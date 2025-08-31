@@ -7,8 +7,11 @@
   },
   "ExpandedNodes": [
     "",
+    "\\external",
+    "\\include",
+    "\\include\\Renderer2D.h",
     "\\src"
   ],
-  "SelectedNode": "\\build",
+  "SelectedNode": "\\CMakeLists.txt",
   "PreviewInSolutionExplorer": false
 }

@@ -18,6 +18,26 @@ target_link_libraries(MakeMyEngine PRIVATE
     OpenGL::GL
 )
 
+
+
+add_custom_command(TARGET MakeMyEngine POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+            ${CMAKE_SOURCE_DIR}/assets
+            $<TARGET_FILE_DIR:MakeMyEngine>/assets)
+
+# include dizini
+target_include_directories(MakeMyEngine PRIVATE
+    ${CMAKE_SOURCE_DIR}/include
+    ${CMAKE_SOURCE_DIR}/external
+)
+
+# kaynak dosyalar
+target_sources(MakeMyEngine PRIVATE
+    src/main.cpp
+    src/Renderer2D.cpp
+)
+
+# (zaten eklediysen geç) assets kopyalama
 add_custom_command(TARGET MakeMyEngine POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
             ${CMAKE_SOURCE_DIR}/assets

@@ -4,6 +4,9 @@
     <ClCompile Include="C:\Users\atasu\Desktop\MakeMyEngine\src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="C:\Users\atasu\Desktop\MakeMyEngine\src\Renderer2D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="C:\Users\atasu\Desktop\MakeMyEngine\CMakeLists.txt" />
