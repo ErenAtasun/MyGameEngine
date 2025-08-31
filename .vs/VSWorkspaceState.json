@@ -7,11 +7,13 @@
   },
   "ExpandedNodes": [
     "",
+    "\\assets",
+    "\\assets\\shaders",
     "\\external",
     "\\include",
     "\\include\\Renderer2D.h",
     "\\src"
   ],
-  "SelectedNode": "\\CMakeLists.txt",
+  "SelectedNode": "\\src\\main.cpp",
   "PreviewInSolutionExplorer": false
 }

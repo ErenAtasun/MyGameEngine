@@ -35,10 +35,8 @@ target_include_directories(MakeMyEngine PRIVATE
 target_sources(MakeMyEngine PRIVATE
     src/main.cpp
     src/Renderer2D.cpp
+    src/OrthoCamera.cpp
+    src/OrthoCameraController.cpp
+
 )
 
-# (zaten eklediysen geç) assets kopyalama
-add_custom_command(TARGET MakeMyEngine POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-            ${CMAKE_SOURCE_DIR}/assets
-            $<TARGET_FILE_DIR:MakeMyEngine>/assets)
