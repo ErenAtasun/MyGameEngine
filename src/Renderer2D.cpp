@@ -4,6 +4,8 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include "AssetManager.h"
+
 
 static std::string ReadFile(const char* path) {
     std::ifstream f(path, std::ios::binary);
@@ -25,9 +27,6 @@ static GLuint MakeProgramFromFiles(const char* v, const char* f) {
     if (!ok) { char log[2048]; glGetProgramInfoLog(p, 2048, nullptr, log); std::cerr << "Program link hatasi:\n" << log << "\n"; }
     glDeleteShader(vsh); glDeleteShader(fsh); return p;
 }
-
-#define STB_IMAGE_IMPLEMENTATION
-#include "../external/stb_image.h"
 
 GLuint Renderer2D::s_VAO = 0, Renderer2D::s_VBO = 0, Renderer2D::s_EBO = 0, Renderer2D::s_Program = 0;
 Renderer2D::QuadVertex* Renderer2D::s_BufferBase = nullptr;
@@ -75,10 +74,9 @@ void Renderer2D::Init(int maxSprites) {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, s_EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(uint32_t), indices.data(), GL_STATIC_DRAW);
 
-    s_Program = MakeProgramFromFiles("assets/shaders/basic.vert", "assets/shaders/sprite.frag");
+    s_Program = Assets::GetShaderFromFiles("shaders/basic.vert", "shaders/sprite.frag");
     glUseProgram(s_Program);
-    int samplers[8] = { 0,1,2,3,4,5,6,7 };
-    glUniform1iv(glGetUniformLocation(s_Program, "uTextures"), 8, samplers);
+
 
     glGenTextures(1, &s_WhiteTexture);
     glBindTexture(GL_TEXTURE_2D, s_WhiteTexture);
@@ -215,20 +213,6 @@ void Renderer2D::DrawSpriteUV(const SpriteUVDesc& s) {
 void Renderer2D::EndScene() { Flush(); }
 
 GLuint Renderer2D::LoadTexture(const char* rel) {
-    std::string path = std::string("assets/") + rel;
-    int w, h, n; stbi_set_flip_vertically_on_load(true);
-    unsigned char* data = stbi_load(path.c_str(), &w, &h, &n, 4);
-    if (!data) { std::cerr << "Texture yuklenemedi: " << path << "\nSebep: " << stbi_failure_reason() << "\n"; return 0; }
-    GLuint t; glGenTextures(1, &t);
-    glBindTexture(GL_TEXTURE_2D, t);
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-    glGenerateMipmap(GL_TEXTURE_2D);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    // Atlas sýzýntýsý yaþamamak için istersen þu ikisini aç:
-    // glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
-    // glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
-    stbi_image_free(data);
-    return t;
+    return Assets::GetTexture(rel); // rel: "texture.png" vb.
 }
+

@@ -35,8 +35,9 @@ target_include_directories(MakeMyEngine PRIVATE
 target_sources(MakeMyEngine PRIVATE
     src/main.cpp
     src/Renderer2D.cpp
+    src/AssetManager.cpp
     src/OrthoCamera.cpp
     src/OrthoCameraController.cpp
-
 )
+
 
