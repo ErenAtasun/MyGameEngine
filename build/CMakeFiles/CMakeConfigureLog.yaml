@@ -88,7 +88,7 @@ events:
       The output was:
       0
       MSBuild version 17.5.1+f6fdcf537 for .NET Framework
-      Oluşturma başlatıldı: 28.08.2025 13:38:24.
+      Oluşturma başlatıldı: 3.09.2025 00:29:22.
       Included response file: C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\amd64\\MSBuild.rsp
       
       1 düğümünde "C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\4.1.0\\CompilerIdCXX\\CompilerIdCXX.vcxproj" projesi (varsayılan hedefler).
@@ -125,7 +125,7 @@ events:
           0 Uyarı
           0 Hata
       
-      Geçen Süre 00:00:01.25
+      Geçen Süre 00:00:01.64
       
       
       Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CompilerIdCXX.exe"
@@ -2581,8 +2581,8 @@ events:
     checks:
       - "Detecting CXX compiler ABI info"
     directories:
-      source: "C:/Users/atasu/Desktop/MakeMyEngine/build/CMakeFiles/CMakeScratch/TryCompile-kiggde"
-      binary: "C:/Users/atasu/Desktop/MakeMyEngine/build/CMakeFiles/CMakeScratch/TryCompile-kiggde"
+      source: "C:/Users/atasu/Desktop/MakeMyEngine/build/CMakeFiles/CMakeScratch/TryCompile-e6ywk5"
+      binary: "C:/Users/atasu/Desktop/MakeMyEngine/build/CMakeFiles/CMakeScratch/TryCompile-e6ywk5"
     cmakeVariables:
       CMAKE_CXX_FLAGS: "/DWIN32 /D_WINDOWS /EHsc"
       CMAKE_CXX_FLAGS_DEBUG: "/Zi /Ob0 /Od /RTC1"
@@ -2596,39 +2596,39 @@ events:
       variable: "CMAKE_CXX_ABI_COMPILED"
       cached: true
       stdout: |
-        Change Dir: 'C:/Users/atasu/Desktop/MakeMyEngine/build/CMakeFiles/CMakeScratch/TryCompile-kiggde'
+        Change Dir: 'C:/Users/atasu/Desktop/MakeMyEngine/build/CMakeFiles/CMakeScratch/TryCompile-e6ywk5'
         
-        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_a544e.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_b44ad.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
         MSBuild version 17.5.1+f6fdcf537 for .NET Framework
-        Oluşturma başlatıldı: 28.08.2025 13:38:25.
+        Oluşturma başlatıldı: 3.09.2025 00:29:24.
         Included response file: C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\amd64\\MSBuild.rsp
         
-        1 düğümünde "C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-kiggde\\cmTC_a544e.vcxproj" projesi (varsayılan hedefler).
+        1 düğümünde "C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-e6ywk5\\cmTC_b44ad.vcxproj" projesi (varsayılan hedefler).
         PrepareForBuild:
-          "cmTC_a544e.dir\\Debug\\" dizini oluşturuluyor.
-          "C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-kiggde\\Debug\\" dizini oluşturuluyor.
-          "cmTC_a544e.dir\\Debug\\cmTC_a544e.tlog\\" dizini oluşturuluyor.
+          "cmTC_b44ad.dir\\Debug\\" dizini oluşturuluyor.
+          "C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-e6ywk5\\Debug\\" dizini oluşturuluyor.
+          "cmTC_b44ad.dir\\Debug\\cmTC_b44ad.tlog\\" dizini oluşturuluyor.
         InitializeBuildStatus:
-          "AlwaysCreate" belirtildiği için "cmTC_a544e.dir\\Debug\\cmTC_a544e.tlog\\unsuccessfulbuild" oluşturuluyor.
+          "AlwaysCreate" belirtildiği için "cmTC_b44ad.dir\\Debug\\cmTC_b44ad.tlog\\unsuccessfulbuild" oluşturuluyor.
         ClCompile:
-          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.35.32215\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /EHsc /RTC1 /MDd /GS /fp:precise /Fo"cmTC_a544e.dir\\Debug\\\\" /Fd"cmTC_a544e.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "C:\\Program Files\\CMake\\share\\cmake-4.1\\Modules\\CMakeCXXCompilerABI.cpp"
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.35.32215\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /EHsc /RTC1 /MDd /GS /fp:precise /Fo"cmTC_b44ad.dir\\Debug\\\\" /Fd"cmTC_b44ad.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "C:\\Program Files\\CMake\\share\\cmake-4.1\\Modules\\CMakeCXXCompilerABI.cpp"
           x64 için Microsoft (R) C/C++ İyileştirmeli Derleyicisi Sürüm 19.35.32217.1
           CMakeCXXCompilerABI.cpp
           Telif Hakkı (C) Microsoft Corporation. Tüm hakları saklıdır.
-          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /EHsc /RTC1 /MDd /GS /fp:precise /Fo"cmTC_a544e.dir\\Debug\\\\" /Fd"cmTC_a544e.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "C:\\Program Files\\CMake\\share\\cmake-4.1\\Modules\\CMakeCXXCompilerABI.cpp"
+          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /EHsc /RTC1 /MDd /GS /fp:precise /Fo"cmTC_b44ad.dir\\Debug\\\\" /Fd"cmTC_b44ad.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "C:\\Program Files\\CMake\\share\\cmake-4.1\\Modules\\CMakeCXXCompilerABI.cpp"
         Link:
-          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.35.32215\\bin\\HostX64\\x64\\link.exe /OUT:"C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-kiggde\\Debug\\cmTC_a544e.exe" /INCREMENTAL /ILK:"cmTC_a544e.dir\\Debug\\cmTC_a544e.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Users/atasu/Desktop/MakeMyEngine/build/CMakeFiles/CMakeScratch/TryCompile-kiggde/Debug/cmTC_a544e.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /IMPLIB:"C:/Users/atasu/Desktop/MakeMyEngine/build/CMakeFiles/CMakeScratch/TryCompile-kiggde/Debug/cmTC_a544e.lib" /MACHINE:X64  /machine:x64 cmTC_a544e.dir\\Debug\\CMakeCXXCompilerABI.obj
-          cmTC_a544e.vcxproj -> C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-kiggde\\Debug\\cmTC_a544e.exe
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.35.32215\\bin\\HostX64\\x64\\link.exe /OUT:"C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-e6ywk5\\Debug\\cmTC_b44ad.exe" /INCREMENTAL /ILK:"cmTC_b44ad.dir\\Debug\\cmTC_b44ad.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Users/atasu/Desktop/MakeMyEngine/build/CMakeFiles/CMakeScratch/TryCompile-e6ywk5/Debug/cmTC_b44ad.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /IMPLIB:"C:/Users/atasu/Desktop/MakeMyEngine/build/CMakeFiles/CMakeScratch/TryCompile-e6ywk5/Debug/cmTC_b44ad.lib" /MACHINE:X64  /machine:x64 cmTC_b44ad.dir\\Debug\\CMakeCXXCompilerABI.obj
+          cmTC_b44ad.vcxproj -> C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-e6ywk5\\Debug\\cmTC_b44ad.exe
         FinalizeBuildStatus:
-          "cmTC_a544e.dir\\Debug\\cmTC_a544e.tlog\\unsuccessfulbuild" dosyası siliniyor.
-          "cmTC_a544e.dir\\Debug\\cmTC_a544e.tlog\\cmTC_a544e.lastbuildstate" öğesine erişiliyor.
-        "C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-kiggde\\cmTC_a544e.vcxproj" Projesini Oluşturma İşlemi Tamamlandı (varsayılan hedefler).
+          "cmTC_b44ad.dir\\Debug\\cmTC_b44ad.tlog\\unsuccessfulbuild" dosyası siliniyor.
+          "cmTC_b44ad.dir\\Debug\\cmTC_b44ad.tlog\\cmTC_b44ad.lastbuildstate" öğesine erişiliyor.
+        "C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-e6ywk5\\cmTC_b44ad.vcxproj" Projesini Oluşturma İşlemi Tamamlandı (varsayılan hedefler).
         
         Oluşturma başarılı oldu.
             0 Uyarı
             0 Hata
         
-        Geçen Süre 00:00:00.39
+        Geçen Süre 00:00:00.46
         
       exitCode: 0
   -
@@ -3948,8 +3948,8 @@ events:
     checks:
       - "Performing Test CMAKE_HAVE_LIBC_PTHREAD"
     directories:
-      source: "C:/Users/atasu/Desktop/MakeMyEngine/build/CMakeFiles/CMakeScratch/TryCompile-wm1a5t"
-      binary: "C:/Users/atasu/Desktop/MakeMyEngine/build/CMakeFiles/CMakeScratch/TryCompile-wm1a5t"
+      source: "C:/Users/atasu/Desktop/MakeMyEngine/build/CMakeFiles/CMakeScratch/TryCompile-0321ax"
+      binary: "C:/Users/atasu/Desktop/MakeMyEngine/build/CMakeFiles/CMakeScratch/TryCompile-0321ax"
     cmakeVariables:
       CMAKE_CXX_FLAGS: "/DWIN32 /D_WINDOWS /EHsc"
       CMAKE_CXX_FLAGS_DEBUG: "/Zi /Ob0 /Od /RTC1"
@@ -3962,39 +3962,39 @@ events:
       variable: "CMAKE_HAVE_LIBC_PTHREAD"
       cached: true
       stdout: |
-        Change Dir: 'C:/Users/atasu/Desktop/MakeMyEngine/build/CMakeFiles/CMakeScratch/TryCompile-wm1a5t'
+        Change Dir: 'C:/Users/atasu/Desktop/MakeMyEngine/build/CMakeFiles/CMakeScratch/TryCompile-0321ax'
         
-        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_af44b.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_0537b.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
         MSBuild version 17.5.1+f6fdcf537 for .NET Framework
-        Oluşturma başlatıldı: 28.08.2025 13:38:26.
+        Oluşturma başlatıldı: 3.09.2025 00:29:25.
         Included response file: C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\amd64\\MSBuild.rsp
         
-        1 düğümünde "C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-wm1a5t\\cmTC_af44b.vcxproj" projesi (varsayılan hedefler).
+        1 düğümünde "C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-0321ax\\cmTC_0537b.vcxproj" projesi (varsayılan hedefler).
         PrepareForBuild:
-          "cmTC_af44b.dir\\Debug\\" dizini oluşturuluyor.
-          "C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-wm1a5t\\Debug\\" dizini oluşturuluyor.
-          "cmTC_af44b.dir\\Debug\\cmTC_af44b.tlog\\" dizini oluşturuluyor.
+          "cmTC_0537b.dir\\Debug\\" dizini oluşturuluyor.
+          "C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-0321ax\\Debug\\" dizini oluşturuluyor.
+          "cmTC_0537b.dir\\Debug\\cmTC_0537b.tlog\\" dizini oluşturuluyor.
         InitializeBuildStatus:
-          "AlwaysCreate" belirtildiği için "cmTC_af44b.dir\\Debug\\cmTC_af44b.tlog\\unsuccessfulbuild" oluşturuluyor.
+          "AlwaysCreate" belirtildiği için "cmTC_0537b.dir\\Debug\\cmTC_0537b.tlog\\unsuccessfulbuild" oluşturuluyor.
         ClCompile:
-          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.35.32215\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CMAKE_HAVE_LIBC_PTHREAD /D "CMAKE_INTDIR=\\"Debug\\"" /EHsc /RTC1 /MDd /GS /fp:precise /std:c++17 /Fo"cmTC_af44b.dir\\Debug\\\\" /Fd"cmTC_af44b.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-wm1a5t\\src.cxx"
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.35.32215\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CMAKE_HAVE_LIBC_PTHREAD /D "CMAKE_INTDIR=\\"Debug\\"" /EHsc /RTC1 /MDd /GS /fp:precise /std:c++17 /Fo"cmTC_0537b.dir\\Debug\\\\" /Fd"cmTC_0537b.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-0321ax\\src.cxx"
           x64 için Microsoft (R) C/C++ İyileştirmeli Derleyicisi Sürüm 19.35.32217.1
           src.cxx
           Telif Hakkı (C) Microsoft Corporation. Tüm hakları saklıdır.
-          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CMAKE_HAVE_LIBC_PTHREAD /D "CMAKE_INTDIR=\\"Debug\\"" /EHsc /RTC1 /MDd /GS /fp:precise /std:c++17 /Fo"cmTC_af44b.dir\\Debug\\\\" /Fd"cmTC_af44b.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-wm1a5t\\src.cxx"
-        C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-wm1a5t\\src.cxx(1,10): fatal  error C1083: içerme dosyası açılamıyor: 'pthread.h': No such file or directory [C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-wm1a5t\\cmTC_af44b.vcxproj]
-        "C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-wm1a5t\\cmTC_af44b.vcxproj" Projesini Oluşturma İşlemi Tamamlandı (varsayılan hedefler) -- BAŞARISIZ OLDU.
+          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CMAKE_HAVE_LIBC_PTHREAD /D "CMAKE_INTDIR=\\"Debug\\"" /EHsc /RTC1 /MDd /GS /fp:precise /std:c++17 /Fo"cmTC_0537b.dir\\Debug\\\\" /Fd"cmTC_0537b.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-0321ax\\src.cxx"
+        C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-0321ax\\src.cxx(1,10): fatal  error C1083: içerme dosyası açılamıyor: 'pthread.h': No such file or directory [C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-0321ax\\cmTC_0537b.vcxproj]
+        "C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-0321ax\\cmTC_0537b.vcxproj" Projesini Oluşturma İşlemi Tamamlandı (varsayılan hedefler) -- BAŞARISIZ OLDU.
         
         Oluşturma BAŞARISIZ OLDU.
         
-        "C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-wm1a5t\\cmTC_af44b.vcxproj" (varsayılan hedef) (1) ->
+        "C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-0321ax\\cmTC_0537b.vcxproj" (varsayılan hedef) (1) ->
         (ClCompile hedefi) -> 
-          C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-wm1a5t\\src.cxx(1,10): fatal  error C1083: içerme dosyası açılamıyor: 'pthread.h': No such file or directory [C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-wm1a5t\\cmTC_af44b.vcxproj]
+          C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-0321ax\\src.cxx(1,10): fatal  error C1083: içerme dosyası açılamıyor: 'pthread.h': No such file or directory [C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-0321ax\\cmTC_0537b.vcxproj]
         
             0 Uyarı
             1 Hata
         
-        Geçen Süre 00:00:00.29
+        Geçen Süre 00:00:00.32
         
       exitCode: 1
   -
@@ -4011,8 +4011,8 @@ events:
     checks:
       - "Looking for pthread_create in pthreads"
     directories:
-      source: "C:/Users/atasu/Desktop/MakeMyEngine/build/CMakeFiles/CMakeScratch/TryCompile-tld8k5"
-      binary: "C:/Users/atasu/Desktop/MakeMyEngine/build/CMakeFiles/CMakeScratch/TryCompile-tld8k5"
+      source: "C:/Users/atasu/Desktop/MakeMyEngine/build/CMakeFiles/CMakeScratch/TryCompile-mrldli"
+      binary: "C:/Users/atasu/Desktop/MakeMyEngine/build/CMakeFiles/CMakeScratch/TryCompile-mrldli"
     cmakeVariables:
       CMAKE_CXX_FLAGS: "/DWIN32 /D_WINDOWS /EHsc"
       CMAKE_CXX_FLAGS_DEBUG: "/Zi /Ob0 /Od /RTC1"
@@ -4025,41 +4025,41 @@ events:
       variable: "CMAKE_HAVE_PTHREADS_CREATE"
       cached: true
       stdout: |
-        Change Dir: 'C:/Users/atasu/Desktop/MakeMyEngine/build/CMakeFiles/CMakeScratch/TryCompile-tld8k5'
+        Change Dir: 'C:/Users/atasu/Desktop/MakeMyEngine/build/CMakeFiles/CMakeScratch/TryCompile-mrldli'
         
-        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_c7856.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_bbd86.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
         MSBuild version 17.5.1+f6fdcf537 for .NET Framework
-        Oluşturma başlatıldı: 28.08.2025 13:38:27.
+        Oluşturma başlatıldı: 3.09.2025 00:29:25.
         Included response file: C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\amd64\\MSBuild.rsp
         
-        1 düğümünde "C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tld8k5\\cmTC_c7856.vcxproj" projesi (varsayılan hedefler).
+        1 düğümünde "C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-mrldli\\cmTC_bbd86.vcxproj" projesi (varsayılan hedefler).
         PrepareForBuild:
-          "cmTC_c7856.dir\\Debug\\" dizini oluşturuluyor.
-          "C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tld8k5\\Debug\\" dizini oluşturuluyor.
-          "cmTC_c7856.dir\\Debug\\cmTC_c7856.tlog\\" dizini oluşturuluyor.
+          "cmTC_bbd86.dir\\Debug\\" dizini oluşturuluyor.
+          "C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-mrldli\\Debug\\" dizini oluşturuluyor.
+          "cmTC_bbd86.dir\\Debug\\cmTC_bbd86.tlog\\" dizini oluşturuluyor.
         InitializeBuildStatus:
-          "AlwaysCreate" belirtildiği için "cmTC_c7856.dir\\Debug\\cmTC_c7856.tlog\\unsuccessfulbuild" oluşturuluyor.
+          "AlwaysCreate" belirtildiği için "cmTC_bbd86.dir\\Debug\\cmTC_bbd86.tlog\\unsuccessfulbuild" oluşturuluyor.
         ClCompile:
-          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.35.32215\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=pthread_create /D "CMAKE_INTDIR=\\"Debug\\"" /EHsc /RTC1 /MDd /GS /fp:precise /std:c++17 /Fo"cmTC_c7856.dir\\Debug\\\\" /Fd"cmTC_c7856.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tld8k5\\CheckFunctionExists.cxx"
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.35.32215\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=pthread_create /D "CMAKE_INTDIR=\\"Debug\\"" /EHsc /RTC1 /MDd /GS /fp:precise /std:c++17 /Fo"cmTC_bbd86.dir\\Debug\\\\" /Fd"cmTC_bbd86.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-mrldli\\CheckFunctionExists.cxx"
           x64 için Microsoft (R) C/C++ İyileştirmeli Derleyicisi Sürüm 19.35.32217.1
           CheckFunctionExists.cxx
           Telif Hakkı (C) Microsoft Corporation. Tüm hakları saklıdır.
-          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=pthread_create /D "CMAKE_INTDIR=\\"Debug\\"" /EHsc /RTC1 /MDd /GS /fp:precise /std:c++17 /Fo"cmTC_c7856.dir\\Debug\\\\" /Fd"cmTC_c7856.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tld8k5\\CheckFunctionExists.cxx"
+          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=pthread_create /D "CMAKE_INTDIR=\\"Debug\\"" /EHsc /RTC1 /MDd /GS /fp:precise /std:c++17 /Fo"cmTC_bbd86.dir\\Debug\\\\" /Fd"cmTC_bbd86.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-mrldli\\CheckFunctionExists.cxx"
         Link:
-          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.35.32215\\bin\\HostX64\\x64\\link.exe /OUT:"C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tld8k5\\Debug\\cmTC_c7856.exe" /INCREMENTAL /ILK:"cmTC_c7856.dir\\Debug\\cmTC_c7856.ilk" /NOLOGO pthreads.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Users/atasu/Desktop/MakeMyEngine/build/CMakeFiles/CMakeScratch/TryCompile-tld8k5/Debug/cmTC_c7856.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /IMPLIB:"C:/Users/atasu/Desktop/MakeMyEngine/build/CMakeFiles/CMakeScratch/TryCompile-tld8k5/Debug/cmTC_c7856.lib" /MACHINE:X64  /machine:x64 cmTC_c7856.dir\\Debug\\CheckFunctionExists.obj
-        LINK : fatal error LNK1104: 'pthreads.lib' dosyası açılamıyor [C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tld8k5\\cmTC_c7856.vcxproj]
-        "C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tld8k5\\cmTC_c7856.vcxproj" Projesini Oluşturma İşlemi Tamamlandı (varsayılan hedefler) -- BAŞARISIZ OLDU.
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.35.32215\\bin\\HostX64\\x64\\link.exe /OUT:"C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-mrldli\\Debug\\cmTC_bbd86.exe" /INCREMENTAL /ILK:"cmTC_bbd86.dir\\Debug\\cmTC_bbd86.ilk" /NOLOGO pthreads.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Users/atasu/Desktop/MakeMyEngine/build/CMakeFiles/CMakeScratch/TryCompile-mrldli/Debug/cmTC_bbd86.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /IMPLIB:"C:/Users/atasu/Desktop/MakeMyEngine/build/CMakeFiles/CMakeScratch/TryCompile-mrldli/Debug/cmTC_bbd86.lib" /MACHINE:X64  /machine:x64 cmTC_bbd86.dir\\Debug\\CheckFunctionExists.obj
+        LINK : fatal error LNK1104: 'pthreads.lib' dosyası açılamıyor [C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-mrldli\\cmTC_bbd86.vcxproj]
+        "C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-mrldli\\cmTC_bbd86.vcxproj" Projesini Oluşturma İşlemi Tamamlandı (varsayılan hedefler) -- BAŞARISIZ OLDU.
         
         Oluşturma BAŞARISIZ OLDU.
         
-        "C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tld8k5\\cmTC_c7856.vcxproj" (varsayılan hedef) (1) ->
+        "C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-mrldli\\cmTC_bbd86.vcxproj" (varsayılan hedef) (1) ->
         (Link hedefi) -> 
-          LINK : fatal error LNK1104: 'pthreads.lib' dosyası açılamıyor [C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tld8k5\\cmTC_c7856.vcxproj]
+          LINK : fatal error LNK1104: 'pthreads.lib' dosyası açılamıyor [C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-mrldli\\cmTC_bbd86.vcxproj]
         
             0 Uyarı
             1 Hata
         
-        Geçen Süre 00:00:00.31
+        Geçen Süre 00:00:00.38
         
       exitCode: 1
   -
@@ -4076,8 +4076,8 @@ events:
     checks:
       - "Looking for pthread_create in pthread"
     directories:
-      source: "C:/Users/atasu/Desktop/MakeMyEngine/build/CMakeFiles/CMakeScratch/TryCompile-jc1wsr"
-      binary: "C:/Users/atasu/Desktop/MakeMyEngine/build/CMakeFiles/CMakeScratch/TryCompile-jc1wsr"
+      source: "C:/Users/atasu/Desktop/MakeMyEngine/build/CMakeFiles/CMakeScratch/TryCompile-obngeq"
+      binary: "C:/Users/atasu/Desktop/MakeMyEngine/build/CMakeFiles/CMakeScratch/TryCompile-obngeq"
     cmakeVariables:
       CMAKE_CXX_FLAGS: "/DWIN32 /D_WINDOWS /EHsc"
       CMAKE_CXX_FLAGS_DEBUG: "/Zi /Ob0 /Od /RTC1"
@@ -4090,36 +4090,36 @@ events:
       variable: "CMAKE_HAVE_PTHREAD_CREATE"
       cached: true
       stdout: |
-        Change Dir: 'C:/Users/atasu/Desktop/MakeMyEngine/build/CMakeFiles/CMakeScratch/TryCompile-jc1wsr'
+        Change Dir: 'C:/Users/atasu/Desktop/MakeMyEngine/build/CMakeFiles/CMakeScratch/TryCompile-obngeq'
         
-        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_aa412.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_1085a.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
         MSBuild version 17.5.1+f6fdcf537 for .NET Framework
-        Oluşturma başlatıldı: 28.08.2025 13:38:27.
+        Oluşturma başlatıldı: 3.09.2025 00:29:26.
         Included response file: C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\amd64\\MSBuild.rsp
         
-        1 düğümünde "C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-jc1wsr\\cmTC_aa412.vcxproj" projesi (varsayılan hedefler).
+        1 düğümünde "C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-obngeq\\cmTC_1085a.vcxproj" projesi (varsayılan hedefler).
         PrepareForBuild:
-          "cmTC_aa412.dir\\Debug\\" dizini oluşturuluyor.
-          "C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-jc1wsr\\Debug\\" dizini oluşturuluyor.
-          "cmTC_aa412.dir\\Debug\\cmTC_aa412.tlog\\" dizini oluşturuluyor.
+          "cmTC_1085a.dir\\Debug\\" dizini oluşturuluyor.
+          "C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-obngeq\\Debug\\" dizini oluşturuluyor.
+          "cmTC_1085a.dir\\Debug\\cmTC_1085a.tlog\\" dizini oluşturuluyor.
         InitializeBuildStatus:
-          "AlwaysCreate" belirtildiği için "cmTC_aa412.dir\\Debug\\cmTC_aa412.tlog\\unsuccessfulbuild" oluşturuluyor.
+          "AlwaysCreate" belirtildiği için "cmTC_1085a.dir\\Debug\\cmTC_1085a.tlog\\unsuccessfulbuild" oluşturuluyor.
         ClCompile:
-          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.35.32215\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=pthread_create /D "CMAKE_INTDIR=\\"Debug\\"" /EHsc /RTC1 /MDd /GS /fp:precise /std:c++17 /Fo"cmTC_aa412.dir\\Debug\\\\" /Fd"cmTC_aa412.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-jc1wsr\\CheckFunctionExists.cxx"
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.35.32215\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=pthread_create /D "CMAKE_INTDIR=\\"Debug\\"" /EHsc /RTC1 /MDd /GS /fp:precise /std:c++17 /Fo"cmTC_1085a.dir\\Debug\\\\" /Fd"cmTC_1085a.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-obngeq\\CheckFunctionExists.cxx"
           x64 için Microsoft (R) C/C++ İyileştirmeli Derleyicisi Sürüm 19.35.32217.1
-          CheckFunctionExists.cxx
           Telif Hakkı (C) Microsoft Corporation. Tüm hakları saklıdır.
-          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=pthread_create /D "CMAKE_INTDIR=\\"Debug\\"" /EHsc /RTC1 /MDd /GS /fp:precise /std:c++17 /Fo"cmTC_aa412.dir\\Debug\\\\" /Fd"cmTC_aa412.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-jc1wsr\\CheckFunctionExists.cxx"
+          CheckFunctionExists.cxx
+          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=pthread_create /D "CMAKE_INTDIR=\\"Debug\\"" /EHsc /RTC1 /MDd /GS /fp:precise /std:c++17 /Fo"cmTC_1085a.dir\\Debug\\\\" /Fd"cmTC_1085a.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-obngeq\\CheckFunctionExists.cxx"
         Link:
-          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.35.32215\\bin\\HostX64\\x64\\link.exe /OUT:"C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-jc1wsr\\Debug\\cmTC_aa412.exe" /INCREMENTAL /ILK:"cmTC_aa412.dir\\Debug\\cmTC_aa412.ilk" /NOLOGO pthread.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Users/atasu/Desktop/MakeMyEngine/build/CMakeFiles/CMakeScratch/TryCompile-jc1wsr/Debug/cmTC_aa412.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /IMPLIB:"C:/Users/atasu/Desktop/MakeMyEngine/build/CMakeFiles/CMakeScratch/TryCompile-jc1wsr/Debug/cmTC_aa412.lib" /MACHINE:X64  /machine:x64 cmTC_aa412.dir\\Debug\\CheckFunctionExists.obj
-        LINK : fatal error LNK1104: 'pthread.lib' dosyası açılamıyor [C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-jc1wsr\\cmTC_aa412.vcxproj]
-        "C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-jc1wsr\\cmTC_aa412.vcxproj" Projesini Oluşturma İşlemi Tamamlandı (varsayılan hedefler) -- BAŞARISIZ OLDU.
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.35.32215\\bin\\HostX64\\x64\\link.exe /OUT:"C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-obngeq\\Debug\\cmTC_1085a.exe" /INCREMENTAL /ILK:"cmTC_1085a.dir\\Debug\\cmTC_1085a.ilk" /NOLOGO pthread.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Users/atasu/Desktop/MakeMyEngine/build/CMakeFiles/CMakeScratch/TryCompile-obngeq/Debug/cmTC_1085a.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /IMPLIB:"C:/Users/atasu/Desktop/MakeMyEngine/build/CMakeFiles/CMakeScratch/TryCompile-obngeq/Debug/cmTC_1085a.lib" /MACHINE:X64  /machine:x64 cmTC_1085a.dir\\Debug\\CheckFunctionExists.obj
+        LINK : fatal error LNK1104: 'pthread.lib' dosyası açılamıyor [C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-obngeq\\cmTC_1085a.vcxproj]
+        "C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-obngeq\\cmTC_1085a.vcxproj" Projesini Oluşturma İşlemi Tamamlandı (varsayılan hedefler) -- BAŞARISIZ OLDU.
         
         Oluşturma BAŞARISIZ OLDU.
         
-        "C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-jc1wsr\\cmTC_aa412.vcxproj" (varsayılan hedef) (1) ->
+        "C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-obngeq\\cmTC_1085a.vcxproj" (varsayılan hedef) (1) ->
         (Link hedefi) -> 
-          LINK : fatal error LNK1104: 'pthread.lib' dosyası açılamıyor [C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-jc1wsr\\cmTC_aa412.vcxproj]
+          LINK : fatal error LNK1104: 'pthread.lib' dosyası açılamıyor [C:\\Users\\atasu\\Desktop\\MakeMyEngine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-obngeq\\cmTC_1085a.vcxproj]
         
             0 Uyarı
             1 Hata

@@ -451,6 +451,8 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClCompile Include="C:\Users\atasu\Desktop\MakeMyEngine\src\OrthoCamera.cpp" />
     <ClCompile Include="C:\Users\atasu\Desktop\MakeMyEngine\src\OrthoCameraController.cpp" />
     <ClCompile Include="C:\Users\atasu\Desktop\MakeMyEngine\src\Tilemap.cpp" />
+    <ClCompile Include="C:\Users\atasu\Desktop\MakeMyEngine\src\Input.cpp" />
+    <ClCompile Include="C:\Users\atasu\Desktop\MakeMyEngine\src\UI.cpp" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

@@ -1,21 +1,31 @@
 #pragma once
-#include <glm/glm.hpp>
 #include <glad/glad.h>
+#include <glm/glm.hpp>
+
+// Ekran boyutlarý baþka bir .cpp’de TANIMLI olmalý
+extern int g_ScreenW;
+extern int g_ScreenH;
 
 struct SpriteDesc {
-    GLuint texture = 0;
-    glm::vec2 pos = { 0,0 };      // px, sol-alt
-    glm::vec2 size = { 100,100 };  // px
-    glm::vec4 tint = { 1,1,1,1 };  // RGBA çarpaný
+    GLuint    texture = 0;
+    glm::vec2 pos{ 0,0 };
+    glm::vec2 size{ 1,1 };
+    glm::vec4 tint{ 1,1,1,1 };
+    float     z = 0.0f;
+    float     rotation = 0.0f;
+    glm::vec2 origin{ 0.5f, 0.5f };
 };
 
 struct SpriteUVDesc {
-    GLuint texture = 0;
-    glm::vec2 pos = { 0,0 };
-    glm::vec2 size = { 100,100 };
-    glm::vec4 tint = { 1,1,1,1 };
-    glm::vec2 uvMin = { 0,0 };   // alt-sol
-    glm::vec2 uvMax = { 1,1 };   // üst-sað
+    GLuint    texture = 0;
+    glm::vec2 pos{ 0,0 };
+    glm::vec2 size{ 1,1 };
+    glm::vec2 uvMin{ 0,0 };
+    glm::vec2 uvMax{ 1,1 };
+    glm::vec4 tint{ 1,1,1,1 };
+    float     z = 0.0f;
+    float     rotation = 0.0f;
+    glm::vec2 origin{ 0.5f, 0.5f };
 };
 
 class Renderer2D {
@@ -24,11 +34,14 @@ public:
     static void Shutdown();
 
     static void BeginScene(const glm::mat4& proj, const glm::mat4& view);
-    static void DrawSprite(const SpriteDesc& s);     // tam doku
-    static void DrawSpriteUV(const SpriteUVDesc& s); // atlas/alt-dikdörtgen
-    static void EndScene();                          // flush
+    static void DrawSprite(const SpriteDesc& s);
+    static void DrawSpriteUV(const SpriteUVDesc& s);
+    static void EndScene();
 
-    static GLuint LoadTexture(const char* pathRelativeAssetsPNG); // "texture.png"
+    static GLuint LoadTexture(const char* relativePng);
+    // UI için ekran koordinatýyla çizim
+    static void DrawScreenQuad(float x, float y, float w, float h,
+        GLuint tex, const float tint[4]);
 
 private:
     static void StartBatch();

@@ -19,6 +19,12 @@
     <ClCompile Include="C:\Users\atasu\Desktop\MakeMyEngine\src\Tilemap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="C:\Users\atasu\Desktop\MakeMyEngine\src\Input.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\atasu\Desktop\MakeMyEngine\src\UI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="C:\Users\atasu\Desktop\MakeMyEngine\CMakeLists.txt" />

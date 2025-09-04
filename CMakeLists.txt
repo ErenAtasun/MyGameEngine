@@ -39,7 +39,8 @@ target_sources(MakeMyEngine PRIVATE
     src/OrthoCamera.cpp
     src/OrthoCameraController.cpp
     src/Tilemap.cpp
-
+    src/Input.cpp 
+    src/UI.cpp 
 )
 
 
