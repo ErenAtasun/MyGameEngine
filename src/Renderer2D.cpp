@@ -31,6 +31,7 @@ GLuint Renderer2D::s_WhiteTexture = 0;
 
 glm::mat4 Renderer2D::s_Proj(1.0f);
 glm::mat4 Renderer2D::s_View(1.0f);
+Renderer2D::Stats Renderer2D::s_Stats{};
 
 // Ekran koordinat�ndan d�nya koordinat�na �eviride y�kseklik laz�m
 extern int g_ScreenH; // Config.cpp i�inde TANIMLI
@@ -141,11 +142,13 @@ void Renderer2D::Flush()
     for (int i = 0; i < s_TextureSlotCount; ++i) {
         glActiveTexture(GL_TEXTURE0 + i);
         glBindTexture(GL_TEXTURE_2D, s_TextureSlots[i]);
+        s_Stats.textureBinds++;
     }
 
     glUseProgram(s_Program);
     glBindVertexArray(s_VAO);
     glDrawElements(GL_TRIANGLES, (GLsizei)s_IndexCount, GL_UNSIGNED_INT, 0);
+    s_Stats.drawCalls++;
 
     StartBatch();
 }
@@ -219,6 +222,7 @@ void Renderer2D::DrawSprite(const SpriteDesc& s)
     s_BufferPtr += 4;
 
     s_IndexCount += 6;
+    s_Stats.quadCount++;
 }
 
 void Renderer2D::DrawSpriteUV(const SpriteUVDesc& s)
@@ -278,6 +282,7 @@ void Renderer2D::DrawSpriteUV(const SpriteUVDesc& s)
     s_BufferPtr += 4;
 
     s_IndexCount += 6;
+    s_Stats.quadCount++;
 }
 
 void Renderer2D::EndScene()
@@ -306,3 +311,6 @@ void Renderer2D::DrawScreenQuad(float x, float y, float w, float h,
 
     DrawSprite(s);
 }
+
+void Renderer2D::ResetStats() { s_Stats = Stats{}; }
+Renderer2D::Stats Renderer2D::GetStats() { return s_Stats; }

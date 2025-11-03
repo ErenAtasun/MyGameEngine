@@ -105,9 +105,9 @@ int main() {
     {
         TilemapDesc d{}; d.atlasTex = texAtlas; d.atlasCols = 4; d.atlasRows = 4;
         d.tileW = 64; d.tileH = 64; d.originPx = { 50,50 }; d.tint = { 1,1,1,1 };
-        bg.LoadCSV("maps/bg.csv", d);
-        world.LoadCSV("maps/level1.csv", d);
-        fg.LoadCSV("maps/fg.csv", d);
+        bg.LoadCSV("assets/maps/bg.csv", d);
+        world.LoadCSV("assets/maps/level1.csv", d);
+        fg.LoadCSV("assets/maps/fg.csv", d);
     }
 
     // -------- UI (butonlar) --------
@@ -123,10 +123,12 @@ int main() {
     // -------- Main Loop --------
     double lastTime = glfwGetTime();
     int prevFbw = fbw, prevFbh = fbh;
+    float statsTimer = 0.0f;
+    bool wireframe = false;
     while (!glfwWindowShouldClose(win)) {
         if (glfwGetKey(win, GLFW_KEY_ESCAPE) == GLFW_PRESS) glfwSetWindowShouldClose(win, 1);
 
-        double now = glfwGetTime(); float dt = float(now - lastTime); lastTime = now;
+        double now = glfwGetTime(); float dt = float(now - lastTime); lastTime = now; statsTimer += dt;
 
         glfwGetFramebufferSize(win, &fbw, &fbh);
         if (fbw != prevFbw || fbh != prevFbh) {
@@ -140,6 +142,10 @@ int main() {
         if (glfwGetKey(win, GLFW_KEY_LEFT) == GLFW_PRESS) sA.pos.x -= 200.f * dt;
         if (glfwGetKey(win, GLFW_KEY_UP) == GLFW_PRESS) sA.pos.y += 200.f * dt;
         if (glfwGetKey(win, GLFW_KEY_DOWN) == GLFW_PRESS) sA.pos.y -= 200.f * dt;
+
+        if (glfwGetKey(win, GLFW_KEY_F2) == GLFW_PRESS) { wireframe = true; }
+        if (glfwGetKey(win, GLFW_KEY_F2) == GLFW_RELEASE && wireframe) { glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); }
+        if (glfwGetKey(win, GLFW_KEY_F3) == GLFW_PRESS) { glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); wireframe = false; }
 
         animTime += dt;
         while (animTime >= 1.0f / animFps) { animTime -= 1.0f / animFps; animFrame = (animFrame + 1) % (ATLAS_COLS * ATLAS_ROWS); }
@@ -156,6 +162,7 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT);
 
         auto& cam = camCtrl.GetCamera();
+        Renderer2D::ResetStats();
         // Dunya cizimi (dunya kamerasyla)
         Renderer2D::BeginScene(cam.GetProjection(), cam.GetView());
         // D�nya
@@ -179,6 +186,11 @@ int main() {
         UI::End();
         Renderer2D::EndScene();
 
+        if (statsTimer >= 1.0f) {
+            auto st = Renderer2D::GetStats();
+            std::cout << "[Stats] drawCalls=" << st.drawCalls << ", quads=" << st.quadCount << ", textureBinds=" << st.textureBinds << "\n";
+            statsTimer = 0.0f;
+        }
         glfwSwapBuffers(win);
         glfwPollEvents();
         Input::NewFrame();

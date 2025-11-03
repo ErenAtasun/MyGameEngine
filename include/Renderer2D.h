@@ -2,7 +2,7 @@
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 
-// Ekran boyutlarý baþka bir .cpp’de TANIMLI olmalý
+// Ekran boyutlarï¿½ baï¿½ka bir .cppï¿½de TANIMLI olmalï¿½
 extern int g_ScreenW;
 extern int g_ScreenH;
 
@@ -39,9 +39,13 @@ public:
     static void EndScene();
 
     static GLuint LoadTexture(const char* relativePng);
-    // UI için ekran koordinatýyla çizim
+    // UI iï¿½in ekran koordinatï¿½yla ï¿½izim
     static void DrawScreenQuad(float x, float y, float w, float h,
         GLuint tex, const float tint[4]);
+
+    struct Stats { uint32_t drawCalls = 0; uint32_t quadCount = 0; uint32_t textureBinds = 0; };
+    static void ResetStats();
+    static Stats GetStats();
 
 private:
     static void StartBatch();
@@ -62,4 +66,6 @@ private:
     static GLuint  s_WhiteTexture;
 
     static glm::mat4 s_Proj, s_View;
+
+    static Stats s_Stats;
 };
