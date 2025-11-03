@@ -3,6 +3,7 @@
 #include <vector>
 #include <glm/glm.hpp>
 #include "Renderer2D.h"
+#include "OrthoCamera.h"
 
 struct TilemapDesc {
     GLuint atlasTex = 0;
@@ -14,10 +15,11 @@ struct TilemapDesc {
 
 class Tilemap {
 public:
-    Tilemap() = default; // Varsayýlan kurucu
+    Tilemap() = default; // Varsayï¿½lan kurucu
 
     bool LoadCSV(const std::string& path, const TilemapDesc& d);
     void Draw() const;
+    void Draw(const OrthoCamera& camera) const;
 
 private:
     TilemapDesc desc;

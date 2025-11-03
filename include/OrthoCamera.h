@@ -13,6 +13,8 @@ public:
     const glm::vec2& GetPosition() const { return m_Position; }
     float GetRotation() const { return m_Rotation; }
     float GetZoom()     const { return m_Zoom; }
+    float GetViewWidth() const { return m_ViewWidth; }
+    float GetViewHeight() const { return m_ViewHeight; }
 
     const glm::mat4& GetProjection() const { return m_Proj; }
     const glm::mat4& GetView()       const { return m_View; }
@@ -26,4 +28,6 @@ private:
     glm::vec2 m_Position{ 0.0f };
     float m_Rotation = 0.0f; // derece
     float m_Zoom = 1.0f;
+    float m_ViewWidth = 0.0f;
+    float m_ViewHeight = 0.0f;
 };

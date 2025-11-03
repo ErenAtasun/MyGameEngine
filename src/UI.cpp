@@ -1,9 +1,9 @@
 #include "UI.h"
-#include "Renderer2D.h" // DrawScreenQuad için yeterli
+#include "Renderer2D.h" // DrawScreenQuad iï¿½in yeterli
 #include "Input.h"      // fare/klavye okuma
 #include <cstring>      // (gerekirse) memset, memcpy vb.
 // 2) sonra GLFW
-// baþka GL header'ý kesinlikle yok
+// baï¿½ka GL header'ï¿½ kesinlikle yok
 
 static int s_ScreenW = 0, s_ScreenH = 0;
 
@@ -11,23 +11,24 @@ namespace UI {
     void Begin(int w, int h) { s_ScreenW = w; s_ScreenH = h; }
     void End() {}
 
-    // ekran koordinatýndan NDC/quada çevirip Renderer2D ile çiz
+    // ekran koordinatï¿½ndan NDC/quada ï¿½evirip Renderer2D ile ï¿½iz
     static void DrawRectPx(float x, float y, float w, float h, unsigned int tex, const float tint[4]) {
-        // Renderer2D sahneni ortografik kamera ile çiziyor; UI için full-screen projeksiyon kullanmýyorsan
-        // kolay yol: ekran pikselini dünya uzayýna çeviren helper yazmak yerine,
-        // Renderer2D'de "DrawScreenQuad(x,y,w,h)" varyantý ekleyebilirsin.
-        // Þimdilik: 0,0 sol-üst kabul edelim ve Renderer2D'de böyle bir fonksiyon olduðunu varsayalým:
-        Renderer2D::DrawScreenQuad(x, y, w, h, tex, tint);
+        SpriteDesc s{};
+        s.texture = tex;
+        s.pos = { x + w * 0.5f, y + h * 0.5f }; // UI projeksiyonu (0,0 sol-ust, +y asagi)
+        s.size = { w, h };
+        s.tint = { tint[0], tint[1], tint[2], tint[3] };
+        Renderer2D::DrawSprite(s);
     }
 
     void DrawButton(UIButton& b) {
         const auto& m = Input::Mouse();
-        // sol-üst referanslý hit-test
+        // sol-ï¿½st referanslï¿½ hit-test
         bool inside = (m.x >= b.x && m.x <= b.x + b.w && m.y >= b.y && m.y <= b.y + b.h);
         b.hover = inside;
         bool clicked = false;
         if (inside && m.leftPressed) { b.down = true; }
-        if (!Input::Mouse().leftDown && b.down) { // býrakýldý
+        if (!Input::Mouse().leftDown && b.down) { // bï¿½rakï¿½ldï¿½
             clicked = inside; b.down = false;
         }
 

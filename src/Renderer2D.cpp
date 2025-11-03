@@ -10,7 +10,7 @@
 #include <vector>
 #include <iostream>
 
-// ---- Sýnýfýn statik deðiþken TANIMLARI ----
+// ---- Sï¿½nï¿½fï¿½n statik deï¿½iï¿½ken TANIMLARI ----
 GLuint Renderer2D::s_VAO = 0;
 GLuint Renderer2D::s_VBO = 0;
 GLuint Renderer2D::s_EBO = 0;
@@ -32,8 +32,8 @@ GLuint Renderer2D::s_WhiteTexture = 0;
 glm::mat4 Renderer2D::s_Proj(1.0f);
 glm::mat4 Renderer2D::s_View(1.0f);
 
-// Ekran koordinatýndan dünya koordinatýna çeviride yükseklik lazým
-extern int g_ScreenH; // Config.cpp içinde TANIMLI
+// Ekran koordinatï¿½ndan dï¿½nya koordinatï¿½na ï¿½eviride yï¿½kseklik lazï¿½m
+extern int g_ScreenH; // Config.cpp iï¿½inde TANIMLI
 
 void Renderer2D::Init(int maxSprites)
 {
@@ -41,7 +41,7 @@ void Renderer2D::Init(int maxSprites)
     s_MaxVertices = s_MaxSprites * 4;
     s_MaxIndices = s_MaxSprites * 6;
 
-    // Maks. texture birimi (frag shader 8 kullanýyor)
+    // Maks. texture birimi (frag shader 8 kullanï¿½yor)
     GLint units = 0;
     glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &units);
     s_MaxTextureSlots = std::min(8, (int)units);
@@ -80,7 +80,7 @@ void Renderer2D::Init(int maxSprites)
     glEnableVertexAttribArray(3); // texIndex
     glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(QuadVertex), (void*)offsetof(QuadVertex, texIndex));
 
-    // Shader (Assets GetShaderFromFiles sampler array'i de ayarlýyor)
+    // Shader (Assets GetShaderFromFiles sampler array'i de ayarlï¿½yor)
     s_Program = Assets::GetShaderFromFiles("shaders/basic.vert", "shaders/sprite.frag");
     glUseProgram(s_Program);
 
@@ -97,7 +97,7 @@ void Renderer2D::Init(int maxSprites)
     s_TextureSlots[0] = s_WhiteTexture;   // 0 = white
     s_TextureSlotCount = 1;
 
-    // CPU tarafý vertex buffer
+    // CPU tarafï¿½ vertex buffer
     s_BufferBase = (QuadVertex*)std::malloc((size_t)s_MaxVertices * sizeof(QuadVertex));
     s_BufferPtr = s_BufferBase;
 
@@ -182,7 +182,7 @@ void Renderer2D::DrawSprite(const SpriteDesc& s)
     const glm::vec2 p = s.pos;
     const glm::vec2 sz = s.size;
 
-    // (rotation/origin uygulanmýyor -> düz axis-aligned quad)
+    // (rotation/origin uygulanmï¿½yor -> dï¿½z axis-aligned quad)
     const glm::vec2 p0 = p;
     const glm::vec2 p1 = { p.x + sz.x, p.y };
     const glm::vec2 p2 = { p.x + sz.x, p.y + sz.y };
@@ -195,10 +195,27 @@ void Renderer2D::DrawSprite(const SpriteDesc& s)
 
     const glm::vec4 col = s.tint;
 
-    s_BufferPtr[0] = { p0, uv0, col, texIndex };
-    s_BufferPtr[1] = { p1, uv1, col, texIndex };
-    s_BufferPtr[2] = { p2, uv2, col, texIndex };
-    s_BufferPtr[3] = { p3, uv3, col, texIndex };
+    glm::vec2 v0, v1, v2, v3;
+    {
+        const glm::vec2 originPx = { s.origin.x * sz.x, s.origin.y * sz.y };
+        const float r = s.rotation;
+        const float c = std::cos(glm::radians(r));
+        const float sn = std::sin(glm::radians(r));
+        auto rot = [&](glm::vec2 v) -> glm::vec2 { return { c * v.x - sn * v.y, sn * v.x + c * v.y }; };
+        const glm::vec2 l0 = glm::vec2(0.0f, 0.0f) - originPx;
+        const glm::vec2 l1 = glm::vec2(sz.x, 0.0f) - originPx;
+        const glm::vec2 l2 = glm::vec2(sz.x, sz.y) - originPx;
+        const glm::vec2 l3 = glm::vec2(0.0f, sz.y) - originPx;
+        v0 = p + rot(l0);
+        v1 = p + rot(l1);
+        v2 = p + rot(l2);
+        v3 = p + rot(l3);
+    }
+
+    s_BufferPtr[0] = { v0, uv0, col, texIndex };
+    s_BufferPtr[1] = { v1, uv1, col, texIndex };
+    s_BufferPtr[2] = { v2, uv2, col, texIndex };
+    s_BufferPtr[3] = { v3, uv3, col, texIndex };
     s_BufferPtr += 4;
 
     s_IndexCount += 6;
@@ -237,10 +254,27 @@ void Renderer2D::DrawSpriteUV(const SpriteUVDesc& s)
 
     const glm::vec4 col = s.tint;
 
-    s_BufferPtr[0] = { p0, uv0, col, texIndex };
-    s_BufferPtr[1] = { p1, uv1, col, texIndex };
-    s_BufferPtr[2] = { p2, uv2, col, texIndex };
-    s_BufferPtr[3] = { p3, uv3, col, texIndex };
+    glm::vec2 v0, v1, v2, v3;
+    {
+        const glm::vec2 originPx = { s.origin.x * sz.x, s.origin.y * sz.y };
+        const float r = s.rotation;
+        const float c = std::cos(glm::radians(r));
+        const float sn = std::sin(glm::radians(r));
+        auto rot = [&](glm::vec2 v) -> glm::vec2 { return { c * v.x - sn * v.y, sn * v.x + c * v.y }; };
+        const glm::vec2 l0 = glm::vec2(0.0f, 0.0f) - originPx;
+        const glm::vec2 l1 = glm::vec2(sz.x, 0.0f) - originPx;
+        const glm::vec2 l2 = glm::vec2(sz.x, sz.y) - originPx;
+        const glm::vec2 l3 = glm::vec2(0.0f, sz.y) - originPx;
+        v0 = p + rot(l0);
+        v1 = p + rot(l1);
+        v2 = p + rot(l2);
+        v3 = p + rot(l3);
+    }
+
+    s_BufferPtr[0] = { v0, uv0, col, texIndex };
+    s_BufferPtr[1] = { v1, uv1, col, texIndex };
+    s_BufferPtr[2] = { v2, uv2, col, texIndex };
+    s_BufferPtr[3] = { v3, uv3, col, texIndex };
     s_BufferPtr += 4;
 
     s_IndexCount += 6;
@@ -256,7 +290,7 @@ GLuint Renderer2D::LoadTexture(const char* relativePng)
     return Assets::GetTexture(relativePng);
 }
 
-// UI: ekran piksel koordinatý ile quad çizer; (0,0) sol-üst
+// UI: ekran piksel koordinatï¿½ ile quad ï¿½izer; (0,0) sol-ï¿½st
 void Renderer2D::DrawScreenQuad(float x, float y, float w, float h,
     GLuint tex, const float tint[4])
 {
@@ -264,7 +298,7 @@ void Renderer2D::DrawScreenQuad(float x, float y, float w, float h,
     s.texture = tex;
 
     const float cx = x + w * 0.5f;
-    const float cy = (g_ScreenH - y) - h * 0.5f; // sol-üst -> dünya
+    const float cy = (g_ScreenH - y) - h * 0.5f; // sol-ï¿½st -> dï¿½nya
 
     s.pos = { cx, cy };
     s.size = { w, h };

@@ -41,6 +41,7 @@ target_sources(MakeMyEngine PRIVATE
     src/Tilemap.cpp
     src/Input.cpp 
     src/UI.cpp 
+    src/Config.cpp
 )
 
 

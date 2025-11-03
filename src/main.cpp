@@ -6,6 +6,7 @@
 #include <vector>
 
 #include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 #include "Renderer2D.h"
 #include "OrthoCamera.h"
@@ -18,11 +19,11 @@
 #ifdef _WIN32
 #include <windows.h>
 #endif
-int g_ScreenW = 1280;
-int g_ScreenH = 720;
+extern int g_ScreenW;
+extern int g_ScreenH;
 
 // ---------- Callbacks ----------
-static void framebuffer_size_callback(GLFWwindow*, int w, int h) { glViewport(0, 0, w, h); }
+static void framebuffer_size_callback(GLFWwindow*, int w, int h) { glViewport(0, 0, w, h); g_ScreenW = w; g_ScreenH = h; }
 
 static OrthoCameraController* gCamCtrl = nullptr;
 static void scroll_cb(GLFWwindow*, double /*xoff*/, double yoff) {
@@ -60,7 +61,7 @@ int main() {
     std::cout << "GL: " << glGetString(GL_VERSION) << "\n";
 
 #ifdef _WIN32
-    // Çalýþma dizinini .exe klasörüne çek (assets yol sorunlarýný önler)
+    // ï¿½alï¿½ï¿½ma dizinini .exe klasï¿½rï¿½ne ï¿½ek (assets yol sorunlarï¿½nï¿½ ï¿½nler)
     {
         char exePath[MAX_PATH]; GetModuleFileNameA(nullptr, exePath, MAX_PATH);
         std::filesystem::current_path(std::filesystem::path(exePath).parent_path());
@@ -121,13 +122,18 @@ int main() {
 
     // -------- Main Loop --------
     double lastTime = glfwGetTime();
+    int prevFbw = fbw, prevFbh = fbh;
     while (!glfwWindowShouldClose(win)) {
         if (glfwGetKey(win, GLFW_KEY_ESCAPE) == GLFW_PRESS) glfwSetWindowShouldClose(win, 1);
 
         double now = glfwGetTime(); float dt = float(now - lastTime); lastTime = now;
 
         glfwGetFramebufferSize(win, &fbw, &fbh);
-        camCtrl.OnResize((float)fbw, (float)fbh);
+        if (fbw != prevFbw || fbh != prevFbh) {
+            prevFbw = fbw; prevFbh = fbh;
+            camCtrl.OnResize((float)fbw, (float)fbh);
+        }
+        glViewport(0, 0, fbw, fbh);
         camCtrl.OnUpdate(dt, win);
 
         if (glfwGetKey(win, GLFW_KEY_RIGHT) == GLFW_PRESS) sA.pos.x += 200.f * dt;
@@ -150,24 +156,27 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT);
 
         auto& cam = camCtrl.GetCamera();
+        // Dunya cizimi (dunya kamerasyla)
         Renderer2D::BeginScene(cam.GetProjection(), cam.GetView());
-
-        // Dünya
-        bg.Draw();
-        world.Draw();
+        // Dï¿½nya
+        bg.Draw(cam);
+        world.Draw(cam);
         Renderer2D::DrawSprite(sA);
         Renderer2D::DrawSprite(sB);
         Renderer2D::DrawSprite(sC);
         for (auto& spr : grid) Renderer2D::DrawSprite(spr);
         if (texAtlas) Renderer2D::DrawSpriteUV(animS);
-        fg.Draw();
+        fg.Draw(cam);
+        Renderer2D::EndScene();
 
-        // UI
+        // UI cizimi (tam ekran ortografik projeksiyon)
+        glm::mat4 uiProj = glm::ortho(0.0f, (float)fbw, (float)fbh, 0.0f);
+        glm::mat4 uiView = glm::mat4(1.0f);
+        Renderer2D::BeginScene(uiProj, uiView);
         UI::Begin((float)fbw, (float)fbh);
         UI::DrawButton(btnStart);
         UI::DrawButton(btnQuit);
         UI::End();
-
         Renderer2D::EndScene();
 
         glfwSwapBuffers(win);
