@@ -33,6 +33,10 @@ glm::mat4 Renderer2D::s_Proj(1.0f);
 glm::mat4 Renderer2D::s_View(1.0f);
 Renderer2D::Stats Renderer2D::s_Stats{};
 
+std::vector<SpriteDesc> Renderer2D::s_DeferredSprites;
+std::vector<SpriteUVDesc> Renderer2D::s_DeferredSpriteUVs;
+bool Renderer2D::s_UseDeferred = false;
+
 // Ekran koordinat�ndan d�nya koordinat�na �eviride y�kseklik laz�m
 extern int g_ScreenH; // Config.cpp i�inde TANIMLI
 
@@ -161,6 +165,9 @@ void Renderer2D::BeginScene(const glm::mat4& proj, const glm::mat4& view)
     const glm::mat4 mvp = s_Proj * s_View * glm::mat4(1.0f);
     glUniformMatrix4fv(glGetUniformLocation(s_Program, "uMVP"), 1, GL_FALSE, &mvp[0][0]);
     StartBatch();
+    s_DeferredSprites.clear();
+    s_DeferredSpriteUVs.clear();
+    s_UseDeferred = false;
 }
 
 void Renderer2D::DrawSprite(const SpriteDesc& s)
@@ -288,6 +295,42 @@ void Renderer2D::DrawSpriteUV(const SpriteUVDesc& s)
 void Renderer2D::EndScene()
 {
     Flush();
+    if (s_UseDeferred) {
+        FlushDeferred();
+    }
+}
+
+void Renderer2D::SubmitSprite(const SpriteDesc& s)
+{
+    s_UseDeferred = true;
+    s_DeferredSprites.push_back(s);
+}
+
+void Renderer2D::SubmitSpriteUV(const SpriteUVDesc& s)
+{
+    s_UseDeferred = true;
+    s_DeferredSpriteUVs.push_back(s);
+}
+
+void Renderer2D::FlushDeferred()
+{
+    // Sort by Z
+    std::sort(s_DeferredSprites.begin(), s_DeferredSprites.end(),
+        [](const SpriteDesc& a, const SpriteDesc& b) { return a.z < b.z; });
+    std::sort(s_DeferredSpriteUVs.begin(), s_DeferredSpriteUVs.end(),
+        [](const SpriteUVDesc& a, const SpriteUVDesc& b) { return a.z < b.z; });
+    
+    // Draw sorted
+    for (const auto& s : s_DeferredSprites) {
+        DrawSprite(s);
+    }
+    for (const auto& s : s_DeferredSpriteUVs) {
+        DrawSpriteUV(s);
+    }
+    
+    s_DeferredSprites.clear();
+    s_DeferredSpriteUVs.clear();
+    s_UseDeferred = false;
 }
 
 GLuint Renderer2D::LoadTexture(const char* relativePng)

@@ -18,9 +18,10 @@ void OrthoCameraController::OnScroll(double y) {
 
 void OrthoCameraController::OnUpdate(float dt, GLFWwindow* win) {
     auto p = m_Camera.GetPosition();
-    if (glfwGetKey(win, GLFW_KEY_W) == GLFW_PRESS) p.y += m_MoveSpeed * dt;
-    if (glfwGetKey(win, GLFW_KEY_S) == GLFW_PRESS) p.y -= m_MoveSpeed * dt;
-    if (glfwGetKey(win, GLFW_KEY_A) == GLFW_PRESS) p.x -= m_MoveSpeed * dt;
-    if (glfwGetKey(win, GLFW_KEY_D) == GLFW_PRESS) p.x += m_MoveSpeed * dt;
+    // Map controls moved to numpad: 8 (up), 2 (down), 4 (left), 6 (right)
+    if (glfwGetKey(win, GLFW_KEY_KP_8) == GLFW_PRESS) p.y += m_MoveSpeed * dt;
+    if (glfwGetKey(win, GLFW_KEY_KP_2) == GLFW_PRESS) p.y -= m_MoveSpeed * dt;
+    if (glfwGetKey(win, GLFW_KEY_KP_4) == GLFW_PRESS) p.x -= m_MoveSpeed * dt;
+    if (glfwGetKey(win, GLFW_KEY_KP_6) == GLFW_PRESS) p.x += m_MoveSpeed * dt;
     m_Camera.SetPosition(p);
 }

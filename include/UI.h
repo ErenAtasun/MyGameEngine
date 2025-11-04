@@ -3,12 +3,12 @@
 #include <functional>
 
 struct UIButton {
-    // ekran koordinatý (px)
-    float x, y;   // sol-üst
+    // ekran koordinatï¿½ (px)
+    float x, y;   // sol-ï¿½st
     float w, h;
     unsigned int tex = 0; // 0 ise beyaz quad
     float tint[4] = { 1,1,1,1 };
-    std::string label; // þimdilik kullanmayacaðýz (metni adým 3'te)
+    std::string label; // ï¿½imdilik kullanmayacaï¿½ï¿½z (metni adï¿½m 3'te)
     bool hover = false, down = false;
 
     // olaylar
@@ -17,6 +17,7 @@ struct UIButton {
 
 namespace UI {
     void Begin(int screenW, int screenH);
-    void DrawButton(UIButton& b); // hem çizer hem input iþler
+    void DrawButton(UIButton& b); // hem ï¿½izer hem input iï¿½ler
     void End();
+    void DrawTextSimple(const char* text, float x, float y, float size, const float color[4]);
 }

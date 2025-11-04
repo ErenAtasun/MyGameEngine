@@ -28,6 +28,30 @@
     <ClCompile Include="C:\Users\atasu\Desktop\MakeMyEngine\src\Config.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="C:\Users\atasu\Desktop\MakeMyEngine\src\Scene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\atasu\Desktop\MakeMyEngine\src\Entity.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\atasu\Desktop\MakeMyEngine\src\SpriteComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\atasu\Desktop\MakeMyEngine\src\AABBCollider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\atasu\Desktop\MakeMyEngine\src\VelocityComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\atasu\Desktop\MakeMyEngine\src\PaddleController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\atasu\Desktop\MakeMyEngine\src\BallComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\atasu\Desktop\MakeMyEngine\src\GameScene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="C:\Users\atasu\Desktop\MakeMyEngine\CMakeLists.txt" />

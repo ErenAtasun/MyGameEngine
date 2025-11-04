@@ -454,6 +454,14 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClCompile Include="C:\Users\atasu\Desktop\MakeMyEngine\src\Input.cpp" />
     <ClCompile Include="C:\Users\atasu\Desktop\MakeMyEngine\src\UI.cpp" />
     <ClCompile Include="C:\Users\atasu\Desktop\MakeMyEngine\src\Config.cpp" />
+    <ClCompile Include="C:\Users\atasu\Desktop\MakeMyEngine\src\Scene.cpp" />
+    <ClCompile Include="C:\Users\atasu\Desktop\MakeMyEngine\src\Entity.cpp" />
+    <ClCompile Include="C:\Users\atasu\Desktop\MakeMyEngine\src\SpriteComponent.cpp" />
+    <ClCompile Include="C:\Users\atasu\Desktop\MakeMyEngine\src\AABBCollider.cpp" />
+    <ClCompile Include="C:\Users\atasu\Desktop\MakeMyEngine\src\VelocityComponent.cpp" />
+    <ClCompile Include="C:\Users\atasu\Desktop\MakeMyEngine\src\PaddleController.cpp" />
+    <ClCompile Include="C:\Users\atasu\Desktop\MakeMyEngine\src\BallComponent.cpp" />
+    <ClCompile Include="C:\Users\atasu\Desktop\MakeMyEngine\src\GameScene.cpp" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

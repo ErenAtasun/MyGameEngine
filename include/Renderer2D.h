@@ -1,6 +1,8 @@
 #pragma once
 #include <glad/glad.h>
 #include <glm/glm.hpp>
+#include <vector>
+#include <algorithm>
 
 // Ekran boyutlar� ba�ka bir .cpp�de TANIMLI olmal�
 extern int g_ScreenW;
@@ -37,6 +39,11 @@ public:
     static void DrawSprite(const SpriteDesc& s);
     static void DrawSpriteUV(const SpriteUVDesc& s);
     static void EndScene();
+    
+    // Z-sorted deferred rendering
+    static void SubmitSprite(const SpriteDesc& s);
+    static void SubmitSpriteUV(const SpriteUVDesc& s);
+    static void FlushDeferred();
 
     static GLuint LoadTexture(const char* relativePng);
     // UI i�in ekran koordinat�yla �izim
@@ -68,4 +75,9 @@ private:
     static glm::mat4 s_Proj, s_View;
 
     static Stats s_Stats;
+    
+    // Deferred rendering for Z-sorting
+    static std::vector<SpriteDesc> s_DeferredSprites;
+    static std::vector<SpriteUVDesc> s_DeferredSpriteUVs;
+    static bool s_UseDeferred;
 };

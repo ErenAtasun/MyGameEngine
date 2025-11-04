@@ -42,6 +42,14 @@ target_sources(MakeMyEngine PRIVATE
     src/Input.cpp 
     src/UI.cpp 
     src/Config.cpp
+    src/Scene.cpp
+    src/Entity.cpp
+    src/SpriteComponent.cpp
+    src/AABBCollider.cpp
+    src/VelocityComponent.cpp
+    src/PaddleController.cpp
+    src/BallComponent.cpp
+    src/GameScene.cpp
 )
 
 

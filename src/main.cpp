@@ -12,9 +12,9 @@
 #include "OrthoCamera.h"
 #include "OrthoCameraController.h"
 #include "AssetManager.h"
-#include "Tilemap.h"
 #include "Input.h"
 #include "UI.h"
+#include "GameScene.h"
 
 #ifdef _WIN32
 #include <windows.h>
@@ -30,16 +30,6 @@ static void scroll_cb(GLFWwindow*, double /*xoff*/, double yoff) {
     if (gCamCtrl) gCamCtrl->OnScroll(yoff);
 }
 
-// Atlas (col,row) -> uv
-static inline void TileUV(int col, int row, int cols, int rows,
-    glm::vec2& uvMin, glm::vec2& uvMax) {
-    float u0 = (float)col / cols;
-    float v0 = (float)row / rows;
-    float u1 = (float)(col + 1) / cols;
-    float v1 = (float)(row + 1) / rows;
-    uvMin = { u0, v0 };
-    uvMax = { u1, v1 };
-}
 
 int main() {
     // -------- GLFW / Context --------
@@ -48,7 +38,7 @@ int main() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    GLFWwindow* win = glfwCreateWindow(1280, 720, "MakeMyEngine - UI + Tilemap", nullptr, nullptr);
+    GLFWwindow* win = glfwCreateWindow(1280, 720, "MakeMyEngine - Ping Pong", nullptr, nullptr);
     if (!win) { std::cerr << "[ERR] Window create failed\n"; glfwTerminate(); return -1; }
     glfwMakeContextCurrent(win);
     glfwSwapInterval(1);
@@ -76,49 +66,19 @@ int main() {
     int fbw, fbh; glfwGetFramebufferSize(win, &fbw, &fbh);
     OrthoCameraController camCtrl((float)fbw, (float)fbh);
     gCamCtrl = &camCtrl;
-
-    // -------- Textures --------
-    GLuint tex1 = Assets::GetTexture("texture.png");
-    GLuint tex2 = std::filesystem::exists("assets/texture2.png")
-        ? Assets::GetTexture("texture2.png") : tex1;
-    GLuint texAtlas = std::filesystem::exists("assets/atlas.png")
-        ? Assets::GetTexture("atlas.png") : tex1;
-
-    // -------- Demo Sprites --------
-    SpriteDesc sA{ tex1, {340,240}, {256,256}, {1,1,1,1} };
-    SpriteDesc sB{ tex2, {700,320}, {128,128}, {1.0f,0.85f,0.85f,1} };
-    SpriteDesc sC{ tex1, {100,100}, { 96, 96}, {0.7f,1.0f,0.7f,1} };
-
-    std::vector<SpriteDesc> grid;
-    for (int y = 0; y < 12; ++y)
-        for (int x = 0; x < 18; ++x)
-            grid.push_back(SpriteDesc{ tex1, { 20.f + x * 60.f, 20.f + y * 40.f }, { 48.f, 32.f }, {1,1,1,1} });
-
-    // -------- Atlas Anim --------
-    const int ATLAS_COLS = 4, ATLAS_ROWS = 4;
-    SpriteUVDesc animS; animS.texture = texAtlas;
-    animS.pos = { 1000, 320 }; animS.size = { 128,128 }; animS.tint = { 1,1,1,1 };
-    int   animFrame = 0;  float animTime = 0.0f;  float animFps = 8.0f;
-
-    // -------- Tilemap --------
-    Tilemap bg, world, fg;
-    {
-        TilemapDesc d{}; d.atlasTex = texAtlas; d.atlasCols = 4; d.atlasRows = 4;
-        d.tileW = 64; d.tileH = 64; d.originPx = { 50,50 }; d.tint = { 1,1,1,1 };
-        bg.LoadCSV("assets/maps/bg.csv", d);
-        world.LoadCSV("assets/maps/level1.csv", d);
-        fg.LoadCSV("assets/maps/fg.csv", d);
-    }
+    
+    // -------- Game Scene --------
+    auto gameScene = std::make_shared<GameScene>();
+    gameScene->OnAttach();
+    gameScene->SetWorldSize((float)fbw, (float)fbh);
 
     // -------- UI (butonlar) --------
-    UIButton btnStart{ (float)fbw - 220.f, 40.f, 180.f, 50.f };
-    btnStart.tint[0] = 0.2f; btnStart.tint[1] = 0.8f; btnStart.tint[2] = 0.3f;
-    bool playing = false;
-    btnStart.onClick = [&]() { playing = !playing; std::cout << (playing ? "PLAY\n" : "PAUSE\n"); };
-
-    UIButton btnQuit{ (float)fbw - 220.f, 100.f, 180.f, 50.f };
+    UIButton btnQuit{ (float)fbw - 120.f, 20.f, 100.f, 40.f };
     btnQuit.tint[0] = 0.8f; btnQuit.tint[1] = 0.2f; btnQuit.tint[2] = 0.2f;
     btnQuit.onClick = [win]() { glfwSetWindowShouldClose(win, 1); };
+    UIButton btnRestart{ (float)fbw * 0.5f - 90.f, (float)fbh * 0.5f + 40.f, 180.f, 50.f };
+    btnRestart.tint[0] = 0.2f; btnRestart.tint[1] = 0.6f; btnRestart.tint[2] = 0.9f;
+    btnRestart.onClick = [&]() { gameScene->Restart(); };
 
     // -------- Main Loop --------
     double lastTime = glfwGetTime();
@@ -134,46 +94,22 @@ int main() {
         if (fbw != prevFbw || fbh != prevFbh) {
             prevFbw = fbw; prevFbh = fbh;
             camCtrl.OnResize((float)fbw, (float)fbh);
+            gameScene->SetWorldSize((float)fbw, (float)fbh);
         }
         glViewport(0, 0, fbw, fbh);
         camCtrl.OnUpdate(dt, win);
-
-        if (glfwGetKey(win, GLFW_KEY_RIGHT) == GLFW_PRESS) sA.pos.x += 200.f * dt;
-        if (glfwGetKey(win, GLFW_KEY_LEFT) == GLFW_PRESS) sA.pos.x -= 200.f * dt;
-        if (glfwGetKey(win, GLFW_KEY_UP) == GLFW_PRESS) sA.pos.y += 200.f * dt;
-        if (glfwGetKey(win, GLFW_KEY_DOWN) == GLFW_PRESS) sA.pos.y -= 200.f * dt;
-
-        if (glfwGetKey(win, GLFW_KEY_F2) == GLFW_PRESS) { wireframe = true; }
-        if (glfwGetKey(win, GLFW_KEY_F2) == GLFW_RELEASE && wireframe) { glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); }
-        if (glfwGetKey(win, GLFW_KEY_F3) == GLFW_PRESS) { glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); wireframe = false; }
-
-        animTime += dt;
-        while (animTime >= 1.0f / animFps) { animTime -= 1.0f / animFps; animFrame = (animFrame + 1) % (ATLAS_COLS * ATLAS_ROWS); }
-        int fx = animFrame % ATLAS_COLS, fy = animFrame / ATLAS_COLS;
-        TileUV(fx, fy, ATLAS_COLS, ATLAS_ROWS, animS.uvMin, animS.uvMax);
-
-        if (glfwGetKey(win, GLFW_KEY_R) == GLFW_PRESS) {
-            tex1 = Assets::ReloadTexture("texture.png");
-            sA.texture = tex1; for (auto& g : grid) g.texture = tex1;
-            std::cout << "[Reload] texture.png\n";
-        }
+        
+        // Update game scene
+        gameScene->OnUpdate(dt);
 
         glClearColor(0.10f, 0.11f, 0.15f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
         auto& cam = camCtrl.GetCamera();
         Renderer2D::ResetStats();
-        // Dunya cizimi (dunya kamerasyla)
+        // Game Scene rendering
         Renderer2D::BeginScene(cam.GetProjection(), cam.GetView());
-        // D�nya
-        bg.Draw(cam);
-        world.Draw(cam);
-        Renderer2D::DrawSprite(sA);
-        Renderer2D::DrawSprite(sB);
-        Renderer2D::DrawSprite(sC);
-        for (auto& spr : grid) Renderer2D::DrawSprite(spr);
-        if (texAtlas) Renderer2D::DrawSpriteUV(animS);
-        fg.Draw(cam);
+        gameScene->OnRender();
         Renderer2D::EndScene();
 
         // UI cizimi (tam ekran ortografik projeksiyon)
@@ -181,7 +117,77 @@ int main() {
         glm::mat4 uiView = glm::mat4(1.0f);
         Renderer2D::BeginScene(uiProj, uiView);
         UI::Begin((float)fbw, (float)fbh);
-        UI::DrawButton(btnStart);
+        
+        // Score display (simple quads for now)
+        GLuint whiteTex = Assets::GetWhiteTexture();
+        float scoreSize = 30.0f;
+        float scoreX1 = 100.0f, scoreX2 = (float)fbw - 200.0f;
+        float scoreY = 50.0f;
+        
+        // Player 1 score (green)
+        int score1 = gameScene->GetPlayer1Score();
+        for (int i = 0; i < score1 && i < 10; ++i) {
+            float c1[4] = { 0.2f, 0.8f, 0.3f, 1.0f };
+            Renderer2D::DrawScreenQuad(scoreX1 + i * (scoreSize + 5.0f), scoreY, scoreSize, scoreSize, whiteTex, c1);
+        }
+        
+        // Player 2 score (red)
+        int score2 = gameScene->GetPlayer2Score();
+        for (int i = 0; i < score2 && i < 10; ++i) {
+            float c2[4] = { 0.8f, 0.2f, 0.3f, 1.0f };
+            Renderer2D::DrawScreenQuad(scoreX2 - i * (scoreSize + 5.0f), scoreY, scoreSize, scoreSize, whiteTex, c2);
+        }
+        
+        // Game Over overlay (draw first, then UI elements on top)
+        if (gameScene->IsGameOver()) {
+            float overlay[4] = { 0.0f, 0.0f, 0.0f, 0.6f };
+            Renderer2D::DrawScreenQuad(0, 0, (float)fbw, (float)fbh, whiteTex, overlay);
+            // Winner banner color
+            int side = gameScene->GetWinningSide();
+            float bannerColor[4] = { 1,1,1,1 };
+            if (side < 0) { bannerColor[0]=0.2f; bannerColor[1]=0.8f; bannerColor[2]=0.3f; } // green
+            else if (side > 0) { bannerColor[0]=0.8f; bannerColor[1]=0.2f; bannerColor[2]=0.3f; } // red
+            Renderer2D::DrawScreenQuad((float)fbw*0.5f - 250.f, (float)fbh*0.5f - 140.f, 500.f, 80.f, whiteTex, bannerColor);
+            // Winner text
+            const char* msg = side < 0 ? "GREEN WINS" : (side > 0 ? "RED WINS" : "");
+            float white[4] = {1,1,1,1};
+            UI::DrawTextSimple(msg, (float)fbw*0.5f - 210.f, (float)fbh*0.5f - 125.f, 56.f, white);
+        }
+        
+        // Restart button (draw outside game over block, always process input)
+        if (gameScene->IsGameOver()) {
+            btnRestart.x = (float)fbw * 0.5f - 90.f;
+            btnRestart.y = (float)fbh * 0.5f - 40.f;
+            // Update callback to ensure it's set
+            btnRestart.onClick = [&gameScene]() { 
+                std::cout << "[Restart] Button clicked!\n";
+                if (gameScene) gameScene->Restart(); 
+            };
+            UI::DrawButton(btnRestart);
+            // Direct hit-test fallback (in case button press/release sequence misses)
+            const auto& m = Input::Mouse();
+            bool inside = (m.x >= btnRestart.x && m.x <= btnRestart.x + btnRestart.w &&
+                           m.y >= btnRestart.y && m.y <= btnRestart.y + btnRestart.h);
+            if (inside && (m.leftPressed || m.leftDown)) {
+                std::cout << "[Restart] Direct click fallback\n";
+                gameScene->Restart();
+            }
+            // Raw GLFW fallback
+            if (glfwGetMouseButton(win, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && inside) {
+                std::cout << "[Restart] Raw mouse press\n";
+                gameScene->Restart();
+            }
+            if (glfwGetKey(win, GLFW_KEY_ENTER) == GLFW_PRESS || glfwGetKey(win, GLFW_KEY_R) == GLFW_PRESS) {
+                std::cout << "[Restart] Raw key press\n";
+                gameScene->Restart();
+            }
+            // Keyboard fallback to restart
+            if (Input::KeyPressed(GLFW_KEY_ENTER) || Input::KeyPressed(GLFW_KEY_R)) {
+                std::cout << "[Restart] Keyboard shortcut\n";
+                gameScene->Restart();
+            }
+        }
+
         UI::DrawButton(btnQuit);
         UI::End();
         Renderer2D::EndScene();
