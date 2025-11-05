@@ -5,6 +5,7 @@
 MakeMyEngine is a lightweight 2D game engine/skeleton built with modern C++ and OpenGL. It combines tilemaps, sprite rendering, AABB collisions, a simple UI, and input handling to help you go from rapid prototyping to production.
 
 ---
+<img width="1322" height="798" alt="Ekran görüntüsü 2025-11-05 175245" src="https://github.com/user-attachments/assets/d850f2b9-a93f-470b-9d51-34506f431e97" />
 
 ## 🔹 Why
 
@@ -42,8 +43,10 @@ MakeMyEngine is a lightweight 2D game engine/skeleton built with modern C++ and 
 
 ---
 
+
 ## 🔹 Architecture at a Glance
 
+<img width="263" height="733" alt="Ekran görüntüsü 2025-11-05 185634" src="https://github.com/user-attachments/assets/e88be025-75f9-42c2-be23-b0d7e5e8e179" />
 * **Scene flow:** `Scene` + `GameScene` manage game loop + layers
 * **Component-driven design:** focused components (`SpriteComponent`, `VelocityComponent`, `BallComponent`, `PaddleController`)
 * **Rendering path:** Ortho camera → `Renderer2D` → shader → texture
@@ -100,6 +103,8 @@ MakeMyEngine is a modern C++ + OpenGL 2D engine/skeleton that’s easy to learn 
 * AABB collision system
 * Input + simple UI layer
 * Clean component‑based structure
+* 
+<img width="1316" height="797" alt="Ekran görüntüsü 2025-11-05 175211" src="https://github.com/user-attachments/assets/b498fe91-9c7d-46b9-b51e-b75c77f92100" />
 
 ### ✅ Why these technologies?
 
