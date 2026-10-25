@@ -86,10 +86,14 @@ void PongLayer::BuildWorld() {
     auto& sprite = m_Ball->AddComponent<mme::SpriteComponent>();
     sprite.size = { kBallSize, kBallSize };
     sprite.tint = kBallColor;
-    m_Ball->AddComponent<mme::BoxCollider2D>().size = { kBallSize, kBallSize };
+    auto& ballCollider = m_Ball->AddComponent<mme::BoxCollider2D>();
+    ballCollider.size = { kBallSize, kBallSize };
+    ballCollider.restitution = 1.0f;  // duvarlardan enerji kaybetmeden seker
+    ballCollider.friction = 0.0f;     // sürtünme sekme açısını bozmasın
     auto& body = m_Ball->AddComponent<mme::RigidBody2D>();
     body.type = mme::BodyType::Dynamic;
-    body.restitution = 1.0f;   // duvarlardan enerji kaybetmeden seker
+    body.fixedRotation = true;        // kare top dönmesin
+    body.bullet = true;
 
     auto& ball = m_Ball->AddComponent<BallComponent>();
     ball.onGoal = [this](int side) { OnGoal(side); };

@@ -17,6 +17,8 @@ namespace mme {
         float fixedTimestep = 1.0f / 60.0f;      // OnFixedUpdate adımı (saniye)
         glm::vec4 clearColor{ 0.10f, 0.11f, 0.15f, 1.0f };
 
+        bool enableImGui = true;                 // Dear ImGui (OnImGuiRender); debug araçları bunu gerektirir
+        bool imguiDocking = false;               // ImGui pencerelerini yerleştirme (editör)
         bool enableDebugTools = true;            // F1 debug paneli + F3 istatistik overlay
         bool showDebugOverlay = false;           // F3 başlangıçta açık mı
         bool enableAudio = true;
@@ -73,6 +75,11 @@ namespace mme {
         void StepOneFrame() { m_StepRequested = true; } // duraklatılmışken tek sabit adım ilerlet
         float GetFrameTime() const { return m_FrameTime; } // gerçek (ölçeksiz) son frame süresi
 
+        // true (varsayılan): ImGui fareyi/klavyeyi kullanırken (bir pencerenin üstünde,
+        // metin kutusunda) oyun bu girdiyi görmez. Editör, oyun görünümü odaktayken
+        // kapatır: oyun, viewport penceresinin üstünde olsa da girdiyi alır.
+        void SetImGuiInputCapture(bool enabled) { m_ImGuiInputCapture = enabled; }
+
         Window& GetWindow() { return *m_Window; }
         const ApplicationSpec& GetSpec() const { return m_Spec; }
         const std::vector<std::unique_ptr<Layer>>& GetLayers() const { return m_Layers; }
@@ -101,6 +108,8 @@ namespace mme {
         bool m_StepRequested = false;
         float m_TimeScale = 1.0f;
         float m_FrameTime = 0.0f;
+        bool m_ImGuiEnabled = false;
+        bool m_ImGuiInputCapture = true;
 
         static Application* s_Instance;
     };

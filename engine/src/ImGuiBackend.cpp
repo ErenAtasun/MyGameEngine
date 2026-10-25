@@ -24,11 +24,12 @@ namespace mme::ImGuiBackend {
         }
     }
 
-    void Init(Window& window, const std::string& fontPath, float fontSize) {
+    void Init(Window& window, const std::string& fontPath, float fontSize, bool docking) {
         IMGUI_CHECKVERSION();
         ImGui::CreateContext();
         ImGuiIO& io = ImGui::GetIO();
         io.IniFilename = "imgui.ini"; // pencere konumları .exe'nin yanında saklanır
+        if (docking) io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
         ApplyStyle();
 
         // Türkçe karakterler için Latin-1 + Latin Extended-A

@@ -21,6 +21,8 @@ namespace mme {
         virtual void OnFixedUpdate(float /*step*/) {}  // sabit adım (fizikten önce)
         virtual void OnUpdate(float /*dt*/) {}         // frame başına
         virtual void OnRender() {}
+        // Ekran uzayı UI ((0,0) sol-üst, piksel): Scene::RenderUI / RenderRuntime çağırır
+        virtual void OnUIRender() {}
 
         // Fizik olayları: yalnızca temasın başladığı adımda bir kez çağrılır
         virtual void OnCollisionEnter(const Collision& /*collision*/) {}

@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <mutex>
+#include <vector>
 
 #ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN
@@ -17,6 +18,9 @@ namespace mme {
     namespace {
         LogLevel s_MinLevel = LogLevel::Info;
         std::mutex s_Mutex;
+        std::mutex s_SinkMutex;
+        std::vector<std::pair<int, LogSink>> s_Sinks;
+        int s_NextSinkID = 1;
         const auto s_StartTime = std::chrono::steady_clock::now();
 
         // Konsol renk desteği yalnızca gerçek bir terminale yazarken açılır;
@@ -57,6 +61,18 @@ namespace mme {
 
     void SetLogLevel(LogLevel minLevel) { s_MinLevel = minLevel; }
 
+    int AddLogSink(LogSink sink) {
+        std::lock_guard<std::mutex> lock(s_SinkMutex);
+        s_Sinks.emplace_back(s_NextSinkID, std::move(sink));
+        return s_NextSinkID++;
+    }
+
+    void RemoveLogSink(int id) {
+        std::lock_guard<std::mutex> lock(s_SinkMutex);
+        for (auto it = s_Sinks.begin(); it != s_Sinks.end(); ++it)
+            if (it->first == id) { s_Sinks.erase(it); return; }
+    }
+
     namespace detail {
         void WriteLog(LogLevel level, const std::string& message) {
             if (level < s_MinLevel) return;
@@ -66,11 +82,21 @@ namespace mme {
             char stamp[32];
             std::snprintf(stamp, sizeof(stamp), "%8.3f", seconds);
 
-            std::lock_guard<std::mutex> lock(s_Mutex);
-            if (useColor) std::cout << LevelColor(level);
-            std::cout << '[' << stamp << "] [" << LevelTag(level) << "] " << message;
-            if (useColor) std::cout << "\x1b[0m";
-            std::cout << std::endl;
+            {
+                std::lock_guard<std::mutex> lock(s_Mutex);
+                if (useColor) std::cout << LevelColor(level);
+                std::cout << '[' << stamp << "] [" << LevelTag(level) << "] " << message;
+                if (useColor) std::cout << "\x1b[0m";
+                std::cout << std::endl;
+            }
+
+            // Kopya üzerinden: dinleyici kendisi log atabilir ya da kendini kaldırabilir
+            std::vector<std::pair<int, LogSink>> sinks;
+            {
+                std::lock_guard<std::mutex> lock(s_SinkMutex);
+                sinks = s_Sinks;
+            }
+            for (auto& [id, sink] : sinks) sink(level, message);
         }
 
         void AssertFailed(const char* expr, const char* file, int line, const std::string& message) {

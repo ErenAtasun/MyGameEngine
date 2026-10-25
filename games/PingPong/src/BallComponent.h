@@ -9,7 +9,7 @@ public:
 };
 
 // Pong topu: raketin neresine çarptıysa o açıyla seker, her vuruşta hızlanır.
-// Duvar sekmeleri fizik sisteminden gelir (restitution = 1).
+// Duvar sekmeleri fizik sisteminden gelir (collider restitution = 1).
 class BallComponent : public mme::Component {
 public:
     void OnCollisionEnter(const mme::Collision& collision) override;

@@ -8,6 +8,9 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # Tüm çalıştırılabilirler tek klasörde: build/bin/<Config>/
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
+find_package(box2d CONFIG REQUIRED)
+find_package(Lua REQUIRED)
+find_path(SOL2_INCLUDE_DIR sol/sol.hpp REQUIRED)
 find_package(glad CONFIG REQUIRED)
 find_package(glfw3 CONFIG REQUIRED)
 find_package(glm CONFIG REQUIRED)
@@ -45,6 +48,8 @@ endfunction()
 add_subdirectory(engine)
 add_subdirectory(games/PingPong)
 add_subdirectory(games/TilemapDemo)
+add_subdirectory(player)
+add_subdirectory(editor)
 
 option(MME_BUILD_TESTS "Motor birim testlerini derle" ON)
 if(MME_BUILD_TESTS)

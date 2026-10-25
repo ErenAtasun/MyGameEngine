@@ -78,25 +78,19 @@ namespace mme::SceneSerializer {
                     if (j.is_null()) { tex = 0; break; }
                     if (!j.is_object() || !j.contains("path")) break;
                     const bool nearest = j.value("filter", std::string("linear")) == "nearest";
-                    tex = Assets::GetTexture(j["path"].get<std::string>(), nearest ? TextureFilter::Nearest : TextureFilter::Linear);
+                    const TextureFilter filter = nearest ? TextureFilter::Nearest : TextureFilter::Linear;
+                    tex = Assets::GetTexture(j["path"].get<std::string>(), filter);
+                    Assets::SetTextureFilter(tex, filter); // önbellekte başka filtreyle yüklenmiş olabilir
                     break;
                 }
             }
         }
     }
 
-    std::string ToJson(Scene& scene) {
-        json root;
-        root["format"] = kFormatVersion;
-        root["scene"] = scene.GetName();
-        json& entities = root["entities"] = json::array();
-
-        std::unordered_set<std::string> skipped;
-        for (auto& owned : scene.GetEntities()) {
-            Entity& e = *owned;
-            if (e.IsPendingDestroy()) continue;
-
+    namespace {
+        json WriteEntity(Entity& e, std::unordered_set<std::string>& skipped) {
             json je;
+            je["id"] = e.GetID();
             je["name"] = e.GetName();
             je["active"] = e.active;
             je["transform"] = {
@@ -114,10 +108,56 @@ namespace mme::SceneSerializer {
                     jc[f.name] = WriteField(f, f.access(c));
                 comps[info->name] = std::move(jc);
             });
-            entities.push_back(std::move(je));
+            return je;
         }
-        for (const auto& name : skipped)
-            MME_WARN("[SceneSerializer] Kayitsiz component atlandi: ", name);
+
+        // keepID = false: yeni ID verilir (prefab, kopya)
+        Entity& ReadEntity(Scene& scene, const json& je, bool keepID) {
+            const std::string name = je.value("name", std::string("Entity"));
+            Entity& e = keepID ? scene.CreateEntityWithID(je.value("id", 0u), name) : scene.CreateEntity(name);
+            e.active = je.value("active", true);
+            if (const auto t = je.find("transform"); t != je.end()) {
+                e.position = ReadVec2(t->value("position", json()), e.position);
+                e.rotation = t->value("rotation", e.rotation);
+                e.scale = ReadVec2(t->value("scale", json()), e.scale);
+                e.zLayer = t->value("zLayer", e.zLayer);
+            }
+            // value() geçici nesne döner: items() onu referansla dolaştığı için önce sakla
+            const json components = je.value("components", json::object());
+            for (const auto& [compName, jc] : components.items()) {
+                const ComponentInfo* info = ComponentRegistry::Find(compName);
+                if (!info) {
+                    MME_WARN("[SceneSerializer] Bilinmeyen component '", compName, "' (", e.GetName(), ")");
+                    continue;
+                }
+                Component& c = info->get(e) ? *info->get(e) : info->add(e);
+                for (const FieldInfo& f : info->fields)
+                    if (const auto it = jc.find(f.name); it != jc.end())
+                        ReadField(f, f.access(c), *it);
+            }
+            return e;
+        }
+
+        void WarnSkipped(const std::unordered_set<std::string>& skipped) {
+            for (const auto& name : skipped)
+                MME_WARN("[SceneSerializer] Kayitsiz component atlandi: ", name);
+        }
+    }
+
+    std::string ToJson(Scene& scene) {
+        json root;
+        root["format"] = kFormatVersion;
+        root["scene"] = scene.GetName();
+        root["physics"] = {
+            { "gravity", Vec2(scene.GetPhysics().gravity) },
+            { "subSteps", scene.GetPhysics().subSteps },
+        };
+        json& entities = root["entities"] = json::array();
+
+        std::unordered_set<std::string> skipped;
+        for (auto& owned : scene.GetEntities())
+            if (!owned->IsPendingDestroy()) entities.push_back(WriteEntity(*owned, skipped));
+        WarnSkipped(skipped);
         return root.dump(2);
     }
 
@@ -133,30 +173,59 @@ namespace mme::SceneSerializer {
         }
 
         scene.Clear();
-        for (const json& je : root.value("entities", json::array())) {
-            Entity& e = scene.CreateEntity(je.value("name", std::string("Entity")));
-            e.active = je.value("active", true);
-            if (const auto t = je.find("transform"); t != je.end()) {
-                e.position = ReadVec2(t->value("position", json()), e.position);
-                e.rotation = t->value("rotation", e.rotation);
-                e.scale = ReadVec2(t->value("scale", json()), e.scale);
-                e.zLayer = t->value("zLayer", e.zLayer);
-            }
-            // value() geçici nesne döner: items() onu referansla dolaştığı için önce sakla
-            const json components = je.value("components", json::object());
-            for (const auto& [name, jc] : components.items()) {
-                const ComponentInfo* info = ComponentRegistry::Find(name);
-                if (!info) {
-                    MME_WARN("[SceneSerializer] Bilinmeyen component '", name, "' (", e.GetName(), ")");
-                    continue;
-                }
-                Component& c = info->get(e) ? *info->get(e) : info->add(e);
-                for (const FieldInfo& f : info->fields)
-                    if (const auto it = jc.find(f.name); it != jc.end())
-                        ReadField(f, f.access(c), *it);
-            }
+        if (root.contains("scene") && root["scene"].is_string()) scene.SetName(root["scene"].get<std::string>());
+        if (const auto p = root.find("physics"); p != root.end() && p->is_object()) {
+            Physics2D& physics = scene.GetPhysics();
+            physics.gravity = ReadVec2(p->value("gravity", json()), physics.gravity);
+            physics.subSteps = p->value("subSteps", physics.subSteps);
         }
+        for (const json& je : root.value("entities", json::array()))
+            ReadEntity(scene, je, true);
         return true;
+    }
+
+    std::string EntityToJson(Entity& entity) {
+        std::unordered_set<std::string> skipped;
+        json root;
+        root["format"] = kFormatVersion;
+        root["entity"] = WriteEntity(entity, skipped);
+        root["entity"].erase("id");
+        WarnSkipped(skipped);
+        return root.dump(2);
+    }
+
+    Entity* EntityFromJson(Scene& scene, const std::string& text) {
+        json root = json::parse(text, nullptr, false);
+        if (root.is_discarded() || !root.is_object() || !root.contains("entity")) {
+            MME_ERROR("[SceneSerializer] Gecersiz prefab JSON");
+            return nullptr;
+        }
+        return &ReadEntity(scene, root["entity"], false);
+    }
+
+    bool SavePrefab(Entity& entity, const std::string& relativePath) {
+        const std::filesystem::path path = Assets::GetPath(relativePath);
+        std::error_code ec;
+        std::filesystem::create_directories(path.parent_path(), ec);
+        std::ofstream out(path, std::ios::binary);
+        if (!out) {
+            MME_ERROR("[SceneSerializer] Yazilamadi: ", path.string());
+            return false;
+        }
+        out << EntityToJson(entity);
+        MME_INFO("[SceneSerializer] Prefab kaydedildi: ", relativePath);
+        return true;
+    }
+
+    Entity* Instantiate(Scene& scene, const std::string& relativePath) {
+        std::ifstream in(Assets::GetPath(relativePath), std::ios::binary);
+        if (!in) {
+            MME_ERROR("[SceneSerializer] Prefab acilamadi: ", relativePath);
+            return nullptr;
+        }
+        std::ostringstream ss;
+        ss << in.rdbuf();
+        return EntityFromJson(scene, ss.str());
     }
 
     bool Save(Scene& scene, const std::string& relativePath) {

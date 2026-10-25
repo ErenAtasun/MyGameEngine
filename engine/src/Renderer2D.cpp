@@ -159,7 +159,9 @@ void main() {
         s_Data.textureSlots[0] = s_Data.whiteTexture;
 
         glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        // Alfa kanalı ayrı: ekran dışı hedefte (editör viewport'u) yarı saydam
+        // sprite'lar hedefin alfasını düşürüp ImGui'de delik açmasın
+        glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 
         StartBatch();
     }

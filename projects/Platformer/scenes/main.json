@@ -1,0 +1,2087 @@
+{
+  "format": 1,
+  "scene": "main",
+  "physics": {
+    "gravity": [
+      0,
+      -1800
+    ],
+    "subSteps": 4
+  },
+  "entities": [
+    {
+      "id": 1,
+      "name": "Oyun",
+      "active": true,
+      "transform": {
+        "position": [
+          0,
+          0
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1,
+          1
+        ],
+        "zLayer": 0.0
+      },
+      "components": {
+        "ScriptComponent": {
+          "script": "scripts/game.lua",
+          "properties": ""
+        }
+      }
+    },
+    {
+      "id": 2,
+      "name": "Kamera",
+      "active": true,
+      "transform": {
+        "position": [
+          0,
+          -100
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1,
+          1
+        ],
+        "zLayer": 0.0
+      },
+      "components": {
+        "CameraComponent": {
+          "viewHeight": 720,
+          "primary": true,
+          "background": [
+            0.42,
+            0.68,
+            0.92,
+            1
+          ]
+        },
+        "ScriptComponent": {
+          "script": "scripts/camera_follow.lua",
+          "properties": ""
+        }
+      }
+    },
+    {
+      "id": 3,
+      "name": "Zemin 1",
+      "active": true,
+      "transform": {
+        "position": [
+          150,
+          -332
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1,
+          1
+        ],
+        "zLayer": 1
+      },
+      "components": {
+        "SpriteComponent": {
+          "texture": {
+            "path": "sprites/ground.png",
+            "filter": "nearest"
+          },
+          "size": [
+            1500,
+            64
+          ],
+          "tint": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "origin": [
+            0.5,
+            0.5
+          ],
+          "uvMin": [
+            0,
+            0
+          ],
+          "uvMax": [
+            1,
+            1
+          ]
+        },
+        "BoxCollider2D": {
+          "size": [
+            1500,
+            64
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "isTrigger": false,
+          "density": 1.0,
+          "friction": 0.6,
+          "restitution": 0.0
+        }
+      }
+    },
+    {
+      "id": 4,
+      "name": "Zemin 2",
+      "active": true,
+      "transform": {
+        "position": [
+          1500,
+          -332
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1,
+          1
+        ],
+        "zLayer": 1
+      },
+      "components": {
+        "SpriteComponent": {
+          "texture": {
+            "path": "sprites/ground.png",
+            "filter": "nearest"
+          },
+          "size": [
+            800,
+            64
+          ],
+          "tint": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "origin": [
+            0.5,
+            0.5
+          ],
+          "uvMin": [
+            0,
+            0
+          ],
+          "uvMax": [
+            1,
+            1
+          ]
+        },
+        "BoxCollider2D": {
+          "size": [
+            800,
+            64
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "isTrigger": false,
+          "density": 1.0,
+          "friction": 0.6,
+          "restitution": 0.0
+        }
+      }
+    },
+    {
+      "id": 5,
+      "name": "Platform 1",
+      "active": true,
+      "transform": {
+        "position": [
+          520,
+          -150
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1,
+          1
+        ],
+        "zLayer": 1
+      },
+      "components": {
+        "SpriteComponent": {
+          "texture": {
+            "path": "sprites/ground.png",
+            "filter": "nearest"
+          },
+          "size": [
+            200,
+            28
+          ],
+          "tint": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "origin": [
+            0.5,
+            0.5
+          ],
+          "uvMin": [
+            0,
+            0
+          ],
+          "uvMax": [
+            1,
+            1
+          ]
+        },
+        "BoxCollider2D": {
+          "size": [
+            200,
+            28
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "isTrigger": false,
+          "density": 1.0,
+          "friction": 0.6,
+          "restitution": 0.0
+        }
+      }
+    },
+    {
+      "id": 6,
+      "name": "Platform 2",
+      "active": true,
+      "transform": {
+        "position": [
+          860,
+          -30
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1,
+          1
+        ],
+        "zLayer": 1
+      },
+      "components": {
+        "SpriteComponent": {
+          "texture": {
+            "path": "sprites/ground.png",
+            "filter": "nearest"
+          },
+          "size": [
+            200,
+            28
+          ],
+          "tint": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "origin": [
+            0.5,
+            0.5
+          ],
+          "uvMin": [
+            0,
+            0
+          ],
+          "uvMax": [
+            1,
+            1
+          ]
+        },
+        "BoxCollider2D": {
+          "size": [
+            200,
+            28
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "isTrigger": false,
+          "density": 1.0,
+          "friction": 0.6,
+          "restitution": 0.0
+        }
+      }
+    },
+    {
+      "id": 7,
+      "name": "Platform 3",
+      "active": true,
+      "transform": {
+        "position": [
+          1180,
+          90
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1,
+          1
+        ],
+        "zLayer": 1
+      },
+      "components": {
+        "SpriteComponent": {
+          "texture": {
+            "path": "sprites/ground.png",
+            "filter": "nearest"
+          },
+          "size": [
+            180,
+            28
+          ],
+          "tint": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "origin": [
+            0.5,
+            0.5
+          ],
+          "uvMin": [
+            0,
+            0
+          ],
+          "uvMax": [
+            1,
+            1
+          ]
+        },
+        "BoxCollider2D": {
+          "size": [
+            180,
+            28
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "isTrigger": false,
+          "density": 1.0,
+          "friction": 0.6,
+          "restitution": 0.0
+        }
+      }
+    },
+    {
+      "id": 8,
+      "name": "Rampa",
+      "active": true,
+      "transform": {
+        "position": [
+          2085,
+          -220
+        ],
+        "rotation": 20,
+        "scale": [
+          1,
+          1
+        ],
+        "zLayer": 1
+      },
+      "components": {
+        "SpriteComponent": {
+          "texture": {
+            "path": "sprites/ground.png",
+            "filter": "nearest"
+          },
+          "size": [
+            520,
+            28
+          ],
+          "tint": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "origin": [
+            0.5,
+            0.5
+          ],
+          "uvMin": [
+            0,
+            0
+          ],
+          "uvMax": [
+            1,
+            1
+          ]
+        },
+        "BoxCollider2D": {
+          "size": [
+            520,
+            28
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "isTrigger": false,
+          "density": 1.0,
+          "friction": 0.6,
+          "restitution": 0.0
+        }
+      }
+    },
+    {
+      "id": 9,
+      "name": "Tepe",
+      "active": true,
+      "transform": {
+        "position": [
+          2620,
+          -130
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1,
+          1
+        ],
+        "zLayer": 1
+      },
+      "components": {
+        "SpriteComponent": {
+          "texture": {
+            "path": "sprites/ground.png",
+            "filter": "nearest"
+          },
+          "size": [
+            640,
+            64
+          ],
+          "tint": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "origin": [
+            0.5,
+            0.5
+          ],
+          "uvMin": [
+            0,
+            0
+          ],
+          "uvMax": [
+            1,
+            1
+          ]
+        },
+        "BoxCollider2D": {
+          "size": [
+            640,
+            64
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "isTrigger": false,
+          "density": 1.0,
+          "friction": 0.6,
+          "restitution": 0.0
+        }
+      }
+    },
+    {
+      "id": 10,
+      "name": "Kasa 1",
+      "active": true,
+      "transform": {
+        "position": [
+          300,
+          -276
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1,
+          1
+        ],
+        "zLayer": 2
+      },
+      "components": {
+        "SpriteComponent": {
+          "texture": {
+            "path": "sprites/crate.png",
+            "filter": "nearest"
+          },
+          "size": [
+            48,
+            48
+          ],
+          "tint": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "origin": [
+            0.5,
+            0.5
+          ],
+          "uvMin": [
+            0,
+            0
+          ],
+          "uvMax": [
+            1,
+            1
+          ]
+        },
+        "BoxCollider2D": {
+          "size": [
+            48,
+            48
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "isTrigger": false,
+          "density": 0.6,
+          "friction": 0.5,
+          "restitution": 0.0
+        },
+        "RigidBody2D": {
+          "type": "Dynamic",
+          "velocity": [
+            0,
+            0
+          ],
+          "angularVelocity": 0,
+          "maxSpeed": 0,
+          "linearDamping": 0,
+          "angularDamping": 0,
+          "gravityScale": 1.0,
+          "fixedRotation": false,
+          "bullet": false
+        }
+      }
+    },
+    {
+      "id": 11,
+      "name": "Kasa 2",
+      "active": true,
+      "transform": {
+        "position": [
+          300,
+          -228
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1,
+          1
+        ],
+        "zLayer": 2
+      },
+      "components": {
+        "SpriteComponent": {
+          "texture": {
+            "path": "sprites/crate.png",
+            "filter": "nearest"
+          },
+          "size": [
+            48,
+            48
+          ],
+          "tint": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "origin": [
+            0.5,
+            0.5
+          ],
+          "uvMin": [
+            0,
+            0
+          ],
+          "uvMax": [
+            1,
+            1
+          ]
+        },
+        "BoxCollider2D": {
+          "size": [
+            48,
+            48
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "isTrigger": false,
+          "density": 0.6,
+          "friction": 0.5,
+          "restitution": 0.0
+        },
+        "RigidBody2D": {
+          "type": "Dynamic",
+          "velocity": [
+            0,
+            0
+          ],
+          "angularVelocity": 0,
+          "maxSpeed": 0,
+          "linearDamping": 0,
+          "angularDamping": 0,
+          "gravityScale": 1.0,
+          "fixedRotation": false,
+          "bullet": false
+        }
+      }
+    },
+    {
+      "id": 12,
+      "name": "Kasa 3",
+      "active": true,
+      "transform": {
+        "position": [
+          348,
+          -276
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1,
+          1
+        ],
+        "zLayer": 2
+      },
+      "components": {
+        "SpriteComponent": {
+          "texture": {
+            "path": "sprites/crate.png",
+            "filter": "nearest"
+          },
+          "size": [
+            48,
+            48
+          ],
+          "tint": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "origin": [
+            0.5,
+            0.5
+          ],
+          "uvMin": [
+            0,
+            0
+          ],
+          "uvMax": [
+            1,
+            1
+          ]
+        },
+        "BoxCollider2D": {
+          "size": [
+            48,
+            48
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "isTrigger": false,
+          "density": 0.6,
+          "friction": 0.5,
+          "restitution": 0.0
+        },
+        "RigidBody2D": {
+          "type": "Dynamic",
+          "velocity": [
+            0,
+            0
+          ],
+          "angularVelocity": 0,
+          "maxSpeed": 0,
+          "linearDamping": 0,
+          "angularDamping": 0,
+          "gravityScale": 1.0,
+          "fixedRotation": false,
+          "bullet": false
+        }
+      }
+    },
+    {
+      "id": 13,
+      "name": "Kasa 4",
+      "active": true,
+      "transform": {
+        "position": [
+          1700,
+          -276
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1,
+          1
+        ],
+        "zLayer": 2
+      },
+      "components": {
+        "SpriteComponent": {
+          "texture": {
+            "path": "sprites/crate.png",
+            "filter": "nearest"
+          },
+          "size": [
+            48,
+            48
+          ],
+          "tint": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "origin": [
+            0.5,
+            0.5
+          ],
+          "uvMin": [
+            0,
+            0
+          ],
+          "uvMax": [
+            1,
+            1
+          ]
+        },
+        "BoxCollider2D": {
+          "size": [
+            48,
+            48
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "isTrigger": false,
+          "density": 0.6,
+          "friction": 0.5,
+          "restitution": 0.0
+        },
+        "RigidBody2D": {
+          "type": "Dynamic",
+          "velocity": [
+            0,
+            0
+          ],
+          "angularVelocity": 0,
+          "maxSpeed": 0,
+          "linearDamping": 0,
+          "angularDamping": 0,
+          "gravityScale": 1.0,
+          "fixedRotation": false,
+          "bullet": false
+        }
+      }
+    },
+    {
+      "id": 14,
+      "name": "Top 1",
+      "active": true,
+      "transform": {
+        "position": [
+          1350,
+          -150
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1,
+          1
+        ],
+        "zLayer": 2
+      },
+      "components": {
+        "SpriteComponent": {
+          "texture": {
+            "path": "sprites/circle.png",
+            "filter": "linear"
+          },
+          "size": [
+            48,
+            48
+          ],
+          "tint": [
+            1,
+            0.45,
+            0.4,
+            1
+          ],
+          "origin": [
+            0.5,
+            0.5
+          ],
+          "uvMin": [
+            0,
+            0
+          ],
+          "uvMax": [
+            1,
+            1
+          ]
+        },
+        "CircleCollider2D": {
+          "radius": 24,
+          "offset": [
+            0,
+            0
+          ],
+          "isTrigger": false,
+          "density": 0.4,
+          "friction": 0.5,
+          "restitution": 0.55
+        },
+        "RigidBody2D": {
+          "type": "Dynamic",
+          "velocity": [
+            0,
+            0
+          ],
+          "angularVelocity": 0,
+          "maxSpeed": 0,
+          "linearDamping": 0,
+          "angularDamping": 0,
+          "gravityScale": 1.0,
+          "fixedRotation": false,
+          "bullet": false
+        }
+      }
+    },
+    {
+      "id": 15,
+      "name": "Top 2",
+      "active": true,
+      "transform": {
+        "position": [
+          1450,
+          -50
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1,
+          1
+        ],
+        "zLayer": 2
+      },
+      "components": {
+        "SpriteComponent": {
+          "texture": {
+            "path": "sprites/circle.png",
+            "filter": "linear"
+          },
+          "size": [
+            48,
+            48
+          ],
+          "tint": [
+            0.4,
+            0.8,
+            1,
+            1
+          ],
+          "origin": [
+            0.5,
+            0.5
+          ],
+          "uvMin": [
+            0,
+            0
+          ],
+          "uvMax": [
+            1,
+            1
+          ]
+        },
+        "CircleCollider2D": {
+          "radius": 24,
+          "offset": [
+            0,
+            0
+          ],
+          "isTrigger": false,
+          "density": 0.4,
+          "friction": 0.5,
+          "restitution": 0.55
+        },
+        "RigidBody2D": {
+          "type": "Dynamic",
+          "velocity": [
+            0,
+            0
+          ],
+          "angularVelocity": 0,
+          "maxSpeed": 0,
+          "linearDamping": 0,
+          "angularDamping": 0,
+          "gravityScale": 1.0,
+          "fixedRotation": false,
+          "bullet": false
+        }
+      }
+    },
+    {
+      "id": 16,
+      "name": "Top 3",
+      "active": true,
+      "transform": {
+        "position": [
+          2400,
+          200
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1,
+          1
+        ],
+        "zLayer": 2
+      },
+      "components": {
+        "SpriteComponent": {
+          "texture": {
+            "path": "sprites/circle.png",
+            "filter": "linear"
+          },
+          "size": [
+            48,
+            48
+          ],
+          "tint": [
+            1,
+            0.85,
+            0.3,
+            1
+          ],
+          "origin": [
+            0.5,
+            0.5
+          ],
+          "uvMin": [
+            0,
+            0
+          ],
+          "uvMax": [
+            1,
+            1
+          ]
+        },
+        "CircleCollider2D": {
+          "radius": 24,
+          "offset": [
+            0,
+            0
+          ],
+          "isTrigger": false,
+          "density": 0.4,
+          "friction": 0.5,
+          "restitution": 0.55
+        },
+        "RigidBody2D": {
+          "type": "Dynamic",
+          "velocity": [
+            0,
+            0
+          ],
+          "angularVelocity": 0,
+          "maxSpeed": 0,
+          "linearDamping": 0,
+          "angularDamping": 0,
+          "gravityScale": 1.0,
+          "fixedRotation": false,
+          "bullet": false
+        }
+      }
+    },
+    {
+      "id": 17,
+      "name": "Tahterevalli Ayak",
+      "active": true,
+      "transform": {
+        "position": [
+          1620,
+          -282
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1,
+          1
+        ],
+        "zLayer": 1
+      },
+      "components": {
+        "SpriteComponent": {
+          "texture": null,
+          "size": [
+            24,
+            36
+          ],
+          "tint": [
+            0.3,
+            0.3,
+            0.35,
+            1
+          ],
+          "origin": [
+            0.5,
+            0.5
+          ],
+          "uvMin": [
+            0,
+            0
+          ],
+          "uvMax": [
+            1,
+            1
+          ]
+        },
+        "BoxCollider2D": {
+          "size": [
+            24,
+            36
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "isTrigger": false,
+          "density": 1.0,
+          "friction": 0.4,
+          "restitution": 0.0
+        }
+      }
+    },
+    {
+      "id": 18,
+      "name": "Tahterevalli",
+      "active": true,
+      "transform": {
+        "position": [
+          1620,
+          -256
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1,
+          1
+        ],
+        "zLayer": 1
+      },
+      "components": {
+        "SpriteComponent": {
+          "texture": null,
+          "size": [
+            320,
+            14
+          ],
+          "tint": [
+            0.75,
+            0.55,
+            0.3,
+            1
+          ],
+          "origin": [
+            0.5,
+            0.5
+          ],
+          "uvMin": [
+            0,
+            0
+          ],
+          "uvMax": [
+            1,
+            1
+          ]
+        },
+        "BoxCollider2D": {
+          "size": [
+            320,
+            14
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "isTrigger": false,
+          "density": 0.5,
+          "friction": 0.8,
+          "restitution": 0.0
+        },
+        "RigidBody2D": {
+          "type": "Dynamic",
+          "velocity": [
+            0,
+            0
+          ],
+          "angularVelocity": 0,
+          "maxSpeed": 0,
+          "linearDamping": 0,
+          "angularDamping": 0,
+          "gravityScale": 1.0,
+          "fixedRotation": false,
+          "bullet": false
+        }
+      }
+    },
+    {
+      "id": 19,
+      "name": "Altın 1",
+      "active": true,
+      "transform": {
+        "position": [
+          -150,
+          -262
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1,
+          1
+        ],
+        "zLayer": 3
+      },
+      "components": {
+        "SpriteComponent": {
+          "texture": {
+            "path": "sprites/coin.png",
+            "filter": "nearest"
+          },
+          "size": [
+            40,
+            40
+          ],
+          "tint": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "origin": [
+            0.5,
+            0.5
+          ],
+          "uvMin": [
+            0,
+            0
+          ],
+          "uvMax": [
+            0.125,
+            1
+          ]
+        },
+        "SpriteAnimator": {
+          "columns": 8,
+          "rows": 1,
+          "firstFrame": 0,
+          "frameCount": 8,
+          "fps": 12,
+          "speed": 1.0,
+          "loop": true,
+          "playing": true
+        },
+        "CircleCollider2D": {
+          "radius": 16,
+          "offset": [
+            0,
+            0
+          ],
+          "isTrigger": true,
+          "density": 1.0,
+          "friction": 0.4,
+          "restitution": 0.0
+        },
+        "ScriptComponent": {
+          "script": "scripts/coin.lua",
+          "properties": ""
+        }
+      }
+    },
+    {
+      "id": 20,
+      "name": "Altın 2",
+      "active": true,
+      "transform": {
+        "position": [
+          -80,
+          -262
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1,
+          1
+        ],
+        "zLayer": 3
+      },
+      "components": {
+        "SpriteComponent": {
+          "texture": {
+            "path": "sprites/coin.png",
+            "filter": "nearest"
+          },
+          "size": [
+            40,
+            40
+          ],
+          "tint": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "origin": [
+            0.5,
+            0.5
+          ],
+          "uvMin": [
+            0,
+            0
+          ],
+          "uvMax": [
+            0.125,
+            1
+          ]
+        },
+        "SpriteAnimator": {
+          "columns": 8,
+          "rows": 1,
+          "firstFrame": 0,
+          "frameCount": 8,
+          "fps": 12,
+          "speed": 1.0,
+          "loop": true,
+          "playing": true
+        },
+        "CircleCollider2D": {
+          "radius": 16,
+          "offset": [
+            0,
+            0
+          ],
+          "isTrigger": true,
+          "density": 1.0,
+          "friction": 0.4,
+          "restitution": 0.0
+        },
+        "ScriptComponent": {
+          "script": "scripts/coin.lua",
+          "properties": ""
+        }
+      }
+    },
+    {
+      "id": 21,
+      "name": "Altın 3",
+      "active": true,
+      "transform": {
+        "position": [
+          520,
+          -90
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1,
+          1
+        ],
+        "zLayer": 3
+      },
+      "components": {
+        "SpriteComponent": {
+          "texture": {
+            "path": "sprites/coin.png",
+            "filter": "nearest"
+          },
+          "size": [
+            40,
+            40
+          ],
+          "tint": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "origin": [
+            0.5,
+            0.5
+          ],
+          "uvMin": [
+            0,
+            0
+          ],
+          "uvMax": [
+            0.125,
+            1
+          ]
+        },
+        "SpriteAnimator": {
+          "columns": 8,
+          "rows": 1,
+          "firstFrame": 0,
+          "frameCount": 8,
+          "fps": 12,
+          "speed": 1.0,
+          "loop": true,
+          "playing": true
+        },
+        "CircleCollider2D": {
+          "radius": 16,
+          "offset": [
+            0,
+            0
+          ],
+          "isTrigger": true,
+          "density": 1.0,
+          "friction": 0.4,
+          "restitution": 0.0
+        },
+        "ScriptComponent": {
+          "script": "scripts/coin.lua",
+          "properties": ""
+        }
+      }
+    },
+    {
+      "id": 22,
+      "name": "Altın 4",
+      "active": true,
+      "transform": {
+        "position": [
+          860,
+          30
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1,
+          1
+        ],
+        "zLayer": 3
+      },
+      "components": {
+        "SpriteComponent": {
+          "texture": {
+            "path": "sprites/coin.png",
+            "filter": "nearest"
+          },
+          "size": [
+            40,
+            40
+          ],
+          "tint": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "origin": [
+            0.5,
+            0.5
+          ],
+          "uvMin": [
+            0,
+            0
+          ],
+          "uvMax": [
+            0.125,
+            1
+          ]
+        },
+        "SpriteAnimator": {
+          "columns": 8,
+          "rows": 1,
+          "firstFrame": 0,
+          "frameCount": 8,
+          "fps": 12,
+          "speed": 1.0,
+          "loop": true,
+          "playing": true
+        },
+        "CircleCollider2D": {
+          "radius": 16,
+          "offset": [
+            0,
+            0
+          ],
+          "isTrigger": true,
+          "density": 1.0,
+          "friction": 0.4,
+          "restitution": 0.0
+        },
+        "ScriptComponent": {
+          "script": "scripts/coin.lua",
+          "properties": ""
+        }
+      }
+    },
+    {
+      "id": 23,
+      "name": "Altın 5",
+      "active": true,
+      "transform": {
+        "position": [
+          1180,
+          150
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1,
+          1
+        ],
+        "zLayer": 3
+      },
+      "components": {
+        "SpriteComponent": {
+          "texture": {
+            "path": "sprites/coin.png",
+            "filter": "nearest"
+          },
+          "size": [
+            40,
+            40
+          ],
+          "tint": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "origin": [
+            0.5,
+            0.5
+          ],
+          "uvMin": [
+            0,
+            0
+          ],
+          "uvMax": [
+            0.125,
+            1
+          ]
+        },
+        "SpriteAnimator": {
+          "columns": 8,
+          "rows": 1,
+          "firstFrame": 0,
+          "frameCount": 8,
+          "fps": 12,
+          "speed": 1.0,
+          "loop": true,
+          "playing": true
+        },
+        "CircleCollider2D": {
+          "radius": 16,
+          "offset": [
+            0,
+            0
+          ],
+          "isTrigger": true,
+          "density": 1.0,
+          "friction": 0.4,
+          "restitution": 0.0
+        },
+        "ScriptComponent": {
+          "script": "scripts/coin.lua",
+          "properties": ""
+        }
+      }
+    },
+    {
+      "id": 24,
+      "name": "Altın 6",
+      "active": true,
+      "transform": {
+        "position": [
+          1400,
+          -260
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1,
+          1
+        ],
+        "zLayer": 3
+      },
+      "components": {
+        "SpriteComponent": {
+          "texture": {
+            "path": "sprites/coin.png",
+            "filter": "nearest"
+          },
+          "size": [
+            40,
+            40
+          ],
+          "tint": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "origin": [
+            0.5,
+            0.5
+          ],
+          "uvMin": [
+            0,
+            0
+          ],
+          "uvMax": [
+            0.125,
+            1
+          ]
+        },
+        "SpriteAnimator": {
+          "columns": 8,
+          "rows": 1,
+          "firstFrame": 0,
+          "frameCount": 8,
+          "fps": 12,
+          "speed": 1.0,
+          "loop": true,
+          "playing": true
+        },
+        "CircleCollider2D": {
+          "radius": 16,
+          "offset": [
+            0,
+            0
+          ],
+          "isTrigger": true,
+          "density": 1.0,
+          "friction": 0.4,
+          "restitution": 0.0
+        },
+        "ScriptComponent": {
+          "script": "scripts/coin.lua",
+          "properties": ""
+        }
+      }
+    },
+    {
+      "id": 25,
+      "name": "Altın 7",
+      "active": true,
+      "transform": {
+        "position": [
+          1820,
+          -180
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1,
+          1
+        ],
+        "zLayer": 3
+      },
+      "components": {
+        "SpriteComponent": {
+          "texture": {
+            "path": "sprites/coin.png",
+            "filter": "nearest"
+          },
+          "size": [
+            40,
+            40
+          ],
+          "tint": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "origin": [
+            0.5,
+            0.5
+          ],
+          "uvMin": [
+            0,
+            0
+          ],
+          "uvMax": [
+            0.125,
+            1
+          ]
+        },
+        "SpriteAnimator": {
+          "columns": 8,
+          "rows": 1,
+          "firstFrame": 0,
+          "frameCount": 8,
+          "fps": 12,
+          "speed": 1.0,
+          "loop": true,
+          "playing": true
+        },
+        "CircleCollider2D": {
+          "radius": 16,
+          "offset": [
+            0,
+            0
+          ],
+          "isTrigger": true,
+          "density": 1.0,
+          "friction": 0.4,
+          "restitution": 0.0
+        },
+        "ScriptComponent": {
+          "script": "scripts/coin.lua",
+          "properties": ""
+        }
+      }
+    },
+    {
+      "id": 26,
+      "name": "Altın 8",
+      "active": true,
+      "transform": {
+        "position": [
+          2000,
+          -120
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1,
+          1
+        ],
+        "zLayer": 3
+      },
+      "components": {
+        "SpriteComponent": {
+          "texture": {
+            "path": "sprites/coin.png",
+            "filter": "nearest"
+          },
+          "size": [
+            40,
+            40
+          ],
+          "tint": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "origin": [
+            0.5,
+            0.5
+          ],
+          "uvMin": [
+            0,
+            0
+          ],
+          "uvMax": [
+            0.125,
+            1
+          ]
+        },
+        "SpriteAnimator": {
+          "columns": 8,
+          "rows": 1,
+          "firstFrame": 0,
+          "frameCount": 8,
+          "fps": 12,
+          "speed": 1.0,
+          "loop": true,
+          "playing": true
+        },
+        "CircleCollider2D": {
+          "radius": 16,
+          "offset": [
+            0,
+            0
+          ],
+          "isTrigger": true,
+          "density": 1.0,
+          "friction": 0.4,
+          "restitution": 0.0
+        },
+        "ScriptComponent": {
+          "script": "scripts/coin.lua",
+          "properties": ""
+        }
+      }
+    },
+    {
+      "id": 27,
+      "name": "Altın 9",
+      "active": true,
+      "transform": {
+        "position": [
+          2150,
+          -60
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1,
+          1
+        ],
+        "zLayer": 3
+      },
+      "components": {
+        "SpriteComponent": {
+          "texture": {
+            "path": "sprites/coin.png",
+            "filter": "nearest"
+          },
+          "size": [
+            40,
+            40
+          ],
+          "tint": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "origin": [
+            0.5,
+            0.5
+          ],
+          "uvMin": [
+            0,
+            0
+          ],
+          "uvMax": [
+            0.125,
+            1
+          ]
+        },
+        "SpriteAnimator": {
+          "columns": 8,
+          "rows": 1,
+          "firstFrame": 0,
+          "frameCount": 8,
+          "fps": 12,
+          "speed": 1.0,
+          "loop": true,
+          "playing": true
+        },
+        "CircleCollider2D": {
+          "radius": 16,
+          "offset": [
+            0,
+            0
+          ],
+          "isTrigger": true,
+          "density": 1.0,
+          "friction": 0.4,
+          "restitution": 0.0
+        },
+        "ScriptComponent": {
+          "script": "scripts/coin.lua",
+          "properties": ""
+        }
+      }
+    },
+    {
+      "id": 28,
+      "name": "Altın 10",
+      "active": true,
+      "transform": {
+        "position": [
+          2560,
+          -60
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1,
+          1
+        ],
+        "zLayer": 3
+      },
+      "components": {
+        "SpriteComponent": {
+          "texture": {
+            "path": "sprites/coin.png",
+            "filter": "nearest"
+          },
+          "size": [
+            40,
+            40
+          ],
+          "tint": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "origin": [
+            0.5,
+            0.5
+          ],
+          "uvMin": [
+            0,
+            0
+          ],
+          "uvMax": [
+            0.125,
+            1
+          ]
+        },
+        "SpriteAnimator": {
+          "columns": 8,
+          "rows": 1,
+          "firstFrame": 0,
+          "frameCount": 8,
+          "fps": 12,
+          "speed": 1.0,
+          "loop": true,
+          "playing": true
+        },
+        "CircleCollider2D": {
+          "radius": 16,
+          "offset": [
+            0,
+            0
+          ],
+          "isTrigger": true,
+          "density": 1.0,
+          "friction": 0.4,
+          "restitution": 0.0
+        },
+        "ScriptComponent": {
+          "script": "scripts/coin.lua",
+          "properties": ""
+        }
+      }
+    },
+    {
+      "id": 29,
+      "name": "Bayrak",
+      "active": true,
+      "transform": {
+        "position": [
+          2820,
+          -66
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1,
+          1
+        ],
+        "zLayer": 1
+      },
+      "components": {
+        "SpriteComponent": {
+          "texture": {
+            "path": "sprites/flag.png",
+            "filter": "nearest"
+          },
+          "size": [
+            48,
+            96
+          ],
+          "tint": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "origin": [
+            0.5,
+            0.5
+          ],
+          "uvMin": [
+            0,
+            0
+          ],
+          "uvMax": [
+            1,
+            1
+          ]
+        },
+        "BoxCollider2D": {
+          "size": [
+            48,
+            96
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "isTrigger": true,
+          "density": 1.0,
+          "friction": 0.4,
+          "restitution": 0.0
+        },
+        "ScriptComponent": {
+          "script": "scripts/flag.lua",
+          "properties": ""
+        }
+      }
+    },
+    {
+      "id": 30,
+      "name": "Ölüm Alanı",
+      "active": true,
+      "transform": {
+        "position": [
+          1200,
+          -900
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1,
+          1
+        ],
+        "zLayer": 0.0
+      },
+      "components": {
+        "BoxCollider2D": {
+          "size": [
+            8000,
+            200
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "isTrigger": true,
+          "density": 1.0,
+          "friction": 0.4,
+          "restitution": 0.0
+        },
+        "ScriptComponent": {
+          "script": "scripts/kill_zone.lua",
+          "properties": ""
+        }
+      }
+    },
+    {
+      "id": 31,
+      "name": "Oyuncu",
+      "active": true,
+      "transform": {
+        "position": [
+          -300,
+          -250
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1,
+          1
+        ],
+        "zLayer": 5
+      },
+      "components": {
+        "SpriteComponent": {
+          "texture": {
+            "path": "sprites/player.png",
+            "filter": "nearest"
+          },
+          "size": [
+            48,
+            48
+          ],
+          "tint": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "origin": [
+            0.5,
+            0.5
+          ],
+          "uvMin": [
+            0,
+            0
+          ],
+          "uvMax": [
+            0.25,
+            1
+          ]
+        },
+        "SpriteAnimator": {
+          "columns": 4,
+          "rows": 1,
+          "firstFrame": 0,
+          "frameCount": 1,
+          "fps": 1,
+          "speed": 1.0,
+          "loop": true,
+          "playing": true
+        },
+        "BoxCollider2D": {
+          "size": [
+            26,
+            44
+          ],
+          "offset": [
+            0,
+            -2
+          ],
+          "isTrigger": false,
+          "density": 1.0,
+          "friction": 0.0,
+          "restitution": 0.0
+        },
+        "RigidBody2D": {
+          "type": "Dynamic",
+          "velocity": [
+            0,
+            0
+          ],
+          "angularVelocity": 0,
+          "maxSpeed": 0,
+          "linearDamping": 0,
+          "angularDamping": 0,
+          "gravityScale": 1.0,
+          "fixedRotation": true,
+          "bullet": false
+        },
+        "ParticleEmitter": {
+          "emitting": false,
+          "rate": 0,
+          "offset": [
+            0,
+            -22
+          ],
+          "velocity": [
+            0,
+            60
+          ],
+          "velocityVariation": [
+            120,
+            40
+          ],
+          "colorBegin": [
+            0.9,
+            0.85,
+            0.7,
+            0.8
+          ],
+          "colorEnd": [
+            0.9,
+            0.85,
+            0.7,
+            0
+          ],
+          "sizeBegin": 8,
+          "sizeEnd": 0,
+          "sizeVariation": 3,
+          "lifetime": 0.4,
+          "lifetimeVariation": 0.1,
+          "texture": null
+        },
+        "ScriptComponent": {
+          "script": "scripts/player.lua",
+          "properties": ""
+        }
+      }
+    }
+  ]
+}

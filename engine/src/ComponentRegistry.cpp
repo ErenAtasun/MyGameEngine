@@ -1,11 +1,16 @@
 #include <MME/ComponentRegistry.h>
-#include <MME/BoxCollider2D.h>
+#include <MME/CameraComponent.h>
+#include <MME/Collider2D.h>
 #include <MME/ParticleEmitter.h>
+#include <MME/ScriptComponent.h>
 #include <MME/RigidBody2D.h>
 #include <MME/SpriteAnimator.h>
 #include <MME/SpriteComponent.h>
 
 namespace mme {
+
+    // ScriptInspector.cpp: script'in properties tablosunu inspector'da gösterir
+    bool DrawScriptProperties(Component& component, const std::function<void()>& beforeEdit);
 
     namespace {
         // Fonksiyon içi statik: statik başlatma sırası sorunlarına karşı
@@ -59,15 +64,39 @@ namespace mme {
         Register<RigidBody2D>("RigidBody2D")
             .Enum("type", &RigidBody2D::type, { "Static", "Kinematic", "Dynamic" })
             .Field("velocity", &RigidBody2D::velocity)
+            .Field("angularVelocity", &RigidBody2D::angularVelocity)
             .Field("maxSpeed", &RigidBody2D::maxSpeed)
             .Field("linearDamping", &RigidBody2D::linearDamping, 0.01f)
-            .Field("restitution", &RigidBody2D::restitution, 0.01f)
-            .Field("gravityScale", &RigidBody2D::gravityScale, 0.01f);
+            .Field("angularDamping", &RigidBody2D::angularDamping, 0.01f)
+            .Field("gravityScale", &RigidBody2D::gravityScale, 0.01f)
+            .Field("fixedRotation", &RigidBody2D::fixedRotation)
+            .Field("bullet", &RigidBody2D::bullet);
 
         Register<BoxCollider2D>("BoxCollider2D")
             .Field("size", &BoxCollider2D::size)
             .Field("offset", &BoxCollider2D::offset)
-            .Field("isTrigger", &BoxCollider2D::isTrigger);
+            .Field("isTrigger", &BoxCollider2D::isTrigger)
+            .Field("density", &BoxCollider2D::density, 0.01f)
+            .Field("friction", &BoxCollider2D::friction, 0.01f)
+            .Field("restitution", &BoxCollider2D::restitution, 0.01f);
+
+        Register<CircleCollider2D>("CircleCollider2D")
+            .Field("radius", &CircleCollider2D::radius, 0.5f)
+            .Field("offset", &CircleCollider2D::offset)
+            .Field("isTrigger", &CircleCollider2D::isTrigger)
+            .Field("density", &CircleCollider2D::density, 0.01f)
+            .Field("friction", &CircleCollider2D::friction, 0.01f)
+            .Field("restitution", &CircleCollider2D::restitution, 0.01f);
+
+        Register<CameraComponent>("CameraComponent")
+            .Field("viewHeight", &CameraComponent::viewHeight)
+            .Field("primary", &CameraComponent::primary)
+            .Field("background", &CameraComponent::background);
+
+        Register<ScriptComponent>("ScriptComponent")
+            .Field("script", &ScriptComponent::script)
+            .Field("properties", &ScriptComponent::properties).Hidden()
+            .Inspector(DrawScriptProperties);
 
         Register<SpriteAnimator>("SpriteAnimator")
             .Field("columns", &SpriteAnimator::columns)

@@ -8,3 +8,6 @@ out/
 
 # Makineye özel CMake ayarları
 CMakeUserPresets.json
+
+# Editörden dışa aktarılan oyunlar
+projects/*_Build/

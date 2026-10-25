@@ -6,10 +6,8 @@
 
 namespace mme {
 
-    class Component;
     class Entity;
     class Scene;
-    struct FieldInfo;
 
     // F1 ile açılan ImGui paneli: performans, zaman kontrolü, fizik, ses,
     // sahne hiyerarşisi ve ComponentRegistry tabanlı inspector.
@@ -28,7 +26,6 @@ namespace mme {
         void DrawAudio();
         void DrawHierarchy(Scene& scene);
         void DrawInspector(Entity& entity);
-        static bool DrawField(const FieldInfo& field, Component& component);
 
         bool m_Visible = false;
         int m_SceneIndex = 0;

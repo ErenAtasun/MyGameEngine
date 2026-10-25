@@ -3,6 +3,7 @@
 
 namespace mme {
 
+    class Entity;
     class Scene;
 
     // Sahneyi JSON olarak kaydeder/yükler. Yalnızca ComponentRegistry'de kayıtlı
@@ -17,5 +18,11 @@ namespace mme {
 
         std::string ToJson(Scene& scene);
         bool FromJson(Scene& scene, const std::string& json);
+
+        // Prefab: tek entity'nin kopyası. Oluşturulan entity yeni bir ID alır.
+        std::string EntityToJson(Entity& entity);
+        Entity* EntityFromJson(Scene& scene, const std::string& json);
+        bool SavePrefab(Entity& entity, const std::string& relativePath);
+        Entity* Instantiate(Scene& scene, const std::string& relativePath);
     }
 }

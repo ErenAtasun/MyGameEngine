@@ -1,0 +1,59 @@
+{
+  "format": 1,
+  "entity": {
+    "name": "Parıltı",
+    "active": true,
+    "transform": {
+      "position": [
+        0,
+        0
+      ],
+      "rotation": 0,
+      "scale": [
+        1,
+        1
+      ],
+      "zLayer": 6
+    },
+    "components": {
+      "ParticleEmitter": {
+        "emitting": false,
+        "rate": 0,
+        "offset": [
+          0,
+          0
+        ],
+        "velocity": [
+          0,
+          40
+        ],
+        "velocityVariation": [
+          220,
+          220
+        ],
+        "colorBegin": [
+          1,
+          0.9,
+          0.3,
+          1
+        ],
+        "colorEnd": [
+          1,
+          0.5,
+          0.1,
+          0
+        ],
+        "sizeBegin": 10,
+        "sizeEnd": 0,
+        "sizeVariation": 4,
+        "lifetime": 0.6,
+        "lifetimeVariation": 0.2,
+        "texture": null
+      },
+      "ScriptComponent": {
+        "script": "scripts/sparkle.lua",
+        "properties": ""
+      }
+    }
+  }
+}

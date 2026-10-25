@@ -25,6 +25,8 @@ namespace mme {
 
         void OnCreate() override;
         void OnUpdate(float dt) override;
+        // Güncellenmeyen sahnelerde (editör) de doğru kare görünsün
+        void OnRender() override { ApplyFrame(); }
 
         void AddClip(const std::string& name, int firstFrame, int frameCount, float fps, bool loop = true);
         // Klibi başlatır; zaten oynuyorsa restart = false iken baştan almaz

@@ -3,6 +3,7 @@
 #include <MME/MME.h>
 #include "InputInternal.h"
 
+#include <chrono>
 #include <cmath>
 #include <cstdio>
 #include <filesystem>
@@ -11,6 +12,7 @@
 #include <random>
 #include <typeindex>
 #include <string>
+#include <thread>
 #include <vector>
 
 // ---------------------------------------------------------------- mini test koşucusu
@@ -142,30 +144,47 @@ TEST(Scene_EntityIdsAreUnique) {
     CHECK(scene.FindEntity(b) != nullptr);
 }
 
-// ---------------------------------------------------------------- Fizik
-TEST(BoxCollider_OverlapAndContains) {
+// ---------------------------------------------------------------- Fizik (Box2D)
+TEST(Collider_ContainsAndBoundsFollowRotation) {
     Scene scene;
     Entity& a = MakeBox(scene, "A", { 0, 0 }, { 10, 10 }, BodyType::Static, false);
-    Entity& b = MakeBox(scene, "B", { 9, 0 }, { 10, 10 }, BodyType::Static, false);
-    Entity& c = MakeBox(scene, "C", { 10, 0 }, { 10, 10 }, BodyType::Static, false); // kenar teması: çakışma değil
     auto& ca = *a.GetComponent<BoxCollider2D>();
-    CHECK(ca.Overlaps(*b.GetComponent<BoxCollider2D>()));
-    CHECK(!ca.Overlaps(*c.GetComponent<BoxCollider2D>()));
     CHECK(ca.Contains({ 4.9f, -4.9f }));
     CHECK(!ca.Contains({ 5.1f, 0.0f }));
 
-    a.scale = { 2.0f, 1.0f };                       // collider ölçekle büyür
+    a.rotation = 45.0f;                              // köşegen: 5·√2 ≈ 7.07
+    CHECK(ca.Contains({ 6.5f, 0.0f }));
+    CHECK(!ca.Contains({ 4.0f, 4.0f }));
+    glm::vec2 mn, mx;
+    ca.GetBounds(mn, mx);
+    CHECK_NEAR(mx.x, 7.0711, 1e-3);
+
+    a.rotation = 90.0f;                              // offset entity ile döner
+    ca.offset = { 10.0f, 0.0f };
+    CHECK_NEAR(ca.GetCenter().y, 10.0, 1e-4);
+
+    a.rotation = 0.0f;
+    a.scale = { 2.0f, 1.0f };                        // collider ölçekle büyür
     CHECK_NEAR(ca.GetHalfExtents().x, 10.0, 1e-5);
+
+    Entity& c = scene.CreateEntity("C");
+    c.scale = { 2.0f, 0.5f };
+    auto& circle = c.AddComponent<CircleCollider2D>();
+    circle.radius = 5.0f;
+    CHECK_NEAR(circle.GetWorldRadius(), 10.0, 1e-5);  // ölçeğin büyük ekseni
+    CHECK(circle.Contains({ 0.0f, 9.9f }));
+    CHECK(!circle.Contains({ 7.2f, 7.2f }));
 }
 
 TEST(Physics_IntegratesVelocityAndGravity) {
     Scene scene;
-    Entity& e = MakeBox(scene, "Ball", { 0, 0 }, { 1, 1 }, BodyType::Dynamic);
+    Entity& e = MakeBox(scene, "Ball", { 0, 0 }, { 10, 10 }, BodyType::Dynamic);
     e.GetComponent<RigidBody2D>()->velocity = { 60.0f, 0.0f };
     scene.GetPhysics().gravity = { 0.0f, -600.0f };
     scene.FixedUpdate(kStep);
-    CHECK_NEAR(e.position.x, 1.0, 1e-4);            // 60 px/s * 1/60 s
-    CHECK_NEAR(e.GetComponent<RigidBody2D>()->velocity.y, -10.0, 1e-4);
+    CHECK_NEAR(e.position.x, 1.0, 1e-3);            // 60 px/s * 1/60 s
+    CHECK_NEAR(e.GetComponent<RigidBody2D>()->velocity.y, -10.0, 1e-3);
+    CHECK(e.GetComponent<RigidBody2D>()->GetMass() > 0.0f);
 }
 
 TEST(Physics_StaticBodiesNeverMove) {
@@ -178,19 +197,22 @@ TEST(Physics_StaticBodiesNeverMove) {
 
 TEST(Physics_DynamicBouncesOffStaticWall) {
     Scene scene;
-    MakeBox(scene, "Wall", { 0, 0 }, { 10, 100 }, BodyType::Static, false);
-    Entity& ball = MakeBox(scene, "Ball", { 9, 0 }, { 10, 10 }, BodyType::Dynamic); // 1 px içeride
+    MakeBox(scene, "Wall", { 0, 0 }, { 10, 100 }, BodyType::Static, false);  // sağ yüzü x = 5
+    Entity& ball = MakeBox(scene, "Ball", { 30, 0 }, { 10, 10 }, BodyType::Dynamic);
     auto& rb = *ball.GetComponent<RigidBody2D>();
-    rb.velocity = { -60.0f, 30.0f };
-    rb.restitution = 1.0f;
+    rb.velocity = { -300.0f, 30.0f };
+    rb.fixedRotation = true;
+    auto& col = *ball.GetComponent<BoxCollider2D>();
+    col.restitution = 1.0f;
+    col.friction = 0.0f;
     auto& counter = ball.AddComponent<ContactCounter>();
 
-    scene.FixedUpdate(kStep);
-    CHECK(ball.position.x >= 10.0f - 1e-4f);        // dışarı itildi
-    CHECK_NEAR(rb.velocity.x, 60.0, 1e-3);          // x yansıdı
-    CHECK_NEAR(rb.velocity.y, 30.0, 1e-3);          // y korundu
+    for (int i = 0; i < 12; ++i) scene.FixedUpdate(kStep);
+    CHECK(ball.position.x - 5.0f >= 5.0f - 1.0f);   // duvarın içine girmedi (Box2D toleransı 0.5 px)
+    CHECK_NEAR(rb.velocity.x, 300.0, 3.0);          // x yansıdı
+    CHECK_NEAR(rb.velocity.y, 30.0, 0.5);           // sürtünmesiz: y korundu
     CHECK(counter.collisions == 1);
-    CHECK_NEAR(counter.lastNormal.x, 1.0, 1e-6);    // duvardan topa bakıyor
+    CHECK_NEAR(counter.lastNormal.x, 1.0, 1e-4);    // duvardan topa bakıyor
 }
 
 TEST(Physics_CollisionEnterFiresOncePerContact) {
@@ -200,9 +222,10 @@ TEST(Physics_CollisionEnterFiresOncePerContact) {
     scene.GetPhysics().gravity = { 0.0f, -600.0f };
     auto& counter = box.AddComponent<ContactCounter>();
 
-    for (int i = 0; i < 30; ++i) scene.FixedUpdate(kStep); // zeminde yarım saniye durur
+    for (int i = 0; i < 60; ++i) scene.FixedUpdate(kStep); // zeminde bir saniye durur
     CHECK(counter.collisions == 1);
-    CHECK_NEAR(box.position.y, 5.0, 0.05);           // zeminin içine batmadı
+    CHECK_NEAR(box.position.y, 5.0, 0.6);            // zeminin içine batmadı
+    CHECK_NEAR(box.rotation, 0.0, 0.5);
 }
 
 TEST(Physics_TriggerReportsButDoesNotPush) {
@@ -212,22 +235,104 @@ TEST(Physics_TriggerReportsButDoesNotPush) {
     Entity& ball = MakeBox(scene, "Ball", { 2, 0 }, { 2, 2 }, BodyType::Dynamic);
     ball.GetComponent<RigidBody2D>()->velocity = { -60.0f, 0.0f };
     auto& counter = ball.AddComponent<ContactCounter>();
+    auto& goalCounter = goal.AddComponent<ContactCounter>();
 
     scene.FixedUpdate(kStep);
     scene.FixedUpdate(kStep);
     CHECK(counter.triggers == 1);
+    CHECK(goalCounter.triggers == 1);                // iki taraf da haberdar
     CHECK(counter.collisions == 0);
-    CHECK_NEAR(ball.position.x, 0.0, 1e-4);          // 2 adımda 2 px, itilmeden
+    CHECK_NEAR(ball.position.x, 0.0, 1e-3);          // 2 adımda 2 px, itilmeden
 }
 
 TEST(Physics_KinematicIsNotPushedByDynamic) {
     Scene scene;
     Entity& paddle = MakeBox(scene, "Paddle", { 0, 0 }, { 10, 50 }, BodyType::Kinematic);
-    Entity& ball = MakeBox(scene, "Ball", { 9, 0 }, { 10, 10 }, BodyType::Dynamic);
-    ball.GetComponent<RigidBody2D>()->velocity = { -120.0f, 0.0f };
-    scene.FixedUpdate(kStep);
+    Entity& ball = MakeBox(scene, "Ball", { 30, 0 }, { 10, 10 }, BodyType::Dynamic);
+    ball.GetComponent<RigidBody2D>()->velocity = { -300.0f, 0.0f };
+    for (int i = 0; i < 10; ++i) scene.FixedUpdate(kStep);
     CHECK_NEAR(paddle.position.x, 0.0, 1e-6);
-    CHECK(ball.position.x >= 10.0f - 1e-4f);
+    CHECK(ball.position.x >= 10.0f - 1.0f);
+    CHECK(ball.GetComponent<RigidBody2D>()->velocity.x > -1.0f);  // durdu (sekme yok)
+}
+
+TEST(Physics_FastBodyDoesNotTunnel) {
+    // 3000 px/s: bir adımda 50 px; 4 px'lik duvar. Box2D'nin sürekli çarpışması yakalar.
+    Scene scene;
+    MakeBox(scene, "Wall", { 100, 0 }, { 4, 200 }, BodyType::Static, false);
+    Entity& ball = MakeBox(scene, "Ball", { 0, 0 }, { 10, 10 }, BodyType::Dynamic);
+    auto& rb = *ball.GetComponent<RigidBody2D>();
+    rb.velocity = { 3000.0f, 0.0f };
+    rb.fixedRotation = true;
+    ball.GetComponent<BoxCollider2D>()->restitution = 1.0f;
+    for (int i = 0; i < 4; ++i) scene.FixedUpdate(kStep);
+    CHECK(ball.position.x < 100.0f);
+    CHECK(rb.velocity.x < -2500.0f);
+}
+
+TEST(Physics_CircleRollsDownRotatedRamp) {
+    Scene scene;
+    scene.GetPhysics().gravity = { 0.0f, -1000.0f };
+    Entity& ramp = MakeBox(scene, "Ramp", { 0, 0 }, { 600, 20 }, BodyType::Static, false);
+    ramp.rotation = 20.0f;                            // sağa doğru yükselir: yokuş aşağı -x
+    Entity& ball = scene.CreateEntity("Ball");
+    ball.position = { 100.0f, 60.0f };
+    ball.AddComponent<CircleCollider2D>().radius = 15.0f;
+    ball.AddComponent<RigidBody2D>();
+
+    for (int i = 0; i < 60; ++i) scene.FixedUpdate(kStep);
+    CHECK(ball.position.x < 60.0f);                   // yokuş aşağı yuvarlandı
+    CHECK(std::abs(ball.rotation) > 1.0f);            // sürtünme: kayma değil dönme
+    CHECK(ball.GetComponent<RigidBody2D>()->angularVelocity > 0.0f); // -x'e yuvarlanmak = saat yönü tersi
+}
+
+TEST(Physics_CodeChangesReachSimulation) {
+    Scene scene;
+    Entity& e = MakeBox(scene, "Box", { 0, 0 }, { 10, 10 }, BodyType::Dynamic);
+    scene.FixedUpdate(kStep);
+    e.position = { 500.0f, 200.0f };                  // ışınlama
+    e.rotation = 30.0f;
+    scene.FixedUpdate(kStep);
+    CHECK_NEAR(e.position.x, 500.0, 1e-3);
+    CHECK_NEAR(e.rotation, 30.0, 1e-3);
+
+    auto& rb = *e.GetComponent<RigidBody2D>();
+    rb.AddForce({ 0.0f, rb.GetMass() * 600.0f });     // a = 600 px/s², bir adım
+    scene.FixedUpdate(kStep);
+    CHECK_NEAR(rb.velocity.y, 10.0, 1e-2);
+    scene.FixedUpdate(kStep);
+    CHECK_NEAR(rb.velocity.y, 10.0, 1e-2);            // kuvvet yalnızca bir adım uygulandı
+
+    e.GetComponent<BoxCollider2D>()->size = { 20.0f, 10.0f }; // şekil yeniden kurulur, kütle iki katına çıkar
+    const float mass = rb.GetMass();
+    scene.FixedUpdate(kStep);
+    CHECK_NEAR(rb.GetMass(), mass * 2.0f, mass * 1e-3);
+
+    CHECK(scene.GetPhysics().GetStats().bodies == 1);
+    e.RemoveComponent<RigidBody2D>();
+    e.RemoveComponent<BoxCollider2D>();
+    scene.FixedUpdate(kStep);
+    CHECK(scene.GetPhysics().GetStats().bodies == 0); // component'siz entity'nin gövdesi kalmaz
+    MakeBox(scene, "B", { 0, 0 }, { 10, 10 }, BodyType::Dynamic).Destroy();
+    scene.FixedUpdate(kStep);
+    CHECK(scene.GetPhysics().GetStats().bodies == 0);
+}
+
+TEST(Physics_RaycastFindsClosestSolid) {
+    Scene scene;
+    MakeBox(scene, "Near", { 100, 0 }, { 10, 100 }, BodyType::Static, false);
+    MakeBox(scene, "Far", { 200, 0 }, { 10, 100 }, BodyType::Static, false);
+    Entity& trigger = MakeBox(scene, "Trigger", { 50, 0 }, { 10, 100 }, BodyType::Static, false);
+    trigger.GetComponent<BoxCollider2D>()->isTrigger = true;
+    Entity& self = MakeBox(scene, "Self", { 0, 0 }, { 10, 10 }, BodyType::Dynamic);
+    scene.FixedUpdate(kStep);
+
+    Physics2D::RaycastHit hit;
+    CHECK(scene.GetPhysics().Raycast({ 0, 0 }, { 300, 0 }, hit, &self));
+    CHECK(hit.entity && hit.entity->GetName() == "Near"); // tetik ve kendisi atlandı
+    CHECK_NEAR(hit.point.x, 95.0, 1e-2);
+    CHECK_NEAR(hit.normal.x, -1.0, 1e-4);
+    CHECK(!scene.GetPhysics().Raycast({ 0, 200 }, { 300, 200 }, hit));
 }
 
 TEST(RigidBody_MaxSpeedClamp) {
@@ -298,60 +403,6 @@ TEST(UI_MeasureText) {
     CHECK(UI::MeasureText("", 7.0f).x == 0.0f);
 }
 
-// ---------------------------------------------------------------- Fizik: broadphase ve alt adımlama
-TEST(Physics_BroadphaseMatchesBruteForce) {
-    // Kinematik kutular itilmez: her çakışan çift tam bir "enter" olayı üretir.
-    // Uzamsal ızgaranın bulduğu temaslar kaba kuvvet O(n²) testiyle aynı olmalı.
-    for (float cell : { 8.0f, 64.0f, 100000.0f }) {          // küçük, normal, tek dev hücre
-        Scene scene;
-        scene.GetPhysics().cellSize = cell;
-        std::mt19937 rng(1234);
-        std::uniform_real_distribution<float> pos(0.0f, 600.0f), size(4.0f, 60.0f);
-        std::vector<Entity*> boxes;
-        for (int i = 0; i < 250; ++i) {
-            Entity& e = MakeBox(scene, "Box", { pos(rng), pos(rng) }, { size(rng), size(rng) }, BodyType::Kinematic);
-            e.AddComponent<ContactCounter>();
-            boxes.push_back(&e);
-        }
-        MakeBox(scene, "Huge", { 300, 300 }, { 5000, 5000 }, BodyType::Static, false); // ızgaraya sığmayan
-
-        int boxPairs = 0;
-        for (size_t i = 0; i < boxes.size(); ++i)
-            for (size_t j = i + 1; j < boxes.size(); ++j)
-                if (boxes[i]->GetComponent<BoxCollider2D>()->Overlaps(*boxes[j]->GetComponent<BoxCollider2D>()))
-                    ++boxPairs;
-
-        scene.FixedUpdate(kStep);
-        int reported = 0;
-        for (Entity* e : boxes) reported += e->GetComponent<ContactCounter>()->collisions;
-        // Kutular arası çiftte iki taraf da sayar; dev kutuyla çakışma her kutu için bir kez
-        CHECK(reported == boxPairs * 2 + (int)boxes.size());
-        CHECK(scene.GetPhysics().GetStats().contacts == (uint32_t)(boxPairs + (int)boxes.size()));
-    }
-}
-
-TEST(Physics_SubstepsPreventTunneling) {
-    // 3000 px/s: bir adımda 50 px. 4 px'lik duvar ve 10 px'lik top için tespit
-    // penceresi 14 px; alt adım olmadan top duvarın içinden geçer.
-    auto run = [](int maxSubsteps) {
-        Scene scene;
-        scene.GetPhysics().maxSubsteps = maxSubsteps;
-        MakeBox(scene, "Wall", { 100, 0 }, { 4, 200 }, BodyType::Static, false);
-        Entity& ball = MakeBox(scene, "Ball", { 0, 0 }, { 10, 10 }, BodyType::Dynamic);
-        auto& rb = *ball.GetComponent<RigidBody2D>();
-        rb.velocity = { 3000.0f, 0.0f };
-        rb.restitution = 1.0f;
-        for (int i = 0; i < 4; ++i) scene.FixedUpdate(kStep);
-        return std::make_pair(ball.position.x, rb.velocity.x);
-    };
-    const auto noSub = run(1);
-    CHECK(noSub.first > 100.0f);            // alt adımsız: tünelledi (testin anlamlı olduğunun kanıtı)
-    CHECK(noSub.second > 0.0f);
-    const auto withSub = run(8);
-    CHECK(withSub.first < 100.0f);          // alt adımlı: duvardan sekti
-    CHECK_NEAR(withSub.second, -3000.0, 1e-2);
-}
-
 // ---------------------------------------------------------------- Component kaydı ve serileştirme
 namespace {
     enum class Mood { Calm, Angry, Sleepy };
@@ -417,8 +468,9 @@ TEST(Serializer_RoundTripPreservesFieldsAndOrder) {
     auto& rb = e.AddComponent<RigidBody2D>();
     rb.type = BodyType::Kinematic;
     rb.velocity = { 5.0f, 6.0f };
-    rb.restitution = 0.25f;
-    e.AddComponent<BoxCollider2D>().isTrigger = true;
+    auto& bc = e.AddComponent<BoxCollider2D>();
+    bc.isTrigger = true;
+    bc.restitution = 0.25f;
     auto& t = e.AddComponent<TestComponent>();
     t.f = 1.5f; t.i = -7; t.b = true; t.v = { 8, 9 }; t.c = { 1, 0, 1, 0.5f }; t.s = "merhaba dünya"; t.mood = Mood::Sleepy;
     a.CreateEntity("Bos");
@@ -447,6 +499,8 @@ TEST(Serializer_RoundTripPreservesFieldsAndOrder) {
     CHECK(e2->GetComponent<RigidBody2D>()->type == BodyType::Kinematic);
     CHECK_NEAR(e2->GetComponent<RigidBody2D>()->velocity.y, 6.0, 1e-5);
     CHECK(e2->GetComponent<BoxCollider2D>()->isTrigger);
+    CHECK_NEAR(e2->GetComponent<BoxCollider2D>()->restitution, 0.25, 1e-6);
+    CHECK(e2->GetID() == e.GetID());                          // ID'ler korunur (editör geri alma)
     const auto* t2 = e2->GetComponent<TestComponent>();
     CHECK(t2 && t2->i == -7 && t2->b && t2->s == "merhaba dünya" && t2->mood == Mood::Sleepy);
     CHECK(t2 && t2->v.y == 9.0f && t2->c.w == 0.5f);
@@ -572,6 +626,153 @@ TEST(Audio_HeadlessPlayback) {
     Audio::Shutdown();
     CHECK(!Audio::IsAvailable());
     fs::remove_all(dir);
+}
+
+// ---------------------------------------------------------------- Lua script'leri
+namespace {
+    namespace fs = std::filesystem;
+
+    // Geçici bir asset klasörüne script yazar; Assets kökü oraya çevrilir
+    struct ScriptDir {
+        fs::path dir = fs::temp_directory_path() / "mme_script_tests";
+        ScriptDir() { fs::remove_all(dir); fs::create_directories(dir); Assets::Init(dir.string()); }
+        ~ScriptDir() { std::error_code ec; fs::remove_all(dir, ec); }
+        void Write(const char* name, const char* source) { std::ofstream(dir / name, std::ios::binary) << source; }
+    };
+
+    ScriptComponent& AddScript(Entity& e, const char* path, const char* properties = "") {
+        auto& sc = e.AddComponent<ScriptComponent>();
+        sc.script = path;
+        sc.properties = properties;
+        return sc;
+    }
+}
+
+TEST(Script_LifecycleAndProperties) {
+    ScriptDir d;
+    d.Write("mover.lua", R"(
+properties = { speed = 1, label = "x", dir = vec2(1, 0) }
+function OnStart(self)
+    self.count = 0
+    self.entity.name = "Basladi " .. self.label
+end
+function OnUpdate(self, dt)
+    self.count = self.count + 1
+    self.entity.position = self.entity.position + self.dir * self.speed
+end
+)");
+    Scene scene;
+    Entity& e = scene.CreateEntity("E");
+    auto& sc = AddScript(e, "mover.lua", R"({"speed": 5, "label": "ok"})");   // inspector değerleri
+    CHECK(!sc.IsRunning());                         // eklenince çalışmaz (editörde düzenleme güvenli)
+
+    scene.Update(kStep);
+    scene.Update(kStep);
+    CHECK(sc.IsRunning());
+    CHECK(e.GetName() == "Basladi ok");
+    CHECK_NEAR(e.position.x, 10.0, 1e-5);           // 2 frame x speed 5
+    CHECK(sc.GetError().empty());
+}
+
+TEST(Script_ErrorsAreContainedAndHotReloaded) {
+    ScriptDir d;
+    d.Write("bad.lua", "function OnUpdate(self, dt) self.entity.x = self.entity.x + 1; error('patladi') end");
+    Scene scene;
+    Entity& e = scene.CreateEntity("E");
+    auto& sc = AddScript(e, "bad.lua");
+    Entity& other = scene.CreateEntity("Diger");
+    AddScript(other, "yok.lua");                    // eksik dosya da yalnızca hata mesajı
+
+    scene.Update(kStep);
+    scene.Update(kStep);
+    CHECK(!sc.IsRunning());
+    CHECK(sc.GetError().find("bad.lua:1:") != std::string::npos);  // dosya:satır
+    CHECK(sc.GetError().find("patladi") != std::string::npos);
+    CHECK_NEAR(e.position.x, 1.0, 1e-6);            // hatadan sonra artık çağrılmıyor
+
+    // Dosya düzeltilince (yarım saniyelik yoklamadan sonra) kaldığı yerden devam eder
+    d.Write("bad.lua", "function OnUpdate(self, dt) self.entity.x = self.entity.x + 10 end");
+    fs::last_write_time(d.dir / "bad.lua", fs::last_write_time(d.dir / "bad.lua") + std::chrono::seconds(2));
+    std::this_thread::sleep_for(std::chrono::milliseconds(600));
+    scene.Update(kStep);
+    scene.Update(kStep);
+    CHECK(sc.IsRunning());
+    CHECK_NEAR(e.position.x, 21.0, 1e-5);
+}
+
+TEST(Script_PhysicsEventsAndEntityHandles) {
+    ScriptDir d;
+    d.Write("ball.lua", R"(
+function OnStart(self)
+    self.hits = 0
+    self.wall = Scene.Find("Wall")
+end
+function OnCollision(self, other, normal)
+    self.hits = self.hits + 1
+    self.lastName = other.name
+    self.nx = normal.x
+    other:Destroy()
+end
+function OnUpdate(self, dt)
+    if self.hits > 0 then
+        self.entity.name = self.lastName .. ":" .. tostring(self.nx)
+        local ok, err = pcall(function() return self.wall.x end)   -- silinmiş entity
+        if not ok and string.find(err, "silinmis") then self.entity.name = self.entity.name .. ":handle" end
+        if self.wall.valid == false then self.entity.zLayer = 7 end
+    end
+end
+)");
+    Scene scene;
+    MakeBox(scene, "Wall", { 0, 0 }, { 10, 100 }, BodyType::Static, false);
+    Entity& ball = MakeBox(scene, "Ball", { 30, 0 }, { 10, 10 }, BodyType::Dynamic);
+    ball.GetComponent<RigidBody2D>()->velocity = { -300.0f, 0.0f };
+    auto& sc = AddScript(ball, "ball.lua");
+
+    for (int i = 0; i < 10; ++i) { scene.FixedUpdate(kStep); scene.Update(kStep); }
+    CHECK(sc.IsRunning());
+    CHECK(ball.GetName() == "Wall:1.0:handle");     // olay, normal ve silinen entity hatası
+    CHECK(ball.zLayer == 7.0f);
+    CHECK(scene.FindEntity("Wall") == nullptr);
+}
+
+TEST(Script_SpawnPrefabAndComponents) {
+    ScriptDir d;
+    ComponentRegistry::RegisterBuiltins();
+    {
+        Scene tmp;
+        Entity& coin = tmp.CreateEntity("Coin");
+        coin.AddComponent<SpriteComponent>().size = { 16, 16 };
+        coin.AddComponent<CircleCollider2D>().radius = 8.0f;
+        CHECK(SceneSerializer::SavePrefab(coin, "coin.prefab.json"));
+    }
+    d.Write("spawner.lua", R"(
+function OnStart(self)
+    for i = 1, 3 do
+        local c = Scene.Spawn("coin.prefab.json", vec2(i * 10, 5))
+        c.sprite.tint = Color(1, 0.5, 0, 1)
+    end
+    local e = Scene.Create("Dinamik")
+    e:Add("RigidBody2D")
+    e.body.type = "Kinematic"
+    e.body.velocity = vec2(60, 0)
+end
+)");
+    Scene scene;
+    AddScript(scene.CreateEntity("Spawner"), "spawner.lua");
+    scene.Update(kStep);
+    int coins = 0;
+    for (auto& e : scene.GetEntities())
+        if (e->GetName() == "Coin") {
+            ++coins;
+            CHECK(e->GetComponent<CircleCollider2D>() && e->GetComponent<CircleCollider2D>()->radius == 8.0f);
+            CHECK_NEAR(e->GetComponent<SpriteComponent>()->tint.g, 0.5, 1e-6);
+        }
+    CHECK(coins == 3);
+    CHECK_NEAR(scene.FindEntity("Coin")->position.x, 10.0, 1e-5);
+    Entity* dyn = scene.FindEntity("Dinamik");
+    CHECK(dyn && dyn->GetComponent<RigidBody2D>()->type == BodyType::Kinematic);
+    scene.FixedUpdate(kStep);
+    CHECK(dyn && std::abs(dyn->position.x - 1.0f) < 1e-3f);
 }
 
 // ---------------------------------------------------------------- main

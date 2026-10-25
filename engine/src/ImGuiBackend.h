@@ -7,7 +7,7 @@ namespace mme {
 
 // Dear ImGui'nin GLFW + OpenGL3 backend'leri (motor içi).
 namespace mme::ImGuiBackend {
-    void Init(Window& window, const std::string& fontPath, float fontSize);
+    void Init(Window& window, const std::string& fontPath, float fontSize, bool docking);
     void Shutdown();
     void BeginFrame();
     void EndFrame();      // çizim verisini GPU'ya gönderir

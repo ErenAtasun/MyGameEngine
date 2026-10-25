@@ -1,0 +1,9 @@
+{
+  "name": "Platformer",
+  "startScene": "scenes/main.json",
+  "window": {
+    "width": 1280,
+    "height": 720
+  },
+  "escapeQuits": true
+}

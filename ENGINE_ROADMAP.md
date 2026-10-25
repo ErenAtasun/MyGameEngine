@@ -72,18 +72,59 @@ Her aşamanın sonunda proje derlenir, çalıştırılır ve ekran görüntüsü
 - [x] Ping-Pong: ses efektleri, vuruş/gol parçacıkları, Türkçe arayüz yazıları
 - [x] TilemapDemo: animasyonlu sprite, TTF Türkçe yazı, sahne kaydet/yükle
 
-## Aşama 5 — Gelecek
-- [ ] Linux / macOS doğrulaması
-- [ ] Döndürülmüş kutular / daire çarpıştırıcılar
-- [ ] Sahne editörü (ImGui üzerinde sürükle-bırak)
+## Aşama 5 — Oyun yapım motoru: editör + Lua + Box2D ✅
+Amaç: kod yazmadan (yalnızca sahne + Lua) oyun yapılabilen, Unity/Godot benzeri editörlü bir 2D motor.
+
+### 5C — Fizik: Box2D 3.1
+- [x] `Physics2D` Box2D üstüne yeniden yazıldı; component'ler veri olarak kaldı (kod `velocity`/`position` yazar, bir sonraki adımda uygulanır)
+- [x] Piksel birimleri (`b2SetLengthUnitsPerMeter(100)`), rotasyon geri yazımı tam trigonometriyle (Box2D yaklaşımları kayma yapıyordu)
+- [x] `Collider2D` taban sınıfı (offset, tetik, yoğunluk, sürtünme, sekme) + `BoxCollider2D` (döner) + `CircleCollider2D`
+- [x] `RigidBody2D`: açısal hız, `fixedRotation`, `bullet`, `AddForce`, kütle
+- [x] Sürekli çarpışma (tünelleme yok), `Physics2D::Raycast`, tetik/temas olayları, uyuyan gövdeler
+- [x] Ping-Pong yeni malzeme API'sine taşındı
+
+### 5B — Lua script'leri (sol2)
+- [x] `ScriptComponent`: sahne başına bir Lua VM, script başına ayrı ortam; `OnStart/OnUpdate/OnFixedUpdate/OnCollision/OnTrigger/OnUI/OnDestroy`
+- [x] Entity/component'ler silinmeye karşı güvenli tanıtıcılarla (`EntityRef`); silinmiş entity'ye erişim anlaşılır Lua hatası verir
+- [x] API: `vec2`, `Color`, `Scene` (Find/Create/Spawn/Load), `Input` (Axis, MouseWorld), `Physics` (Raycast), `Audio`, `UI`, `Time`, `Log`
+- [x] `properties` tablosu inspector'da düzenlenir ve sahneye kaydedilir; oyun çalışırken canlı değerler düzenlenir
+- [x] Hot-reload (durum korunur), hatalar `dosya:satır` ile konsola düşer, hatalı script düzeltilince kaldığı yerden devam eder
+- [x] Prefab'lar (`*.prefab.json`): editörde "Prefab olarak kaydet", Lua'da `Scene.Spawn`
+
+### 5A — Editör (`Editor.exe`)
+- [x] ImGui docking: Sahne, Hiyerarşi, Inspector, Dosyalar, Konsol, Ayarlar; ilk açılışta varsayılan düzen
+- [x] Framebuffer'a çizilen viewport, editör kamerası (sağ/orta tuş kaydır, tekerlek imlece doğru yakınlaş), ızgara
+- [x] Tıklayarak seçim (dönmüş sprite/collider), Taşı/Döndür/Ölçekle gizmo'su (W/E/R), Ctrl ile ızgaraya/15°'ye oturma
+- [x] Geri al / yinele (sahne anlık görüntüsü; bir sürükleme = bir adım), çoğalt, sil, hiyerarşide sürükleyerek sıralama
+- [x] Oynat / Duraklat / Adım / Durdur: oyun sahnenin kopyasında çalışır, Durdur'da her şey geri gelir
+- [x] Dosya tarayıcı: resim → sahneye sürükle = sprite, script → entity'ye bağla, sahne/prefab aç; yeni script şablonu
+- [x] Hazır nesneler (Sprite, Kutu, Top, Zemin, Tetik, Kamera, Parçacık), `CameraComponent`, sahne yerçekimi ayarı
+
+### 5D — Proje ve oynatıcı
+- [x] `project.json` (`mme::Project`), proje seçici / yeni proje oluşturma; asset'ler önce projede, sonra motorda aranır
+- [x] `Player.exe <proje> [--scene ...]`, editörden "Oynatıcıda çalıştır" (F6)
+- [x] "Oyunu dışa aktar": `<Proje>_Build/` içine oyun adıyla .exe + DLL'ler + motor asset'leri + `game/`
+
+### 5E — Örnek projeler (C++ yok, yalnızca sahne + Lua)
+- [x] `projects/Platformer`: koşma/zıplama (raycast zemin kontrolü, coyote time), itilebilir kasalar, yuvarlanan toplar, tahterevalli, altınlar, bayrak, HUD
+- [x] `projects/Pong`: Ping-Pong'un Lua sürümü (raket açısı, hızlanma, skor, kazanan ekranı)
+- [x] Testler: Box2D fiziği (rotasyon, daire, tünelleme, raycast, kod değişikliklerinin aktarımı) ve Lua (yaşam döngüsü, properties, hata + hot-reload, olaylar, prefab) — 35 GPU'suz + 3 pencereli test
+
+## Aşama 6 — Sıradaki adımlar
+- [ ] Linux / macOS doğrulaması (dışa aktarma ve "Oynatıcıda çalıştır" şu an Windows'a özel)
+- [ ] Ebeveyn/çocuk hiyerarşisi (dönüşümler şu an düz)
+- [ ] Eklemler (menteşe, mesafe, yay) ve tilemap'in sahne/editör desteği
+- [ ] Çoklu seçim, prefab örneklerinin prefab'a bağlı kalması
+- [ ] Sahne kamerasının editörde önizleme penceresi
 
 ## Bilinen sınırlamalar
-- Fizik yalnızca eksen hizalı kutular (rotasyon yok). Alt adımlama en fazla 8 adım; bunu aşacak kadar
-  hızlı ve ince nesneler hâlâ birbirinin içinden geçebilir.
+- Fizik birimi piksel (100 px = 1 m): en kararlı aralık 10-1000 px boyutundaki nesneler. Static/Kinematic
+  gövdeler kendi aralarında çarpışmaz (Box2D kuralı), en az biri Dynamic olmalı.
 - Ses konumsal değil (2D panning / 3D ses yok).
-- Hot-reload yalnızca dokular için; yerleşik shader motora gömülü.
-- Debug panelinde sahne *yükleme* yok: oyunlar entity işaretçileri tuttuğu için yükleme oyunun kendi
-  kodundan yapılmalı (TilemapDemo F9 örneği).
+- Hot-reload dokular ve Lua script'leri için; yerleşik shader motora gömülü.
+- Editörde geri alma tüm sahnenin JSON anlık görüntüsüyle yapılır (küçük/orta sahneler için uygun).
+- Lua'da component'ler her erişimde entity'den yeniden bulunur; `io`/`os` kütüphaneleri açık değil.
+- Debug panelinde (F1) sahne *yükleme* yok; editör ve oynatıcı kendi sahnelerini yükler.
 - TTF fontlar ASCII + Latin-1 + Latin Extended-A ile sınırlı (Türkçe tam; Kiril, Yunan, CJK yok).
   Yerleşik 5x7 font yalnızca ASCII, Türkçe harfleri en yakın karşılığına çevirir.
-- Çalışma dizinini .exe klasörüne alma yalnızca Windows'ta yapılıyor.
+- Çalışma dizinini .exe klasörüne alma, oynatıcıyı başlatma ve dışa aktarma yalnızca Windows'ta.

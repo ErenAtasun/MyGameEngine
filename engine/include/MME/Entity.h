@@ -94,6 +94,7 @@ namespace mme {
         void FixedUpdate(float step);
         void Update(float dt);
         void Render();
+        void RenderUI();
         void NotifyCollision(const Collision& c);
         void NotifyTrigger(Entity& other);
 

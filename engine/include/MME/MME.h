@@ -12,6 +12,7 @@
 
 #include <MME/Assets.h>
 #include <MME/Renderer2D.h>
+#include <MME/Framebuffer.h>
 #include <MME/OrthoCamera.h>
 #include <MME/OrthoCameraController.h>
 #include <MME/Tilemap.h>
@@ -24,10 +25,14 @@
 #include <MME/Entity.h>
 #include <MME/Component.h>
 #include <MME/SpriteComponent.h>
+#include <MME/CameraComponent.h>
 #include <MME/RigidBody2D.h>
-#include <MME/BoxCollider2D.h>
+#include <MME/Collider2D.h>
 #include <MME/Physics2D.h>
 #include <MME/SpriteAnimator.h>
 #include <MME/ParticleEmitter.h>
+#include <MME/ScriptComponent.h>
+#include <MME/InspectorUI.h>
 #include <MME/ComponentRegistry.h>
 #include <MME/SceneSerializer.h>
+#include <MME/Project.h>

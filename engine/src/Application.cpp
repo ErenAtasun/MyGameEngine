@@ -76,8 +76,11 @@ namespace mme {
         if (spec.enableAudio) Audio::Init();
         ComponentRegistry::RegisterBuiltins();
 
+        m_ImGuiEnabled = spec.enableImGui || spec.enableDebugTools;
+        if (m_ImGuiEnabled)
+            ImGuiBackend::Init(*m_Window, spec.imguiFont.empty() ? std::string() : Assets::GetPath(spec.imguiFont),
+                               spec.imguiFontSize, spec.imguiDocking);
         if (spec.enableDebugTools) {
-            ImGuiBackend::Init(*m_Window, spec.imguiFont.empty() ? std::string() : Assets::GetPath(spec.imguiFont), spec.imguiFontSize);
             PushOverlay<DebugOverlay>(spec.showDebugOverlay);
             PushOverlay<DebugPanel>();
         }
@@ -148,8 +151,9 @@ namespace mme {
     void Application::OnEvent(Event& e) {
         // ImGui fareyi/klavyeyi kullanıyorsa oyun bu girdiyi görmez. Bırakma
         // olayları her zaman işlenir: aksi halde tuş basılı kalmış sayılırdı.
-        const bool toImGui = (IsMouseEvent(e.type) && ImGuiBackend::WantsMouse()) ||
-                             (e.type == EventType::KeyPressed && ImGuiBackend::WantsKeyboard());
+        const bool toImGui = m_ImGuiInputCapture &&
+                             ((IsMouseEvent(e.type) && ImGuiBackend::WantsMouse()) ||
+                              (e.type == EventType::KeyPressed && ImGuiBackend::WantsKeyboard()));
         if (toImGui) return;
 
         Input::Internal::ProcessEvent(e);
@@ -225,7 +229,7 @@ namespace mme {
         for (size_t i = 0; i < m_Layers.size(); ++i) m_Layers[i]->OnUIRender();
         Renderer2D::EndScene();
 
-        if (m_Spec.enableDebugTools) {
+        if (m_ImGuiEnabled) {
             ImGuiBackend::BeginFrame();
             for (size_t i = 0; i < m_Layers.size(); ++i) m_Layers[i]->OnImGuiRender();
             ImGuiBackend::EndFrame();

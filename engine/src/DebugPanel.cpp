@@ -3,6 +3,7 @@
 #include <MME/Assets.h>
 #include <MME/Audio.h>
 #include <MME/ComponentRegistry.h>
+#include <MME/InspectorUI.h>
 #include <MME/Renderer2D.h>
 #include <MME/Scene.h>
 #include <MME/SceneSerializer.h>
@@ -106,11 +107,10 @@ namespace mme {
         ImGui::Checkbox("Hız vektörleri", &dbg.velocities);
         if (scene) {
             Physics2D& physics = scene->GetPhysics();
-            const auto& st = physics.GetStats();
-            ImGui::Text("Gövde %u   Aday çift %u   Temas %u   Alt adım %u",
-                        st.bodies, st.candidatePairs, st.contacts, st.substeps);
+            const auto st = physics.GetStats();
+            ImGui::Text("Gövde %u   Uyanık %u   Temas %u", st.bodies, st.awakeBodies, st.contacts);
             ImGui::DragFloat2("Yerçekimi", &physics.gravity.x, 5.0f);
-            ImGui::DragFloat("Hücre boyutu", &physics.cellSize, 1.0f, 16.0f, 1024.0f);
+            ImGui::SliderInt("Alt adım", &physics.subSteps, 1, 8);
         }
     }
 
@@ -157,82 +157,6 @@ namespace mme {
 
     void DebugPanel::DrawInspector(Entity& e) {
         if (!ImGui::CollapsingHeader("Inspector", ImGuiTreeNodeFlags_DefaultOpen)) return;
-        ImGui::PushID((int)e.GetID());
-
-        std::string name = e.GetName();
-        if (ImGui::InputText("İsim", &name)) e.SetName(name);
-        ImGui::Checkbox("Aktif", &e.active);
-        ImGui::SameLine();
-        ImGui::TextDisabled("ID %u", e.GetID());
-        ImGui::DragFloat2("Konum", &e.position.x, 1.0f);
-        ImGui::DragFloat("Rotasyon", &e.rotation, 1.0f);
-        ImGui::DragFloat2("Ölçek", &e.scale.x, 0.01f);
-        ImGui::DragFloat("zLayer", &e.zLayer, 0.1f);
-
-        std::type_index toRemove = typeid(void);
-        e.ForEachComponent([&](std::type_index type, Component& c) {
-            const ComponentInfo* info = ComponentRegistry::Find(type);
-            ImGui::PushID(type.name());
-            if (!info) {
-                ImGui::Separator();
-                ImGui::TextDisabled("%s (kayıtsız)", type.name());
-                ImGui::PopID();
-                return;
-            }
-            const bool open = ImGui::CollapsingHeader(info->name.c_str(), ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowOverlap);
-            ImGui::SameLine(ImGui::GetContentRegionAvail().x - 10.0f);
-            if (ImGui::SmallButton("X")) toRemove = type;
-            if (open)
-                for (const FieldInfo& f : info->fields) DrawField(f, c);
-            ImGui::PopID();
-        });
-        // Dolaşım bittikten sonra sil: döngü içinde vektör değişmesin
-        if (toRemove != std::type_index(typeid(void))) e.RemoveComponent(toRemove);
-
-        if (ImGui::BeginCombo("##add", "Component ekle…")) {
-            for (const ComponentInfo& info : ComponentRegistry::GetAll()) {
-                if (info.get(e)) continue;
-                if (ImGui::Selectable(info.name.c_str())) info.add(e);
-            }
-            ImGui::EndCombo();
-        }
-        ImGui::PopID();
-    }
-
-    bool DebugPanel::DrawField(const FieldInfo& f, Component& c) {
-        void* p = f.access(c);
-        const char* label = f.name.c_str();
-        switch (f.type) {
-            case FieldType::Float:  return ImGui::DragFloat(label, static_cast<float*>(p), f.dragSpeed);
-            case FieldType::Int:    return ImGui::DragInt(label, static_cast<int*>(p), std::max(f.dragSpeed, 0.1f));
-            case FieldType::Bool:   return ImGui::Checkbox(label, static_cast<bool*>(p));
-            case FieldType::Vec2:   return ImGui::DragFloat2(label, &static_cast<glm::vec2*>(p)->x, f.dragSpeed);
-            case FieldType::Color:  return ImGui::ColorEdit4(label, &static_cast<glm::vec4*>(p)->x);
-            case FieldType::String: return ImGui::InputText(label, static_cast<std::string*>(p));
-            case FieldType::Enum: {
-                int* v = static_cast<int*>(p);
-                const char* preview = (*v >= 0 && *v < (int)f.enumNames.size()) ? f.enumNames[(size_t)*v].c_str() : "?";
-                bool changed = false;
-                if (ImGui::BeginCombo(label, preview)) {
-                    for (int i = 0; i < (int)f.enumNames.size(); ++i)
-                        if (ImGui::Selectable(f.enumNames[(size_t)i].c_str(), i == *v)) { *v = i; changed = true; }
-                    ImGui::EndCombo();
-                }
-                return changed;
-            }
-            case FieldType::Texture: {
-                const TextureID tex = *static_cast<TextureID*>(p);
-                const std::string path = Assets::GetTexturePath(tex);
-                ImGui::Text("%s: %s", label, tex == 0 ? "(yok)" : path.empty() ? "(bellekten)" : path.c_str());
-                if (tex) {
-                    const TextureInfo info = Assets::GetTextureInfo(tex);
-                    const float w = 96.0f, h = info.width > 0 ? w * (float)info.height / (float)info.width : w;
-                    // Dokularda v=0 altta; ImGui y'si aşağı baktığı için v çevrilir
-                    ImGui::Image((ImTextureID)(uintptr_t)tex, ImVec2(w, h), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
-                }
-                return false;
-            }
-        }
-        return false;
+        InspectorUI::DrawEntity(e);
     }
 }

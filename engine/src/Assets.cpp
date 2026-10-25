@@ -26,6 +26,7 @@ namespace mme::Assets {
         };
 
         std::string gBase;
+        std::string gProject;
         std::unordered_map<std::string, FileTexture> gTextures; // key: "texture.png"
         std::unordered_map<GLuint, TextureInfo> gTextureInfo;   // tüm canlı dokular
         std::unordered_map<std::string, GLuint> gPrograms;      // key: "vs|fs"
@@ -100,7 +101,7 @@ namespace mme::Assets {
 
         // Diskten okuyup yükler; existing verilirse onun içine. Başarısızsa 0.
         GLuint LoadFromDisk(const std::string& relativePath, GLuint existing, TextureFilter filter) {
-            const fs::path p = fs::path(gBase) / relativePath;
+            const fs::path p = GetPath(relativePath);
             int w = 0, h = 0, n = 0;
             unsigned char* data = stbi_load(p.string().c_str(), &w, &h, &n, 4);
             if (!data) {
@@ -129,10 +130,23 @@ namespace mme::Assets {
     }
 
     std::string GetPath(const std::string& relativePath) {
-        return (fs::path(gBase) / relativePath).string();
+        if (gProject.empty()) return (fs::path(gBase) / relativePath).string();
+        const fs::path inProject = fs::path(gProject) / relativePath;
+        std::error_code ec;
+        if (fs::exists(inProject, ec)) return inProject.string();
+        const fs::path inEngine = fs::path(gBase) / relativePath;
+        if (fs::exists(inEngine, ec)) return inEngine.string();
+        return inProject.string(); // henüz yok: yeni dosya projeye yazılır
     }
 
     const std::string& GetBaseDir() { return gBase; }
+
+    void SetProjectDir(const std::string& projectDir) {
+        gProject = projectDir;
+        if (!gProject.empty()) MME_INFO("[Assets] Proje: ", fs::absolute(gProject).string());
+    }
+
+    const std::string& GetProjectDir() { return gProject; }
 
     // ------------------ Texture ------------------
     TextureID GetTexture(const std::string& relativePath, TextureFilter filter) {
@@ -141,7 +155,7 @@ namespace mme::Assets {
 
         const GLuint t = LoadFromDisk(relativePath, 0, filter);
         if (!t) return 0;
-        gTextures[relativePath] = FileTexture{ t, WriteTime(fs::path(gBase) / relativePath) };
+        gTextures[relativePath] = FileTexture{ t, WriteTime(GetPath(relativePath)) };
         return t;
     }
 
@@ -152,13 +166,24 @@ namespace mme::Assets {
         FileTexture& tex = it->second;
         const TextureFilter filter = gTextureInfo[tex.id].filter;
         if (LoadFromDisk(relativePath, tex.id, filter))
-            tex.writeTime = WriteTime(fs::path(gBase) / relativePath);
+            tex.writeTime = WriteTime(GetPath(relativePath));
         return tex.id;
     }
 
     TextureInfo GetTextureInfo(TextureID texture) {
         auto it = gTextureInfo.find(texture);
         return it != gTextureInfo.end() ? it->second : TextureInfo{};
+    }
+
+    void SetTextureFilter(TextureID texture, TextureFilter filter) {
+        auto it = gTextureInfo.find(texture);
+        if (it == gTextureInfo.end() || it->second.filter == filter) return;
+        it->second.filter = filter;
+        const bool nearest = filter == TextureFilter::Nearest;
+        glBindTexture(GL_TEXTURE_2D, texture);
+        // Dosyadan yüklenenlerin mipmap'i var
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, nearest ? GL_NEAREST_MIPMAP_NEAREST : GL_LINEAR_MIPMAP_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, nearest ? GL_NEAREST : GL_LINEAR);
     }
 
     std::string GetTexturePath(TextureID texture) {
@@ -189,7 +214,7 @@ namespace mme::Assets {
     int CheckForChanges() {
         int reloaded = 0;
         for (auto& [path, tex] : gTextures) {
-            const auto now = WriteTime(fs::path(gBase) / path);
+            const auto now = WriteTime(GetPath(path));
             if (now == fs::file_time_type{} || now == tex.writeTime) continue;
             // Dosya yazılırken okunursa yükleme başarısız olur; zaman damgası
             // güncellenmez, sonraki kontrolde tekrar denenir.
@@ -219,8 +244,8 @@ namespace mme::Assets {
         auto it = gPrograms.find(key);
         if (it != gPrograms.end()) return it->second;
 
-        std::string vsrc = ReadFile(fs::path(gBase) / vsRelative);
-        std::string fsrc = ReadFile(fs::path(gBase) / fsRelative);
+        std::string vsrc = ReadFile(GetPath(vsRelative));
+        std::string fsrc = ReadFile(GetPath(fsRelative));
         if (vsrc.empty() || fsrc.empty()) return 0;
 
         GLuint pr = CreateShaderProgram(vsrc.c_str(), fsrc.c_str(), key);

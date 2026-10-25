@@ -2,7 +2,7 @@
 
 ## 🔹 Short Summary
 
-MakeMyEngine is a lightweight 2D game engine/skeleton built with modern C++ and OpenGL. It combines tilemaps, sprite rendering, AABB collisions, a simple UI, and input handling to help you go from rapid prototyping to production.
+MakeMyEngine is a lightweight 2D game engine built with modern C++ and OpenGL. It ships with a visual **scene editor**, **Lua scripting** and **Box2D physics**, so complete games can be made without writing C++: lay out the scene in the editor, attach Lua scripts, press Play, then export a standalone `.exe`. Games can still be written directly in C++ against the engine library.
 
 ---
 <img width="1322" height="798" alt="Ekran görüntüsü 2025-11-05 175245" src="https://github.com/user-attachments/assets/d850f2b9-a93f-470b-9d51-34506f431e97" />
@@ -32,21 +32,25 @@ MakeMyEngine is a lightweight 2D game engine/skeleton built with modern C++ and 
 
 ## 🔹 Highlights
 
+* **Editor (`Editor.exe`):** dockable scene view, hierarchy, inspector, asset browser and console; click to select, move/rotate/scale gizmos with grid snapping, undo/redo, duplicate, prefabs, drag-and-drop of images/scripts/prefabs; **Play / Pause / Step / Stop** runs the game on a copy of the scene and restores everything on Stop
+* **Lua scripting:** `ScriptComponent` with `OnStart`, `OnUpdate`, `OnFixedUpdate`, `OnCollision`, `OnTrigger`, `OnUI`; per-script `properties` editable in the inspector (live while playing); hot-reload that keeps script state; errors reported as `file:line` in the console without crashing the game
+* **Box2D 3.1 physics:** rotated boxes and circles, friction/restitution/density, continuous collision, sleeping, raycasts, trigger and contact events; units are pixels
+* **Projects & player:** `project.json` projects, `Player.exe <project>` runs a game, *Export* produces a self-contained folder with `<Game>.exe`
 * **Engine / game split:** the engine is a static library (`MME::Engine`); games are separate executables that never see OpenGL or GLFW headers
 * **Application + layers:** `Application` owns the window and main loop; games plug in as `Layer`s (`OnFixedUpdate`, `OnUpdate`, `OnRender`, `OnUIRender`, `OnImGuiRender`, `OnEvent`); layers can be pushed/popped at runtime
 * **Fixed-timestep loop:** simulation at 60 Hz, rendering at display rate; pause, single-step and time scale
 * **Batched 2D renderer:** `Renderer2D` packs up to 10,000 quads and 8 textures into a single draw call; built-in shader embedded in the engine; debug lines/outlines
 * **Scene + components:** `Scene` owns `Entity`s, entities own components (`SpriteComponent`, `SpriteAnimator`, `ParticleEmitter`, `RigidBody2D`, `BoxCollider2D`, your own)
 * **Reflection:** `ComponentRegistry` describes component fields once; the debug inspector and the JSON serializer are both driven by it
-* **2D physics:** static / kinematic / dynamic bodies, spatial-hash broadphase, substepping against tunneling, restitution, gravity, `OnCollisionEnter` / `OnTriggerEnter`
-* **Scene serialization:** `SceneSerializer` saves/loads scenes as JSON (component order preserved, textures stored by path)
+* **2D physics (C++ API):** `RigidBody2D` (static / kinematic / dynamic), `BoxCollider2D`, `CircleCollider2D`, `OnCollisionEnter` / `OnTriggerEnter`; components stay plain data and are synced with Box2D every fixed step
+* **Scene serialization:** `SceneSerializer` saves/loads scenes and prefabs as JSON (entity IDs and component order preserved, textures stored by path)
 * **Debug tools:** Dear ImGui panel (F1) with hierarchy, live inspector, add/remove components, collider and velocity drawing, physics/audio stats; stats overlay (F3)
 * **Audio:** miniaudio-based sound effects (pitch/volume), streamed music, master / SFX / music volume
 * **Text:** TTF fonts via stb_truetype with UTF-8 (full Turkish support: ç ğ ı ö ş ü İ), plus a built-in 5x7 bitmap font
 * **Sprites & effects:** sprite-sheet animation clips, pooled particle system
 * **Hot-reload:** in Debug builds assets are read straight from the repo; edited textures reload live under the same `TextureID`
 * **Ortho camera, CSV tilemaps, event-driven input, immediate-mode UI buttons**
-* **Tooling:** leveled `Log`, `MME_ASSERT`, `vcpkg.json` manifest, CMake presets, 32 automated tests
+* **Tooling:** leveled `Log` with listeners, `MME_ASSERT`, `vcpkg.json` manifest, CMake presets, 38 automated tests
 
 ---
 
@@ -55,8 +59,13 @@ MakeMyEngine is a lightweight 2D game engine/skeleton built with modern C++ and 
 ```
 engine/                 MME::Engine (static library)
   include/MME/          public API — #include <MME/MME.h>
-  src/                  implementation (OpenGL, GLFW, ImGui backends, miniaudio, stb stay in here)
-games/
+  src/                  implementation (OpenGL, GLFW, ImGui, Box2D, Lua/sol2, miniaudio, stb stay in here)
+editor/                 Editor.exe — visual scene editor
+player/                 Player.exe — runs a project made in the editor
+projects/
+  Platformer/           physics platformer made only with the editor + Lua
+  Pong/                 Pong rebuilt with the editor + Lua
+games/                  C++ games using the engine directly
   PingPong/             two-player Pong: sounds, particles, Turkish UI
   TilemapDemo/          tilemap, camera, animated sprites, save/load scene
 tests/
@@ -67,7 +76,7 @@ assets/                 textures, maps, fonts, sounds, music, sprites
 
 * **Frame:** poll events → fixed updates (physics) → update → render world → render UI
 * **Rendering path:** camera → `Renderer2D::BeginScene` → batched quads → one draw call per batch
-* **Physics step:** pick substeps → integrate bodies → broadphase pairs → resolve AABB overlaps → dispatch contact events
+* **Physics step:** sync changed components to Box2D → `b2World_Step` → write positions/velocities back → dispatch contact and trigger events
 
 ### Minimal game
 
@@ -103,19 +112,41 @@ Register it in CMake with `mme_add_game(MyGame src/main.cpp)`.
 
 ---
 
+### Minimal script
+
+```lua
+-- scripts/player.lua — attach with a ScriptComponent (drag the file onto an entity)
+properties = { speed = 320, jumpSpeed = 760 }   -- editable in the inspector
+
+function OnUpdate(self, dt)
+    local v = self.entity.body.velocity
+    v.x = Input.Axis("A", "D") * self.speed
+    if Input.KeyPressed("Space") then v.y = self.jumpSpeed end
+    self.entity.body.velocity = v
+end
+
+function OnTrigger(self, other)
+    if other.name == "Coin" then other:Destroy() end
+end
+```
+
+Script API: `vec2`, `Color`, `self.entity` (`position`, `rotation`, `scale`, `body`, `sprite`, `animator`, `particles`, `box`, `circle`, `script`, `Destroy()`, `Add(name)`), `Scene.Find/Create/Spawn/Load`, `Input.KeyDown/KeyPressed/Axis/MouseWorld`, `Physics.Raycast`, `Audio.Play/PlayMusic`, `UI.Text/TextCentered/Rect/Width/Height`, `Time.dt/time`, `Log.Info/Warn/Error`. See the scripts in `projects/` for complete examples.
+
+---
+
 ## 🔹 Roadmap
 
 See [ENGINE_ROADMAP.md](ENGINE_ROADMAP.md) for the full plan and known limitations. Next up:
 
+* [x] Scene editor, Lua scripting, Box2D physics, project player and export
 * [ ] Platform validation (Linux/macOS)
-* [ ] Rotated boxes and circle colliders
-* [ ] In-engine scene editor on top of the ImGui panel
+* [ ] Parent/child transforms, joints, tilemaps in the editor
 
 ---
 
 ## 🔹 Build & Run (Windows / VS 2022)
 
-Requires [vcpkg](https://github.com/microsoft/vcpkg) and the `VCPKG_ROOT` environment variable pointing at it. Dependencies (`glad`, `glfw3`, `glm`, `imgui`, `miniaudio`, `nlohmann-json`, `stb`) are declared in `vcpkg.json` and installed automatically on the first configure.
+Requires [vcpkg](https://github.com/microsoft/vcpkg) and the `VCPKG_ROOT` environment variable pointing at it. Dependencies (`box2d`, `glad`, `glfw3`, `glm`, `imgui` with docking, `lua`, `miniaudio`, `nlohmann-json`, `sol2`, `stb`) are declared in `vcpkg.json` and installed automatically on the first configure.
 
 ```
 cmake --preset vs2022
@@ -123,9 +154,15 @@ cmake --build --preset debug
 ctest --preset debug
 ```
 
-Executables land in `build/bin/Debug/` (`PingPong.exe`, `TilemapDemo.exe`, `EngineTests.exe`, `EngineAppTests.exe`) with `assets/` copied next to them.
+Executables land in `build/bin/Debug/` (`Editor.exe`, `Player.exe`, `PingPong.exe`, `TilemapDemo.exe`, `EngineTests.exe`, `EngineAppTests.exe`) with `assets/` copied next to them.
 Debug builds read assets directly from the repository's `assets/` folder (for hot-reload); Release builds use the copied folder.
 To use a vcpkg path without setting `VCPKG_ROOT`, add a git-ignored `CMakeUserPresets.json` that inherits `vs2022` and sets it in `environment`.
+
+**Editor:** `Editor.exe projects/Platformer` (or start without arguments to pick/create a project) · `Ctrl+P` play/stop · `F6` run in the player · `W`/`E`/`R` move/rotate/scale · right/middle drag pan · wheel zoom · `Ctrl` snap · `Ctrl+Z`/`Ctrl+Y` undo/redo · `Ctrl+D` duplicate · `Del` delete · `F` focus · `Ctrl+S` save
+
+**Player:** `Player.exe <project folder> [--scene scenes/x.json]` · exported games start without arguments
+
+**Platformer:** `A`/`D` or arrows run · `Space`/`W` jump · `R` restart · **Pong (Lua):** `W`/`S`, `↑`/`↓`, `Space` serve
 
 **PingPong:** `W`/`S` left paddle · `↑`/`↓` right paddle · `Space` serve · `M` music · `Enter`/`R` restart · `Esc` quit
 
@@ -136,7 +173,7 @@ To use a vcpkg path without setting `VCPKG_ROOT`, add a git-ignored `CMakeUserPr
 ### Assets & credits
 
 * `assets/fonts/FiraSans-Regular.ttf`: Fira Sans by Mozilla / Telefonica, [SIL Open Font License](assets/fonts/OFL.txt)
-* Sound effects, music loop and the coin sprite sheet are generated procedurally for this project
+* Sound effects, music loop, the coin sprite sheet and the sample projects' pixel art are generated procedurally for this project
 
 ---
 

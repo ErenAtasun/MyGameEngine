@@ -1,4 +1,5 @@
 #pragma once
+#include <functional>
 #include <sstream>
 #include <string>
 #include <utility>
@@ -9,6 +10,12 @@ namespace mme {
 
     // Bu seviyenin altındaki mesajlar yazılmaz (varsayılan: Info)
     void SetLogLevel(LogLevel minLevel);
+
+    // Konsola yazılan her mesajın bir kopyası dinleyicilere de gider (ör. editör
+    // konsol paneli). Dinleyici hangi thread'den log atıldıysa orada çağrılır.
+    using LogSink = std::function<void(LogLevel level, const std::string& message)>;
+    int AddLogSink(LogSink sink);       // dönen kimlikle kaldırılır
+    void RemoveLogSink(int id);
 
     namespace detail {
         void WriteLog(LogLevel level, const std::string& message);

@@ -1,0 +1,1119 @@
+{
+  "format": 1,
+  "scene": "main",
+  "physics": {
+    "gravity": [
+      0,
+      0
+    ],
+    "subSteps": 4
+  },
+  "entities": [
+    {
+      "id": 1,
+      "name": "Oyun",
+      "active": true,
+      "transform": {
+        "position": [
+          0,
+          0
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1,
+          1
+        ],
+        "zLayer": 0.0
+      },
+      "components": {
+        "ScriptComponent": {
+          "script": "scripts/pong.lua",
+          "properties": ""
+        }
+      }
+    },
+    {
+      "id": 2,
+      "name": "Kamera",
+      "active": true,
+      "transform": {
+        "position": [
+          0,
+          0
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1,
+          1
+        ],
+        "zLayer": 0.0
+      },
+      "components": {
+        "CameraComponent": {
+          "viewHeight": 720,
+          "primary": true,
+          "background": [
+            0.07,
+            0.08,
+            0.11,
+            1
+          ]
+        }
+      }
+    },
+    {
+      "id": 3,
+      "name": "Çizgi 1",
+      "active": true,
+      "transform": {
+        "position": [
+          0,
+          -336.0
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1,
+          1
+        ],
+        "zLayer": 0.0
+      },
+      "components": {
+        "SpriteComponent": {
+          "texture": null,
+          "size": [
+            6,
+            24
+          ],
+          "tint": [
+            1,
+            1,
+            1,
+            0.15
+          ],
+          "origin": [
+            0.5,
+            0.5
+          ],
+          "uvMin": [
+            0,
+            0
+          ],
+          "uvMax": [
+            1,
+            1
+          ]
+        }
+      }
+    },
+    {
+      "id": 4,
+      "name": "Çizgi 2",
+      "active": true,
+      "transform": {
+        "position": [
+          0,
+          -288.0
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1,
+          1
+        ],
+        "zLayer": 0.0
+      },
+      "components": {
+        "SpriteComponent": {
+          "texture": null,
+          "size": [
+            6,
+            24
+          ],
+          "tint": [
+            1,
+            1,
+            1,
+            0.15
+          ],
+          "origin": [
+            0.5,
+            0.5
+          ],
+          "uvMin": [
+            0,
+            0
+          ],
+          "uvMax": [
+            1,
+            1
+          ]
+        }
+      }
+    },
+    {
+      "id": 5,
+      "name": "Çizgi 3",
+      "active": true,
+      "transform": {
+        "position": [
+          0,
+          -240.0
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1,
+          1
+        ],
+        "zLayer": 0.0
+      },
+      "components": {
+        "SpriteComponent": {
+          "texture": null,
+          "size": [
+            6,
+            24
+          ],
+          "tint": [
+            1,
+            1,
+            1,
+            0.15
+          ],
+          "origin": [
+            0.5,
+            0.5
+          ],
+          "uvMin": [
+            0,
+            0
+          ],
+          "uvMax": [
+            1,
+            1
+          ]
+        }
+      }
+    },
+    {
+      "id": 6,
+      "name": "Çizgi 4",
+      "active": true,
+      "transform": {
+        "position": [
+          0,
+          -192.0
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1,
+          1
+        ],
+        "zLayer": 0.0
+      },
+      "components": {
+        "SpriteComponent": {
+          "texture": null,
+          "size": [
+            6,
+            24
+          ],
+          "tint": [
+            1,
+            1,
+            1,
+            0.15
+          ],
+          "origin": [
+            0.5,
+            0.5
+          ],
+          "uvMin": [
+            0,
+            0
+          ],
+          "uvMax": [
+            1,
+            1
+          ]
+        }
+      }
+    },
+    {
+      "id": 7,
+      "name": "Çizgi 5",
+      "active": true,
+      "transform": {
+        "position": [
+          0,
+          -144.0
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1,
+          1
+        ],
+        "zLayer": 0.0
+      },
+      "components": {
+        "SpriteComponent": {
+          "texture": null,
+          "size": [
+            6,
+            24
+          ],
+          "tint": [
+            1,
+            1,
+            1,
+            0.15
+          ],
+          "origin": [
+            0.5,
+            0.5
+          ],
+          "uvMin": [
+            0,
+            0
+          ],
+          "uvMax": [
+            1,
+            1
+          ]
+        }
+      }
+    },
+    {
+      "id": 8,
+      "name": "Çizgi 6",
+      "active": true,
+      "transform": {
+        "position": [
+          0,
+          -96.0
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1,
+          1
+        ],
+        "zLayer": 0.0
+      },
+      "components": {
+        "SpriteComponent": {
+          "texture": null,
+          "size": [
+            6,
+            24
+          ],
+          "tint": [
+            1,
+            1,
+            1,
+            0.15
+          ],
+          "origin": [
+            0.5,
+            0.5
+          ],
+          "uvMin": [
+            0,
+            0
+          ],
+          "uvMax": [
+            1,
+            1
+          ]
+        }
+      }
+    },
+    {
+      "id": 9,
+      "name": "Çizgi 7",
+      "active": true,
+      "transform": {
+        "position": [
+          0,
+          -48.0
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1,
+          1
+        ],
+        "zLayer": 0.0
+      },
+      "components": {
+        "SpriteComponent": {
+          "texture": null,
+          "size": [
+            6,
+            24
+          ],
+          "tint": [
+            1,
+            1,
+            1,
+            0.15
+          ],
+          "origin": [
+            0.5,
+            0.5
+          ],
+          "uvMin": [
+            0,
+            0
+          ],
+          "uvMax": [
+            1,
+            1
+          ]
+        }
+      }
+    },
+    {
+      "id": 10,
+      "name": "Çizgi 8",
+      "active": true,
+      "transform": {
+        "position": [
+          0,
+          0.0
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1,
+          1
+        ],
+        "zLayer": 0.0
+      },
+      "components": {
+        "SpriteComponent": {
+          "texture": null,
+          "size": [
+            6,
+            24
+          ],
+          "tint": [
+            1,
+            1,
+            1,
+            0.15
+          ],
+          "origin": [
+            0.5,
+            0.5
+          ],
+          "uvMin": [
+            0,
+            0
+          ],
+          "uvMax": [
+            1,
+            1
+          ]
+        }
+      }
+    },
+    {
+      "id": 11,
+      "name": "Çizgi 9",
+      "active": true,
+      "transform": {
+        "position": [
+          0,
+          48.0
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1,
+          1
+        ],
+        "zLayer": 0.0
+      },
+      "components": {
+        "SpriteComponent": {
+          "texture": null,
+          "size": [
+            6,
+            24
+          ],
+          "tint": [
+            1,
+            1,
+            1,
+            0.15
+          ],
+          "origin": [
+            0.5,
+            0.5
+          ],
+          "uvMin": [
+            0,
+            0
+          ],
+          "uvMax": [
+            1,
+            1
+          ]
+        }
+      }
+    },
+    {
+      "id": 12,
+      "name": "Çizgi 10",
+      "active": true,
+      "transform": {
+        "position": [
+          0,
+          96.0
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1,
+          1
+        ],
+        "zLayer": 0.0
+      },
+      "components": {
+        "SpriteComponent": {
+          "texture": null,
+          "size": [
+            6,
+            24
+          ],
+          "tint": [
+            1,
+            1,
+            1,
+            0.15
+          ],
+          "origin": [
+            0.5,
+            0.5
+          ],
+          "uvMin": [
+            0,
+            0
+          ],
+          "uvMax": [
+            1,
+            1
+          ]
+        }
+      }
+    },
+    {
+      "id": 13,
+      "name": "Çizgi 11",
+      "active": true,
+      "transform": {
+        "position": [
+          0,
+          144.0
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1,
+          1
+        ],
+        "zLayer": 0.0
+      },
+      "components": {
+        "SpriteComponent": {
+          "texture": null,
+          "size": [
+            6,
+            24
+          ],
+          "tint": [
+            1,
+            1,
+            1,
+            0.15
+          ],
+          "origin": [
+            0.5,
+            0.5
+          ],
+          "uvMin": [
+            0,
+            0
+          ],
+          "uvMax": [
+            1,
+            1
+          ]
+        }
+      }
+    },
+    {
+      "id": 14,
+      "name": "Çizgi 12",
+      "active": true,
+      "transform": {
+        "position": [
+          0,
+          192.0
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1,
+          1
+        ],
+        "zLayer": 0.0
+      },
+      "components": {
+        "SpriteComponent": {
+          "texture": null,
+          "size": [
+            6,
+            24
+          ],
+          "tint": [
+            1,
+            1,
+            1,
+            0.15
+          ],
+          "origin": [
+            0.5,
+            0.5
+          ],
+          "uvMin": [
+            0,
+            0
+          ],
+          "uvMax": [
+            1,
+            1
+          ]
+        }
+      }
+    },
+    {
+      "id": 15,
+      "name": "Çizgi 13",
+      "active": true,
+      "transform": {
+        "position": [
+          0,
+          240.0
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1,
+          1
+        ],
+        "zLayer": 0.0
+      },
+      "components": {
+        "SpriteComponent": {
+          "texture": null,
+          "size": [
+            6,
+            24
+          ],
+          "tint": [
+            1,
+            1,
+            1,
+            0.15
+          ],
+          "origin": [
+            0.5,
+            0.5
+          ],
+          "uvMin": [
+            0,
+            0
+          ],
+          "uvMax": [
+            1,
+            1
+          ]
+        }
+      }
+    },
+    {
+      "id": 16,
+      "name": "Çizgi 14",
+      "active": true,
+      "transform": {
+        "position": [
+          0,
+          288.0
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1,
+          1
+        ],
+        "zLayer": 0.0
+      },
+      "components": {
+        "SpriteComponent": {
+          "texture": null,
+          "size": [
+            6,
+            24
+          ],
+          "tint": [
+            1,
+            1,
+            1,
+            0.15
+          ],
+          "origin": [
+            0.5,
+            0.5
+          ],
+          "uvMin": [
+            0,
+            0
+          ],
+          "uvMax": [
+            1,
+            1
+          ]
+        }
+      }
+    },
+    {
+      "id": 17,
+      "name": "Çizgi 15",
+      "active": true,
+      "transform": {
+        "position": [
+          0,
+          336.0
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1,
+          1
+        ],
+        "zLayer": 0.0
+      },
+      "components": {
+        "SpriteComponent": {
+          "texture": null,
+          "size": [
+            6,
+            24
+          ],
+          "tint": [
+            1,
+            1,
+            1,
+            0.15
+          ],
+          "origin": [
+            0.5,
+            0.5
+          ],
+          "uvMin": [
+            0,
+            0
+          ],
+          "uvMax": [
+            1,
+            1
+          ]
+        }
+      }
+    },
+    {
+      "id": 18,
+      "name": "Sol Raket",
+      "active": true,
+      "transform": {
+        "position": [
+          -590,
+          0
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1,
+          1
+        ],
+        "zLayer": 1
+      },
+      "components": {
+        "SpriteComponent": {
+          "texture": null,
+          "size": [
+            20,
+            110
+          ],
+          "tint": [
+            0.45,
+            0.95,
+            0.55,
+            1
+          ],
+          "origin": [
+            0.5,
+            0.5
+          ],
+          "uvMin": [
+            0,
+            0
+          ],
+          "uvMax": [
+            1,
+            1
+          ]
+        },
+        "BoxCollider2D": {
+          "size": [
+            20,
+            110
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "isTrigger": false,
+          "density": 1.0,
+          "friction": 0.0,
+          "restitution": 0.0
+        },
+        "RigidBody2D": {
+          "type": "Kinematic",
+          "velocity": [
+            0,
+            0
+          ],
+          "angularVelocity": 0,
+          "maxSpeed": 0,
+          "linearDamping": 0,
+          "angularDamping": 0,
+          "gravityScale": 0,
+          "fixedRotation": true,
+          "bullet": false
+        },
+        "ScriptComponent": {
+          "script": "scripts/paddle.lua",
+          "properties": "{\"up\": \"W\", \"down\": \"S\"}"
+        }
+      }
+    },
+    {
+      "id": 19,
+      "name": "Sağ Raket",
+      "active": true,
+      "transform": {
+        "position": [
+          590,
+          0
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1,
+          1
+        ],
+        "zLayer": 1
+      },
+      "components": {
+        "SpriteComponent": {
+          "texture": null,
+          "size": [
+            20,
+            110
+          ],
+          "tint": [
+            1.0,
+            0.45,
+            0.45,
+            1
+          ],
+          "origin": [
+            0.5,
+            0.5
+          ],
+          "uvMin": [
+            0,
+            0
+          ],
+          "uvMax": [
+            1,
+            1
+          ]
+        },
+        "BoxCollider2D": {
+          "size": [
+            20,
+            110
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "isTrigger": false,
+          "density": 1.0,
+          "friction": 0.0,
+          "restitution": 0.0
+        },
+        "RigidBody2D": {
+          "type": "Kinematic",
+          "velocity": [
+            0,
+            0
+          ],
+          "angularVelocity": 0,
+          "maxSpeed": 0,
+          "linearDamping": 0,
+          "angularDamping": 0,
+          "gravityScale": 0,
+          "fixedRotation": true,
+          "bullet": false
+        },
+        "ScriptComponent": {
+          "script": "scripts/paddle.lua",
+          "properties": "{\"up\": \"Up\", \"down\": \"Down\"}"
+        }
+      }
+    },
+    {
+      "id": 20,
+      "name": "Top",
+      "active": true,
+      "transform": {
+        "position": [
+          0,
+          0
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1,
+          1
+        ],
+        "zLayer": 2
+      },
+      "components": {
+        "ParticleEmitter": {
+          "emitting": false,
+          "rate": 90,
+          "offset": [
+            0,
+            0
+          ],
+          "velocity": [
+            0,
+            0
+          ],
+          "velocityVariation": [
+            12,
+            12
+          ],
+          "colorBegin": [
+            1,
+            0.85,
+            0.4,
+            0.55
+          ],
+          "colorEnd": [
+            1,
+            0.5,
+            0.2,
+            0
+          ],
+          "sizeBegin": 16,
+          "sizeEnd": 0,
+          "sizeVariation": 0,
+          "lifetime": 0.35,
+          "lifetimeVariation": 0,
+          "texture": null
+        },
+        "SpriteComponent": {
+          "texture": null,
+          "size": [
+            18,
+            18
+          ],
+          "tint": [
+            1,
+            0.9,
+            0.5,
+            1
+          ],
+          "origin": [
+            0.5,
+            0.5
+          ],
+          "uvMin": [
+            0,
+            0
+          ],
+          "uvMax": [
+            1,
+            1
+          ]
+        },
+        "BoxCollider2D": {
+          "size": [
+            18,
+            18
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "isTrigger": false,
+          "density": 1.0,
+          "friction": 0.0,
+          "restitution": 1.0
+        },
+        "RigidBody2D": {
+          "type": "Dynamic",
+          "velocity": [
+            0,
+            0
+          ],
+          "angularVelocity": 0,
+          "maxSpeed": 0,
+          "linearDamping": 0,
+          "angularDamping": 0,
+          "gravityScale": 0,
+          "fixedRotation": true,
+          "bullet": true
+        },
+        "ScriptComponent": {
+          "script": "scripts/ball.lua",
+          "properties": ""
+        }
+      }
+    },
+    {
+      "id": 21,
+      "name": "Üst Duvar",
+      "active": true,
+      "transform": {
+        "position": [
+          0,
+          400.0
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1,
+          1
+        ],
+        "zLayer": 0.0
+      },
+      "components": {
+        "BoxCollider2D": {
+          "size": [
+            1440,
+            80
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "isTrigger": false,
+          "density": 1.0,
+          "friction": 0.0,
+          "restitution": 0.0
+        }
+      }
+    },
+    {
+      "id": 22,
+      "name": "Alt Duvar",
+      "active": true,
+      "transform": {
+        "position": [
+          0,
+          -400.0
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1,
+          1
+        ],
+        "zLayer": 0.0
+      },
+      "components": {
+        "BoxCollider2D": {
+          "size": [
+            1440,
+            80
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "isTrigger": false,
+          "density": 1.0,
+          "friction": 0.0,
+          "restitution": 0.0
+        }
+      }
+    },
+    {
+      "id": 23,
+      "name": "Sol Kale",
+      "active": true,
+      "transform": {
+        "position": [
+          -680.0,
+          0
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1,
+          1
+        ],
+        "zLayer": 0.0
+      },
+      "components": {
+        "BoxCollider2D": {
+          "size": [
+            80,
+            720
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "isTrigger": true,
+          "density": 1.0,
+          "friction": 0.0,
+          "restitution": 0.0
+        }
+      }
+    },
+    {
+      "id": 24,
+      "name": "Sağ Kale",
+      "active": true,
+      "transform": {
+        "position": [
+          680.0,
+          0
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1,
+          1
+        ],
+        "zLayer": 0.0
+      },
+      "components": {
+        "BoxCollider2D": {
+          "size": [
+            80,
+            720
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "isTrigger": true,
+          "density": 1.0,
+          "friction": 0.0,
+          "restitution": 0.0
+        }
+      }
+    }
+  ]
+}

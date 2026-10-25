@@ -38,6 +38,10 @@ namespace mme {
         for (size_t i = 0; i < m_Components.size(); ++i) m_Components[i].second->OnRender();
     }
 
+    void Entity::RenderUI() {
+        for (size_t i = 0; i < m_Components.size(); ++i) m_Components[i].second->OnUIRender();
+    }
+
     void Entity::NotifyCollision(const Collision& c) {
         for (size_t i = 0; i < m_Components.size(); ++i) m_Components[i].second->OnCollisionEnter(c);
     }

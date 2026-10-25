@@ -20,19 +20,25 @@ namespace mme {
 }
 
 // Dosya tabanlı varlık önbelleği. Yollar Init'e verilen klasöre görelidir.
+// Bir proje klasörü ayarlanırsa (editör / oynatıcı) dosyalar önce orada, sonra
+// motorun kendi asset klasöründe aranır; yeni dosyalar projeye yazılır.
 namespace mme::Assets {
 
     void Init(const std::string& baseDir);
     void Shutdown();
 
-    // "maps/level1.csv" -> "<assets>/maps/level1.csv"
+    // "maps/level1.csv" -> "<proje ya da assets>/maps/level1.csv"
     std::string GetPath(const std::string& relativePath);
-    const std::string& GetBaseDir();
+    const std::string& GetBaseDir();       // motorun asset klasörü
+
+    void SetProjectDir(const std::string& projectDir);  // boş: proje yok
+    const std::string& GetProjectDir();
 
     // Textures (ilk yükleme hangi filtreyle yapıldıysa önbellekte o kalır)
     TextureID GetTexture(const std::string& relativePath, TextureFilter filter = TextureFilter::Linear);
     TextureID ReloadTexture(const std::string& relativePath);
     TextureInfo GetTextureInfo(TextureID texture);
+    void SetTextureFilter(TextureID texture, TextureFilter filter);
     // Dosyadan yüklenmiş bir dokunun göreli yolu; bellekten oluşturulduysa boş
     std::string GetTexturePath(TextureID texture);
 
