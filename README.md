@@ -32,47 +32,111 @@ MakeMyEngine is a lightweight 2D game engine/skeleton built with modern C++ and 
 
 ## 🔹 Highlights
 
-* **Ortho camera + controller:** `OrthoCamera`, `OrthoCameraController`
-* **2D renderer + sprite system:** `Renderer2D`, `SpriteComponent`, GLSL shaders (`assets/shaders`)
-* **CSV-based tilemaps:** `Tilemap` (`assets/maps`)
-* **Physics/collision:** AABB (`AABBCollider`, `CollisionSystem`)
-* **Input handling:** `Input` (keyboard)
-* **Simple UI layer:** `UI`
-* **Entity/Component architecture:** `Entity`, `Component`
-* **Asset management:** `AssetManager`
+* **Engine / game split:** the engine is a static library (`MME::Engine`); games are separate executables that never see OpenGL or GLFW headers
+* **Application + layers:** `Application` owns the window and main loop; games plug in as `Layer`s (`OnFixedUpdate`, `OnUpdate`, `OnRender`, `OnUIRender`, `OnImGuiRender`, `OnEvent`); layers can be pushed/popped at runtime
+* **Fixed-timestep loop:** simulation at 60 Hz, rendering at display rate; pause, single-step and time scale
+* **Batched 2D renderer:** `Renderer2D` packs up to 10,000 quads and 8 textures into a single draw call; built-in shader embedded in the engine; debug lines/outlines
+* **Scene + components:** `Scene` owns `Entity`s, entities own components (`SpriteComponent`, `SpriteAnimator`, `ParticleEmitter`, `RigidBody2D`, `BoxCollider2D`, your own)
+* **Reflection:** `ComponentRegistry` describes component fields once; the debug inspector and the JSON serializer are both driven by it
+* **2D physics:** static / kinematic / dynamic bodies, spatial-hash broadphase, substepping against tunneling, restitution, gravity, `OnCollisionEnter` / `OnTriggerEnter`
+* **Scene serialization:** `SceneSerializer` saves/loads scenes as JSON (component order preserved, textures stored by path)
+* **Debug tools:** Dear ImGui panel (F1) with hierarchy, live inspector, add/remove components, collider and velocity drawing, physics/audio stats; stats overlay (F3)
+* **Audio:** miniaudio-based sound effects (pitch/volume), streamed music, master / SFX / music volume
+* **Text:** TTF fonts via stb_truetype with UTF-8 (full Turkish support: ç ğ ı ö ş ü İ), plus a built-in 5x7 bitmap font
+* **Sprites & effects:** sprite-sheet animation clips, pooled particle system
+* **Hot-reload:** in Debug builds assets are read straight from the repo; edited textures reload live under the same `TextureID`
+* **Ortho camera, CSV tilemaps, event-driven input, immediate-mode UI buttons**
+* **Tooling:** leveled `Log`, `MME_ASSERT`, `vcpkg.json` manifest, CMake presets, 32 automated tests
 
 ---
 
-
 ## 🔹 Architecture at a Glance
 
-<img width="263" height="733" alt="Ekran görüntüsü 2025-11-05 185634" src="https://github.com/user-attachments/assets/e88be025-75f9-42c2-be23-b0d7e5e8e179" />
+```
+engine/                 MME::Engine (static library)
+  include/MME/          public API — #include <MME/MME.h>
+  src/                  implementation (OpenGL, GLFW, ImGui backends, miniaudio, stb stay in here)
+games/
+  PingPong/             two-player Pong: sounds, particles, Turkish UI
+  TilemapDemo/          tilemap, camera, animated sprites, save/load scene
+tests/
+  EngineTests.cpp       unit tests (no GPU needed)
+  AppTests.cpp          main-loop tests on a hidden window (needs a GPU)
+assets/                 textures, maps, fonts, sounds, music, sprites
+```
 
-* **Scene flow:** `Scene` + `GameScene` manage game loop + layers
-* **Component-driven design:** focused components (`SpriteComponent`, `VelocityComponent`, `BallComponent`, `PaddleController`)
-* **Rendering path:** Ortho camera → `Renderer2D` → shader → texture
-* **Assets:** under `/assets` (shaders, textures, CSV tilemaps)
+* **Frame:** poll events → fixed updates (physics) → update → render world → render UI
+* **Rendering path:** camera → `Renderer2D::BeginScene` → batched quads → one draw call per batch
+* **Physics step:** pick substeps → integrate bodies → broadphase pairs → resolve AABB overlaps → dispatch contact events
+
+### Minimal game
+
+```cpp
+#include <MME/MME.h>
+
+class MyLayer : public mme::Layer {
+    mme::Scene m_Scene;
+    mme::OrthoCamera m_Camera{ 1280, 720 };
+public:
+    void OnAttach() override {
+        auto& box = m_Scene.CreateEntity("Box");
+        box.AddComponent<mme::SpriteComponent>().size = { 64, 64 };
+        box.AddComponent<mme::BoxCollider2D>().size = { 64, 64 };
+        box.AddComponent<mme::RigidBody2D>().velocity = { 100, 0 };
+    }
+    void OnFixedUpdate(float step) override { m_Scene.FixedUpdate(step); }
+    void OnRender() override {
+        mme::Renderer2D::BeginScene(m_Camera);
+        m_Scene.Render();
+        mme::Renderer2D::EndScene();
+    }
+};
+
+int main() {
+    mme::Application app;
+    app.PushLayer<MyLayer>();
+    app.Run();
+}
+```
+
+Register it in CMake with `mme_add_game(MyGame src/main.cpp)`.
 
 ---
 
 ## 🔹 Roadmap
 
-* [ ] Texture batching + atlas optimizations
-* [ ] Simple particle system
-* [ ] Audio (OpenAL or miniaudio)
-* [ ] Scripting (Lua/AngelScript)
-* [ ] Basic UI widgets (button, slider, text input)
-* [ ] Platform layer validation (Linux/macOS)
+See [ENGINE_ROADMAP.md](ENGINE_ROADMAP.md) for the full plan and known limitations. Next up:
+
+* [ ] Platform validation (Linux/macOS)
+* [ ] Rotated boxes and circle colliders
+* [ ] In-engine scene editor on top of the ImGui panel
 
 ---
 
-## 🔹 Build & Run (Windows / VS)
+## 🔹 Build & Run (Windows / VS 2022)
 
-1. Open project with **CMake**
-2. Generate Visual Studio solution
-3. Build + run `MakeMyEngine.exe`
+Requires [vcpkg](https://github.com/microsoft/vcpkg) and the `VCPKG_ROOT` environment variable pointing at it. Dependencies (`glad`, `glfw3`, `glm`, `imgui`, `miniaudio`, `nlohmann-json`, `stb`) are declared in `vcpkg.json` and installed automatically on the first configure.
 
-> Build outputs + example assets live under `build/Debug`.
+```
+cmake --preset vs2022
+cmake --build --preset debug
+ctest --preset debug
+```
+
+Executables land in `build/bin/Debug/` (`PingPong.exe`, `TilemapDemo.exe`, `EngineTests.exe`, `EngineAppTests.exe`) with `assets/` copied next to them.
+Debug builds read assets directly from the repository's `assets/` folder (for hot-reload); Release builds use the copied folder.
+To use a vcpkg path without setting `VCPKG_ROOT`, add a git-ignored `CMakeUserPresets.json` that inherits `vs2022` and sets it in `environment`.
+
+**PingPong:** `W`/`S` left paddle · `↑`/`↓` right paddle · `Space` serve · `M` music · `Enter`/`R` restart · `Esc` quit
+
+**TilemapDemo:** `WASD` camera · wheel zoom · left click paint tile · right click erase · `F5` save scene · `F9` load scene
+
+**Everywhere:** `F1` debug panel · `F3` stats overlay
+
+### Assets & credits
+
+* `assets/fonts/FiraSans-Regular.ttf`: Fira Sans by Mozilla / Telefonica, [SIL Open Font License](assets/fonts/OFL.txt)
+* Sound effects, music loop and the coin sprite sheet are generated procedurally for this project
 
 ---
 
@@ -99,12 +163,12 @@ MakeMyEngine is a modern C++ + OpenGL 2D engine/skeleton that’s easy to learn 
 ### ✅ What’s inside?
 
 * Ortho camera + controller
-* 2D renderer, sprites, GLSL shader pipeline
+* Batched 2D renderer (one draw call per batch), sprites, GLSL shader pipeline
 * CSV-based tilemaps
 * AABB collision system
 * Input + simple UI layer
 * Clean component‑based structure
-* 
+
 <img width="1316" height="797" alt="Ekran görüntüsü 2025-11-05 175211" src="https://github.com/user-attachments/assets/b498fe91-9c7d-46b9-b51e-b75c77f92100" />
 
 ### ✅ Why these technologies?
@@ -123,11 +187,11 @@ MakeMyEngine is a modern C++ + OpenGL 2D engine/skeleton that’s easy to learn 
 
 ### ✅ Next
 
-Batching, particles, audio, scripting.
+Linux/macOS support, more collider shapes, an in-engine scene editor.
 
 ### ✅ Try it
 
 Open with CMake → build → run.
-Assets under `/assets` (shaders, textures, tilemaps).
+Assets under `/assets` (textures, tilemaps); see Build & Run above.
 
 ---

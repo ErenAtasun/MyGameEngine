@@ -1,3 +1,0 @@
-C:/Users/atasu/Desktop/MakeMyEngine/build/CMakeFiles/MakeMyEngine.dir
-C:/Users/atasu/Desktop/MakeMyEngine/build/CMakeFiles/ALL_BUILD.dir
-C:/Users/atasu/Desktop/MakeMyEngine/build/CMakeFiles/ZERO_CHECK.dir

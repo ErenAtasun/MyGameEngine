@@ -1,0 +1,16 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
+  "name": "makemyengine",
+  "version-string": "0.2.0",
+  "description": "Lightweight 2D game engine in C++17 and OpenGL",
+  "builtin-baseline": "120deac3062162151622ca4860575a33844ba10b",
+  "dependencies": [
+    "glad",
+    "glfw3",
+    "glm",
+    { "name": "imgui", "features": [ "glfw-binding", "opengl3-binding" ] },
+    "miniaudio",
+    "nlohmann-json",
+    "stb"
+  ]
+}

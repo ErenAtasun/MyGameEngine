@@ -1,0 +1,10 @@
+# Derleme çıktıları
+build/
+out/
+
+# Visual Studio
+.vs/
+*.user
+
+# Makineye özel CMake ayarları
+CMakeUserPresets.json
